@@ -26,3 +26,5 @@ point data. Initially I copied the C code, compiled it into a dynamic library, a
 stepsize and move on to an adaptive stepsize (which is what's being used in BATSRUS). More complicated stuffs include tracing in 3D general mesh. Work in progress.
 
 One example in Python is given in this [post](https://pythonmatplotlibtips.blogspot.com/2017/12/draw-flow-with-continuous-stream-line.html). Essentially it is solving ODEs and connect points into lines. At each step in the discretized equation, a interpolation function is provided to calculate the vector field direction at a given point.
+
+I have built a small package [FieldTracer.jl](https://github.com/henry2004y/FieldTracer.jl) for tracing streamlines and fieldlines in 2D and 3D.
