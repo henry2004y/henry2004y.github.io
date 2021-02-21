@@ -64,6 +64,14 @@ Beyond that, you also need to
 2. [sync your fork](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork)
 3. [rebase your development branch](https://gist.github.com/Chaser324/ce0505fbed06b947d962#cleaning-up-your-work)
 
+Additionally, it would be better if you squeeze your small commits into large ones with concise messages, and push to remote like this:
+```
+git checkout my_branch
+git reset --soft HEAD~4
+git commit
+git push --force origin my_branch
+```
+
 As with many peer review projects, pull requests take a long time in the queue waiting to be merged.
 Handle the situation wisely to save your time and effort!
 
