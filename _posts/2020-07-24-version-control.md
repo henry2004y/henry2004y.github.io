@@ -72,6 +72,9 @@ git commit
 git push --force origin my_branch
 ```
 
+Sometimes `rebase` will become a tedious option if you jump between branches. In this case, `cherry-pick` may be an easy alternative. Check out
+[How to Cherry Pick Commits]https://stackoverflow.com/questions/1670970/how-to-cherry-pick-multiple-commits) for more.
+
 As with many peer review projects, pull requests take a long time in the queue waiting to be merged.
 Handle the situation wisely to save your time and effort!
 
