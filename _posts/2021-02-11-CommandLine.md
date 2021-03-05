@@ -39,4 +39,9 @@ Explanation:
 tail -f log
 ```
 
+This works, but the downside is that `tail` reads the whole file into buffer. As an alternative, using `less` is a more elegant approach:
+```
+less +F log
+```
+
 Many more to be added later!
