@@ -33,6 +33,10 @@ By the way, for a serious project, NEVER push directly to the master branch. The
 
 With all that being said, git is still not perfect. Recently I was confused about the usage of `git rebase`, so I did a Google search on the topic. Both of them are used for merging branches, but the differences are summarized [here](https://www.perforce.com/blog/vcs/git-rebase-vs-merge-which-better). Based on my current understanding, rebase is better than merge if you know what you are doing.
 
+## Renaming
+
+Often git may get confused about renaming files. Check [this StackOverflow discussion](https://stackoverflow.com/questions/433111/how-to-make-git-mark-a-deleted-and-a-new-file-as-a-file-move) and the trick of using `git log --follow` in [Follow the History of renamed files](https://kgrz.io/use-git-log-follow-for-file-history.html).
+
 ## Workflow within a group
 
 It is easy to use git if you are the only person who commits.
