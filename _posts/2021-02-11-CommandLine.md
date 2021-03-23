@@ -44,4 +44,18 @@ This works, but the downside is that `tail` reads the whole file into buffer. As
 less +F log
 ```
 
+* Return the last n modified file in directory in time order:
+```
+ls -Art | tail -n 1
+```
+or in reverse order:
+```
+ls -t | head -n 1
+```
+
+* Pipe selected files into tar:
+```
+ls -Art | tail -n 5 | tar czvf out.tar.gz -T -
+```
+
 Many more to be added later!
