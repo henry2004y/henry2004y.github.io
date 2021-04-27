@@ -37,6 +37,12 @@ With all that being said, git is still not perfect. Recently I was confused abou
 
 Often git may get confused about renaming files. Check [this StackOverflow discussion](https://stackoverflow.com/questions/433111/how-to-make-git-mark-a-deleted-and-a-new-file-as-a-file-move) and the trick of using `git log --follow` in [Follow the History of renamed files](https://kgrz.io/use-git-log-follow-for-file-history.html).
 
+## Removing from history
+
+Removing a file completely from Git history requires extra care, which is described in [Removing sensitive data from a repository](https://docs.github.com/en/github/authenticating-to-github/removing-sensitive-data-from-a-repository).
+
+Remember to tell your collaborators working on their local branches to rebase from origin/master by `git pull --rebase` instead of `git pull`. Otherwise one merge commit could reintroduce some or all of the tainted history that you just went to the trouble of purging!
+
 ## Workflow within a group
 
 It is easy to use git if you are the only person who commits.
