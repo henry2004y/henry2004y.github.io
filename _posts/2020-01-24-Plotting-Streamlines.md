@@ -5,7 +5,8 @@ tags: [visual]
 comments: true
 ---
 
-一开始在Matlab上开发VisAna的时候，记得Gabor就在说怎么这个磁力线莫名其妙地断了，旁边贾老师说这是Matlab画图导致的问题，不是我程序写错了。后来转战Julia，
+The built-in streamline function of Matplotlib/MATLAB is not proper for scientifically visualizing field information.
+一开始在MATLAB上开发VisAna的时候，记得Gabor就在说怎么这个磁力线莫名其妙地断了，旁边贾老师说这是MATLAB画图导致的问题，不是我程序写错了。后来转战Julia，
 改用Matplotlib，这个问题不但没有解决，还变得愈演愈烈。
 
 问题的表现有几点：
@@ -17,8 +18,7 @@ Take a look at the official streamline plots:
 
 This is definitely what you expect. I noticed that there is a `minlength` argument described in [streamplot](https://matplotlib.org/api/_as_gen/matplotlib.pyplot.streamplot.html). Maybe give that a try?
 
-The solution turns out to be doing tracing alone. In SpacePy, there's a standalone C code for tracing one line at a time and output the 
-point data. Initially I copied the C code, compiled it into a dynamic library, and then call the function directly from Julia. Next I incorporate the function into the plotting function I have and use it instead of the original streamplot in Matplotlib.
+The solution turns out to be doing tracing alone. In [SpacePy]((https://github.com/spacepy/spacepy/blob/master/spacepy/pybats/trace2d.py)), there's a standalone C code for tracing one line at a time and output the point data. Initially I copied the C code, compiled it into a dynamic library, and then call the function directly from Julia. Next I incorporate the function into the plotting function I have and use it instead of the original streamplot in Matplotlib.
 
 ---
 
@@ -27,4 +27,4 @@ stepsize and move on to an adaptive stepsize (which is what's being used in BATS
 
 One example in Python is given in this [post](https://pythonmatplotlibtips.blogspot.com/2017/12/draw-flow-with-continuous-stream-line.html). Essentially it is solving ODEs and connect points into lines. At each step in the discretized equation, a interpolation function is provided to calculate the vector field direction at a given point.
 
-I have built a small package [FieldTracer.jl](https://github.com/henry2004y/FieldTracer.jl) for tracing streamlines and fieldlines in 2D and 3D.
+I have built a small package [FieldTracer.jl](https://github.com/henry2004y/FieldTracer.jl) for tracing streamlines and fieldlines in 2D and 3D. It is now almost feature complete.
