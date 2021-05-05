@@ -43,6 +43,17 @@ Removing a file completely from Git history requires extra care, which is descri
 
 Remember to tell your collaborators working on their local branches to rebase from origin/master by `git pull --rebase` instead of `git pull`. Otherwise one merge commit could reintroduce some or all of the tainted history that you just went to the trouble of purging!
 
+Sometimes you may want to remove file from the repository but keep it locally. This can be achieved by
+```shell
+git rm --cached -r somedir
+```
+Will stage the deletion of the directory, but doesn't touch anything on disk. This works also for a file, like:
+```shell
+git rm --cached somefile.ext
+```
+Afterwards you may want to add `somedir/` or `somefile.txt` to your `.gitignore` file so that git doesn't try to add it back.
+
+
 ## Workflow within a group
 
 It is easy to use git if you are the only person who commits.
@@ -75,7 +86,7 @@ Beyond that, you also need to
 3. [rebase your development branch](https://gist.github.com/Chaser324/ce0505fbed06b947d962#cleaning-up-your-work)
 
 Additionally, it would be better if you squeeze your small commits into large ones with concise messages, and push to remote like this:
-```
+```shell
 git checkout my_branch
 git reset --soft HEAD~4
 git commit
