@@ -37,6 +37,10 @@ With all that being said, git is still not perfect. Recently I was confused abou
 
 Often git may get confused about renaming files. Check [this StackOverflow discussion](https://stackoverflow.com/questions/433111/how-to-make-git-mark-a-deleted-and-a-new-file-as-a-file-move) and the trick of using `git log --follow` in [Follow the History of renamed files](https://kgrz.io/use-git-log-follow-for-file-history.html).
 
+## Squashing commits
+
+Generally it is better to squeeze small commits before merging. Take a look at this post [Combining multiple commits before pushing](https://stackoverflow.com/questions/6934752/combining-multiple-commits-before-pushing-in-git).
+
 ## Removing from history
 
 Removing a file completely from Git history requires extra care, which is described in [Removing sensitive data from a repository](https://docs.github.com/en/github/authenticating-to-github/removing-sensitive-data-from-a-repository).
