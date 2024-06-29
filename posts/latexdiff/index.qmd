@@ -3,7 +3,7 @@ title: Using latexdiff
 subtitle: Compare and show the differences between files
 author: "Hongyang Zhou"
 date: "2019-11-08"
-categories: [computer, latex]
+categories: [software, latex]
 ---
 
 Compare the differences between files is a tedious task. However, if you pick the right tool, it may become as easy as one line command.

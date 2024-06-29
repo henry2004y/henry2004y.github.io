@@ -3,7 +3,7 @@ title: Editors
 subtitle: Emacs, Vim, Atom, VSCode, and Typora
 author: "Hongyang Zhou"
 date: "2020-07-24"
-categories: [softwares]
+categories: [software]
 ---
 
 ## From Atom to VSCode

@@ -31,6 +31,7 @@ Fixing stability issues are much harder than speed.
 
 `ping` is de-facto tool for network checking, available on all platforms.
 It will show you in the end of its execution summary statistics like the following:
+
 ```shell
 --- 142.250.74.142 ping statistics ---
 2342 packets transmitted, 2341 received, 0.0426985% packet loss, time 4193057ms
@@ -42,6 +43,7 @@ rtt min/avg/max/mdev = 6.334/7.367/25.469/1.011 ms
 ## Router
 
 Router provides wired and wifi connection that links you to the modem. It is similar to a network traffic control center for multiple devices. For my network instability and connection problems, they seemed to be fixed by:
+
 * changing wires (less likely, but the first thing to check)
 * upgrading the firmware of the router (solved the instability issue)
 * [cloning device MAC address](https://www.cablematters.com/blog/Networking/what-is-mac-address-cloning) (solved WAN identification issue as shown [here](https://community.tp-link.com/us/home/forum/topic/157141))

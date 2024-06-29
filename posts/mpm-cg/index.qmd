@@ -2,7 +2,7 @@
 title: MPM与CG特效
 author: "Hongyang Zhou"
 date: "2020-01-12"
-categories: [computer, visual]
+categories: [programming, visual]
 ---
 
 

@@ -2,7 +2,7 @@
 title: Chromium Browsers
 author: "Hongyang Zhou"
 date: "2021-02-24"
-categories: [softward]
+categories: [software]
 ---
 
 When I bought a new laptop a few months ago, I decided to get a new Win10. Now the default browser on Win10 is Edge, which is built upon Google's Chromium kernel.
