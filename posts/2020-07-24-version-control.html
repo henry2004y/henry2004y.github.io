@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.543">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Hongyang Zhou">
+
+<title>blog - Git Version Control</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/henry2004y"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Git Version Control</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">Blog</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Hongyang Zhou </p>
+            </div>
+    </div>
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<p>I haven’t considered myself a programmer until very recent years. As a proof of that, 2017/08/28 is the first day I use Git. My experience of using a version control system started with CVS, a centralized management tool. Before mid 2019, our research group were using CVS for version control. The adopted concept is that there is one and only one branch on the server, and everyone commits to that. This is good for maintainence within a few people. Back in 2005, Linus Torvalds, the creator of Linux, created Git in a very special scanerio: the Linux kernel community could no longer use their revision control system BitKeeper and no other Source Control Management (SCMs) met their needs for a distributed system. Linus took the challenge into his own hands and disappeared over the weekend to emerge the following week with Git. In the same year, he made a <a href="https://www.youtube.com/watch?v=4XpnKHJAok8&amp;t=2884s">interval talk</a> at Google to explain his motivation.</p>
+<p>Time proves Linus was right. Nowadays, Git the go-to option for revision control. Quoted from his own word: &gt; I think that many others had been frustrated by all the same issues that made me hate SCM’s, and while there have been many projects that tried to fix one or two small corner cases that drove people wild, there really hadn’t been anything like git that really ended up taking on the big problems head on. Even when people don’t realize how important that “distributed” part was (and a lot of people were fighting it), once they figure out that it allows those easy and reliable backups, and allows people to make their own private test repositories without having to worry about the politics of having write access to some central repository, they’ll never go back.</p>
+<p>I happen to know somebody who is strongly against Git but have to give up the fight and use it instead. However, if your workflow philosophy does not change, you won’t touch the true power of git. So, what is wrong with CVS? By far the cleanest explanation I find is from Zack Brown: &gt; There were many complaints about CVS though. One was that it tracked changes on a per-file basis and didn’t recognize a larger patch as a single revision, which made it hard to interpret the past contributions of other developers. There also were some hard-to-fix bugs, like race conditions when two conflicting patches were submitted at the same time.</p>
+<p>CVS is really terrible when I want to reorganize the whole directory or the Internet connection is off. Besides, I have some other opinions. The key concept behind Git is its distributed storage. I’ll make a bet that if you are a truly open-source person, you will love this idea.</p>
+<p>So now when you go back and revisit this story of Git, you can feel the importance of vision for the future. New things are born because we are tired of the old ones. The popularity of Git and its workflow has a reason.</p>
+<p>By the way, for a serious project, <strong>NEVER push directly to the master branch</strong>. There are all kinds of tool to do automated testing before you are confident about the changes.</p>
+<p>With all that being said, git is still not perfect. Recently I was confused about the usage of <code>git rebase</code>, so I did a search on the topic. Both <code>merge</code> and <code>rebase</code> are used for merging branches, but the differences are summarized <a href="https://www.perforce.com/blog/vcs/git-rebase-vs-merge-which-better">here</a>. Based on my current understanding, <code>rebase</code> is better than merge for local unpublished commits; <code>rebase</code> may create a disaster in conflicts if being used on commits that are already pushed/shared on a remote repository!<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<section id="adding" class="level2">
+<h2 class="anchored" data-anchor-id="adding">Adding</h2>
+<p>The first principle of commits is one thing at a time. For instance, if you have two independent changes in a file, the basic <code>git -add file</code> will list both changes togther. A more advanced way is <code>git add -p file</code>: this allows you to go through all the changes and decide whether they belong to the same topic!</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Uszj_k0DGsg?start=90" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
+</iframe>
+</section>
+<section id="renaming" class="level2">
+<h2 class="anchored" data-anchor-id="renaming">Renaming</h2>
+<p>Often git may get confused about renaming files. Check <a href="https://stackoverflow.com/questions/433111/how-to-make-git-mark-a-deleted-and-a-new-file-as-a-file-move">this StackOverflow discussion</a> and the trick of using <code>git log --follow</code> in <a href="https://kgrz.io/use-git-log-follow-for-file-history.html">Follow the History of renamed files</a>.</p>
+<p>The important thing to know is that internally git does not have the concept of renaming: it only knows deleting and adding. A more thorough explanation can be found <a href="https://vjeko.com/2020/11/24/understanding-renaming-moving-files-with-git/">here</a>. In most common cases, when you try to reorganizing your code, consider separate the renaming stage and content modification stage.</p>
+</section>
+<section id="squashing" class="level2">
+<h2 class="anchored" data-anchor-id="squashing">Squashing</h2>
+<p>Generally it is better to squeeze small commits before merging, especially in a PR. Take a look at this post <a href="https://stackoverflow.com/questions/6934752/combining-multiple-commits-before-pushing-in-git">Combining multiple commits before pushing</a>.</p>
+</section>
+<section id="finding-regression" class="level2">
+<h2 class="anchored" data-anchor-id="finding-regression">Finding regression</h2>
+<p><code>git bisect</code> is a great tool for finding regression. Check <a href="https://stackoverflow.com/questions/4713088/how-to-use-git-bisect">how to use git bisect</a>.</p>
+</section>
+<section id="blaming" class="level2">
+<h2 class="anchored" data-anchor-id="blaming">Blaming</h2>
+<p><code>git blame</code> shows the modification history of a file. There are now built-in GUI supports on GitHub and GitLab.</p>
+</section>
+<section id="deleting-a-branch" class="level2">
+<h2 class="anchored" data-anchor-id="deleting-a-branch">Deleting a branch</h2>
+<p><a href="https://stackoverflow.com/questions/2003505/how-do-i-delete-a-git-branch-locally-and-remotely">How to delete a branch</a></p>
+</section>
+<section id="resolving-conflicts" class="level2">
+<h2 class="anchored" data-anchor-id="resolving-conflicts">Resolving conflicts</h2>
+<section id="when-does-conflicts-may-occur" class="level3">
+<h3 class="anchored" data-anchor-id="when-does-conflicts-may-occur">When does conflicts may occur</h3>
+<ul>
+<li><code>git merge</code></li>
+<li><code>git rebase</code></li>
+<li><code>git pull</code></li>
+<li><code>git cherry-pick</code></li>
+<li><code>git stash apply</code></li>
+</ul>
+</section>
+<section id="how-to-undo-a-conflict-and-start-over" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-undo-a-conflict-and-start-over">How to undo a conflict and start over</h3>
+<p>You can always undo and start fresh!</p>
+<pre class="shell"><code>git merge --abort</code></pre>
+<pre class="shell"><code>git rebase --abort</code></pre>
+</section>
+<section id="how-to-solve-a-conflict" class="level3">
+<h3 class="anchored" data-anchor-id="how-to-solve-a-conflict">How to solve a conflict</h3>
+<p>Simply clean up the file!</p>
+<pre class="shell"><code>git mergetool</code></pre>
+</section>
+</section>
+<section id="removing-from-history" class="level2">
+<h2 class="anchored" data-anchor-id="removing-from-history">Removing from history</h2>
+<p>Removing a file completely from Git history requires extra care, which is described in <a href="https://docs.github.com/en/github/authenticating-to-github/removing-sensitive-data-from-a-repository">Removing sensitive data from a repository</a>.</p>
+<p>Remember to tell your collaborators working on their local branches to rebase from origin/master by <code>git pull --rebase</code> instead of <code>git pull</code>. Otherwise one merge commit could reintroduce some or all of the tainted history that you just went to the trouble of purging!</p>
+<p>Sometimes you may want to remove file from the repository but keep it locally. This can be achieved by</p>
+<pre class="shell"><code>git rm --cached -r somedir</code></pre>
+<p>Will stage the deletion of the directory, but doesn’t touch anything on disk. This works also for a file, like:</p>
+<pre class="shell"><code>git rm --cached somefile.ext</code></pre>
+<p>Afterwards you may want to add <code>somedir/</code> or <code>somefile.txt</code> to your <code>.gitignore</code> file so that git doesn’t try to add it back.</p>
+</section>
+<section id="workflow-within-a-group" class="level2">
+<h2 class="anchored" data-anchor-id="workflow-within-a-group">Workflow within a group</h2>
+<p>It is easy to use git if you are the only person who commits. It becomes tricky if you are working with a group of people.</p>
+<p>I originally made some mistakes in the git workflow when I started working in a new group on GitHub. The team chooses to merge every new feature and bug fixes into the dev branch instead of the master branch. So everytime you fork the repository, commit some changes, and then submit a pull request to the main dev branch. At first I was not used to working on new feature branches. I followed my old CVS way of dumping everything I did into my forked branch, and gradually it became a huge change. This is not good for reviewing. What made it worse was that others were submitting pull requests also. Once their commits are merged into the latest dev branch, my huge branch will have many commits ahead and also several commits behind, which is likely to lead to conflicts that must be resolved manually. Here is a good chance to emphasize the usage of <code>rebase</code>: if any commits have been made to the upstream master branch, you should rebase your development branch so that merging it will be a simple fast-forward that won’t require any conflict resolution work. It is also useful in the situation where you are developing two new feature branches A and B, and B is depending on A. You submit your PR of A while working on B. Later you receive feedbacks on A, making changes, and rebase B on top of that. If you don’t use <code>rebase</code>, you have to resolve the conflicts everytime you modify A, and eventually at the time you submit PR of B, it will become a huge mess. Similar situation is being described <a href="https://stackoverflow.com/questions/56875810/new-pull-request-when-one-is-already-opened">here</a>. Learn from yours and others’ mistakes!</p>
+<p>Here is the suggested workflow. “Working off a branch” usually means you</p>
+<ol type="1">
+<li>clone a repository, e.g.&nbsp;<code>git clone http://repository</code></li>
+<li>check out the branch you’re interested in <code>git checkout awesome-branchname</code>,</li>
+<li>and create a new branch based of that <code>git checkout -b new-even-more-awesome-branch-name</code></li>
+</ol>
+<p>Beyond that, you also need to</p>
+<ol type="1">
+<li><a href="https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/configuring-a-remote-for-a-fork">configure the remote for your fork</a></li>
+<li><a href="https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork">sync your fork</a></li>
+<li><a href="https://gist.github.com/Chaser324/ce0505fbed06b947d962#cleaning-up-your-work">rebase your development branch</a></li>
+</ol>
+<p>Additionally, it would be better if you squeeze your small commits into large ones with concise messages, and push to remote like this:</p>
+<pre class="shell"><code>git checkout my_branch
+git reset --soft HEAD~4
+git commit
+git push --force origin my_branch</code></pre>
+<p>Sometimes <code>rebase</code> will become a tedious option if you jump between branches. In this case, <code>cherry-pick</code> may be an easy alternative. Check out [How to Cherry Pick Commits]https://stackoverflow.com/questions/1670970/how-to-cherry-pick-multiple-commits) for more.</p>
+<p>As with many peer review projects, pull requests take a long time in the queue waiting to be merged. Handle the situation wisely to save your time and effort!</p>
+<p>Here is an excellent <a href="https://gist.github.com/Chaser324/ce0505fbed06b947d962">guidance for what to do on GitHub</a>.</p>
+</section>
+<section id="github" class="level2">
+<h2 class="anchored" data-anchor-id="github">GitHub</h2>
+<p>In Fall 2021, GitHub disabled direct command line push through HTTPS even if you are the owner. They introduced a new authentication key which only shows up once and has a limited available time. Now the recommended way to connect to GitHub is through SSH. Follow the steps in <a href="https://stackoverflow.com/questions/60757334/git-push-from-vs-code-no-anonymous-write-access-authentication-failed">Q&amp;A</a> to setup the SSH connection to GitHub.</p>
+</section>
+<section id="resources" class="level2">
+<h2 class="anchored" data-anchor-id="resources">Resources</h2>
+<p>There is a summary of <a href="https://deepsource.io/blog/git-best-practices/">Git best practices</a>. Even after I scanned through it, I still made all kinds of mistakes. That’s fine. This is how you improve.</p>
+<p>Never or less, happy coding!</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Practically Gabor’s forced usage of <code>rebase</code> only works if you have a single branch to work on. Do not make it the default synchronizing behavior!<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

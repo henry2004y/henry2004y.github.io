@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.543">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Hongyang Zhou">
+<meta name="dcterms.date" content="2020-09-10">
+
+<title>Hongyang’s Blog - 我与数据可视化的那点事儿</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Hongyang’s Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/henry2004y"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">我与数据可视化的那点事儿</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">visual</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Hongyang Zhou </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 10, 2020</p>
+    </div>
+  </div>
+  
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">September 17, 2022</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>学习工作中反复和图像打交道，更能感受到人类的视觉动物本性。五感中，视觉可谓是信息量最大的输入，也同时深入影响着抽象的思维逻辑。我们力图在复杂中寻找简单，高度提炼的数据是关键的一环。</p>
+<p>从事科研若干年，关于成果展示，一句经典老话：“字不如表，表不如图。”从一开始不明所以在海报里塞入大量文字，到后来转而力求简洁清晰的图像，本质上就是随着随着认知的深入能深入浅出地发掘重要信息进行归纳总结。比如现在的文献检索，当你用关键词找到若干篇备选，也不会每一遍都从头到尾地看，而是依据本身的熟悉程度寻找核心线索和结论，着重看关键的公式和图表。如果恰巧你能在一个公式或一张图中找到这样的关键信息，而无需为了诸多细节阅览全篇，你会庆幸自己遇到了个好作者。我们喜欢图像，就像是在混乱中寻找秩序的冲动。</p>
+<hr>
+<p>大家频繁接触数据做图多半是从中学开始学习几何以后。想着当年各种手绘解析几何的直线曲线图形，为后来的电子化做图打下了坚实的基础。这种经典的教学方式如今可能会受到电子化的冲击，但动手画图依旧是我们最快的理解方式。记得高中时候鸟蛋就开始玩儿几何画板，那对于搞奥赛平面几何简直就是神器：各种图形中涉及到的不动点、共线、共圆，手绘是静态的很难看出，但是用几何画板设几个不动点拖几下可能就出来了。在苏州参加集训的时候一次请来的老师讲课不经意之间在我们面前秀了一把操作，让台下所有学生羡煞了眼。鸟蛋一次还跟我讲拿几何画板看旋轮线轨迹，对当时的我来说已是超乎想象的了。后来认识了楚哥，自吹几何画板也是用得飞起，我信个七分，羡慕个三分。</p>
+<p>关于计算机绘图，个人上手最早的经历可以追溯到大一C语言作业要求的命令行输出。当时有一类练习输出的题目就是让你在命令行里画各种图形。现在有一些仿古的绘图库，比如<a href="http://docs.juliaplots.org/latest/generated/unicodeplots">UnicodePlots</a>，还能让人依稀回忆起那样的图形风格。真正开始大量实践是从大学物理实验开始的，这系列课程我连上了四个学期，每学期就占1.5个学分，占用的时间和投入的经历却几乎相当于一门3学分的课程。每周一次用一个下午或者一个晚上的时间做实验，然后拿着数据按照要求一通分析，为了写实验报告经常弄得焦头烂额。一开始全电子版的实验报告还不熟练，大部分都是手写的，只是图表是用Origin做的，误差估计啥的经常是拿着计算器手算的，最后到打印店把做好的图用A4纸打出来，裁剪好贴到手写的报告上面去。到了本科高年级的物理课和研究项目中，手写的报告几乎不复存在了，无论是实地操作的仪器中采集的数据，还是计算机模拟跑出来的数据，数据分析和处理全部电子化了。大三开始接触MATLAB进行动态绘图，大四上手LaTeX折腾得死去活来但入门后蓦然回首发现公式、图表和排版竟然可以如此简单，画图这事儿就自然而然地走进了我的日常学习之中。做本科毕业论文的时候，主要的粒子模拟是用Fortran跑的，输出的格式也是自定义的，然后传到MATLAB里面画图做动画截图分析结果。</p>
+<hr>
+<p>研究生以后画图更成了家常便饭的活，各种project需要的图主要靠MATLAB做，而组里做研究主要靠IDL。一遍又一遍的写报告制图中，摸爬滚打学习着如何制作大小适宜、风格统一、简洁明快的图片，顺带也涉猎了大量有文档可查的功能。研一的冬季学期上了门系里的编程课，主讲老师Dan是个Python狂粉，我在这里第一次系统学习了Python并了解了著名的由已故生物学家John Hunter在2002年创造的类MATLAB绘图库Matplotlib。由于和MATLAB的渊源，我上手起来非常快，虽然不是很喜欢Python的语法，但是对Matplotlib非常认可。另一方面，IDL这门古早的语言至今还被用在大量空间物理的数据分析中，虽然我就几乎没见过年轻人说它的好话。当年理论力学课最后李毅教授曾经展示过他写的陀螺模拟程序，还有GUI界面，似乎就是IDL写的。研究生组里老板精通Fortran,Perl和IDL，用IDL写一整套的模拟数据可视化包，渡过安装的镇痛后，参照说明操作绘图倒是非常便利。然而这里的“便利”，指的是照猫画虎做既定规格的图的时候——若是遇到稍微想订制一下的出版规格的图，基于IDL的这套工具用起来真是有苦难言。当时Python已经火起来了，组里也有老师写了个Python的模拟文件处理程序，但一来我并不喜欢Python，二来这个包第一次安装时还失败了，所以就没了下文。Mathematica虽然很早就见识过它的厉害，但是我不熟，由于也更偏向符号运算，一时对我的需求也不是很多，就没有仔细折腾。远在大一的时候去曹原租住的小屋，刚进门就看见他在用Mathematica玩一个可调参数的函数，当时就被惊艳到了。同样程度的可视化通过拖拽控制槽来即时显示函数的工具，MATLAB在17年前后才引入，前后查了5年有余。更不用提后来再次惊艳我的Wolfram Alpha，虽然不怎么用，但依然感叹匪夷所思。Mathematica的创始人Stephen Wolfram是一名天才型的人物，我在校那几年和MATLAB的创始人Cleve Moler曾先后两年来过密歇根做演讲，但那天我不巧病倒了，未能去现场。</p>
+<p>然而没有摆脱IDL的阴影仍在笼罩。本来IDL就够难用了，老板还只用命令行的IDL，更是雪上加霜。曾经我试图修改些他写的IDL脚本，先是在自己尝试的时候连个简单的循环都不能编译，后来又是看到了Fortran66中“臭名昭著”的common block遍地横飞，全然苦不堪言。折磨两年后，17年暑假我回国，励精图治开始写一个基于MATLAB的模拟数据分析包。多年的课程锻炼让我对MATLAB绘图如数家珍，所以主要的难点在于数据格式的读入。我们组这个小作坊说来也是神奇，几乎所有的研究工具都是私人定制的，其中也包括数据格式。这格式显然是没有啥文档说明的，尤其是主要使用的二进制文件，只能靠读源代码进行分析。花了一个月，我参考老板的IDL包写出了自己的MATLAB包的雏形。这也是我真正意义上对于数据处理和绘图底层架构的入坑尝试，收获了非常多的实战经验。我第一篇文章中所有的图都是拿这个MATLAB包做的。</p>
+<p>在上计算流体力学的时候，我被Christof Fidkowski教授的电子版讲义深深震撼了：那是我学生生涯里见过的最好的教学讲义，甚至比很多教材都精致。他用来画概念图的那款软件我至今不得其名，但是自己后来在Mac上找到了一款叫Zebra的免费版类几何画板软件，也已经十分好用了。</p>
+<p>18年底，机缘巧合我结识了Julia。关于这段故事，详情可以转见<a href="https://henry2004y.github.io/JuliaNotes/menu7/">Perception</a>. 19年初，我觉得时机已然成熟，为何不写个基于Julia的模拟数据处理包呢？有了先前MATLAB包的经验，这次改写效率高了很多，基本上一个星期就完成了第一版。期间遇到的主要问题源于我对Julia的不熟悉以及Julia本身对于文件I/O底层的支持当时还不够健全（譬如<code>read!(iostream, @view A[:,1])</code> 这样的操作，在Julia 1.4以前并不原生支持，需要一些hack）。然而这次改写，加上Julia本身对于绘图后端选择的强调，让我开始思考我们需要一个什么样的数据可视化包。我们可以越俎代庖般给所有的已有绘图库中的方法添加自己写的一套wrapper，并且定制所有的参数，但是这么做的代价就是出产的包异常臃肿并且难以维护：每当遇到新的情景，新的参数，你都需要在wrapper中添加相应的改动，最终的代码就会又臭又长。这里不得不提Python中令我深受启发的特殊传参方法 <code>*args</code> 和 <code>**kwargs</code>： Julia中类似的操作叫做splat operator <code>...</code>，利用它，你可以很方便的为已有的方法构建简洁的wrapper。</p>
+<p>不久后我意识到Julia中三维绘图分析功能相比于Tecplot和ParaView来说实在是太简陋了，于是四处寻找解决办法。Tecplot是一款组里一直在使用的三维数据可视化软件，功能很强大，可惜是收费的。它的数据格式除了最新的高性能并行规格作为商业机密保密以外其它的都有详细的说明，所以组里的计算程序能够直接输出该老格式的文件。遗憾的是，这个格式并不能直接被ParaView读取。ParaView是一款业界非常出名的三维可视化开源软件，同他的兄弟VisIt一样师出VTK，也已经深耕了二三十年。VTK则是一套历史悠久的计算机图形学底层库，定义了诸多基础几何结构的表示方法，也是现在诸多可视化的软件的基石。这时候我也临近毕业，一心的想法就是不能栓死在付费小众软件上，而应向着更通用的格式靠拢，于是详细了解了VTK的基本格式，包括传统的和现代基于XML的，并且上手了ParaView的操作流程。更巧的是，一位Julia社区中的法国人搞出了一个生成基于XML格式的VTK文件的开源包，打通了最后一个关节。虽然从Tecplot的PLT到VTK格式转换需要些时间，但是受惠于XML中的压缩算法文件大小可以减小2-10倍，在我看来是非常重要的优势。这里的逻辑有点绕，但结局是我搭好了Julia+ParaView的可视化分析生态，并成功应用到了第二篇科学文章的数据分析之中。</p>
+<hr>
+<p>当我开始芬兰的博士后工作后，这边的组里又是一套全新的C++代码+数据格式+自定义Python包。如果是个写的好维护的好的Python包我也就直接用了，可是我进组两个月屡次要求开发者在文档缺失的情况下给一个绘图包的使用教学，一路被各种莫名其妙的借口拖到看不见尽头……我一念之下自己动手从零开始用Julia写了一个新的。所幸这次数据格式的文档还不错，Python理解起来也不难，第一版的数据读取+简易绘图模块大概两周弄出来了。这次的新挑战在于，原先的Python代码头重脚轻的逻辑让我看得连连叹息：在读取数据这块，它定义了Python class中最核心的方法是一个通用参数的接口，之后在各个地方再调用基于这个通用方法的实现。众所周知，Python是一门本来就不是以速度闻名的动态语言，这么一折腾更是代码又长运行又慢。如果我照着原样翻译一遍，当然可以立刻在Julia中运行，但是运行效率上一定是没谱的。于是凭借两年来写Julia的经验、对文件格式的理解、以及对Python代码的分析，我从头构建了整个数据流的逻辑，<a href="https://henry2004y.github.io/Vlasiator.jl/dev/log/#Benchmarks">结果</a>是几十KB的小文件读取快了10倍，1MB左右的快了2倍，30MB以上的基本持平——根据我先前的经验，这部分主要的时间都消耗在了系统I/O上面，越大的文件越是如此；理论上Python的I/O由于是用C实现的，不会比任何语言慢。这不能反映出我的Julia代码写得好，只能说明原先的Python代码的确存在设计问题。</p>
+<p>后来陆陆续续我不断在丰富这个Julia包的功能、构建完整的测试和文档，并且注册到了官方包管理目录中以方便安装使用。基于Python Matplotlib的绘图后端代码，我用200行实现了原先Python中1200行实现的功能。核心的设计理念就是用户不需要额外阅读我写的文档才能知道如何作图：如果他有需求，可以直接在Matplotlib或者其他后端库的详细文档中找到相应的实现方法。这样大大节约像我这样中间开发者的工作，利于长久维护。还是那句话，不是友军太给力，奈何敌军不争气。最开始的时候，我其实也可以选择全面更新已有的Python代码，但是出于对劝服先前维护者改动的疑虑、所有功能重新实现工作量的担忧、以及淘汰老旧错误使用习惯的代价，我放弃了走这条路的念头。用新工具很多时候不得不从头造轮子，但是相应的我们没有历史的负担，不必念及旧情。我花了不少时间尝试一些细节上的优化，许多都是无疾而终，但也并非无功而返：失败带来的都是宝贵的经验，做你不知道的或者别人没做过的尝试才能淬炼手艺。于是临近一年时间这个包的版本号也即将达到0.8,而我的如意算盘则是在手头的新数据分析完发文章的那一天达成1.0的目标。让我们拭目以待。</p>
+<hr>
+<p>学习Julia的过程中，我也一直在跟进社区里数据可视化方面的进展。早期的Julia中是没有自己的绘图库的；当时的做法主要是搭好了和各种其他语言的接口，直接调用其他语言中成名已久的绘图包，比如Matplotlib和GGPlot。为了方便使用，Plots.jl的主要作者设计了一套前后端的逻辑，后端是这些调用的库，前端则是统一的Julia语法。然而由于各种后台库之间的差异，使用起来时常会遇到前端不支持的功能或者不能调整的地方，最终还不如直接调用底层库方便。同时逐步诞生的是一个原生的Julia基于OpenGL的绘图库Makie，概念很新颖，但是尤其是早期又慢又难用，开发人手不足缺失众多功能，仍处在尝鲜的阶段。曾经我就这方面的问题在论坛问了很多，最终得出结论在19年当时若想有productive ready的工具还是得用PyPlot，其他包里不足之处还是得靠时间去磨。</p>
+<p>如今两年过去了，传统上time-to-first-plot的知名问题随着新版本的问世得到很大改善，但依旧还达不到Python的水准；Makie临近1.0版本，文档逐步丰富，接口逐渐统一，多图排版得到了显著提升，自定义数据接口也修复了bug,但是默认的流程下启动速度还是太慢。很多人期待着Makie最终能取代Plots.jl成为Julia的招牌绘图库，毕竟亲儿子，需要秀肌肉。按如今的发展势头，再等两年说不定我可以正式向别人推荐这个包了。</p>
+<hr>
+<p>我还折腾过好一段时间图形化界面GUI。MATLAB中提供了自定义的<a href="https://se.mathworks.com/discovery/matlab-gui.html">GUI编写模块</a>，从最古老的GUIDE，到现在的App Designer。早先是写<a href="https://github.com/henry2004y/VisAnaMatlab">VisAna</a>的时候想搞一个简单的快速浏览数据的用户界面，弄了一半，数据能通过菜单读取了，能画一张最基础的图。没继续弄的原因，就是我发现这是一个大坑：很多细节的调整非常花时间，并且做出来了可能也没人用。对于像我自己这样的，直接写脚本或者命令行绘图是更高效的方式；对于不想直接敲代码写函数的，可能也不会亲自去画图。于是这个GUI的想法变成了一个很鸡肋的功能，我也半途而废了。一次在运动之后我和睿豪聊起这个事儿，他笑了笑说我应该去搞计算机——我想着设计个没人用的用户界面如此麻烦，还真不适合我这个缺少艺术细胞的人做。 有天跟老板Gabor抱怨模型输入参数检查很费心的时候，他不知道从我们代码库的哪个角落给我翻出来一个基于HTML的GUI，可以修改并检查模型的输入参数。我在组里已经干了好几年了也从没听人谈起过这个，也没见人用过，可见这东西做出来是吃力不讨好。</p>
+<p>最早上Python课的时候，我就玩过相关的GUI开发包，虽然很简陋，但是对我而言很新奇。18年我参加完ISSS13的workshop以后，对一个日本研究组开发的以教学为主要目的的PIC代码很感兴趣。当时这套代码是从Fortran改到MATLAB的，并且添加了个GUI，能调输入参数，也能实时监控输出，的确适合教学；但由于年代久远，GUI部分是用GUIDE写的，正巧App Designer刚出来不久，我借着东风把原始的代码改成了兼容App Designer的版本，大致了解了一个App的实现框架。20年底楚哥跟我抱怨过他老板写的MATLAB程序多么难用，我一看是个裸的脚本加上一个GUIDE的壳，框架好不好另说一没文档说明二没数据测试，也就放弃帮他改进了。如今的MATLAB App Designer明显是更加趋近于Java风格的，毕竟整个MATLAB的前端和可视化部分都是Java实现的。</p>
+<p>Julia中也有封装的一些做App或者图形化界面的包，比如GTK、Electron之类的，但是毕竟不是原生的支持有限，很容易碰壁。结合先前的经验，我也就没有继续探索下去。设计前端的界面真是个体力活，码农那么多，Java那么火，也是因为需要大量人力来完善面向普通用户的图形界面。新时代密集型劳动，码农称谓诚不欺我。</p>
+<hr>
+<p>科学绘图有别于艺术绘画，但依旧可以拥有风格甚至幽默。<a href="https://xkcd.com/">xkcd</a>就是一个风靡在PhD群体中的漫画库。在Matplotlib中使用<code>plt.xkcd()</code>，或者在PyPlot中使用<code>xkcd()</code>，你可能会惊讶地发现加入点小曲折的线段无意间消解了你过于规矩的焦虑：</p>
+<p><img src="https://imgs.xkcd.com/comics/real_programmers.png" alt="real programmers"></p>
+<p><img src="https://imgs.xkcd.com/comics/curve_fitting.png" alt="curve fitting"></p>
+<p><img src="https://imgs.xkcd.com/comics/pie_charts.png" alt=""></p>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<script src="https://utteranc.es/client.js" repo="AlbertRapp/blogComments" issue-term="pathname" theme="github-light" crossorigin="anonymous" async="">
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
