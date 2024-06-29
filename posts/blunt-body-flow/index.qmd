@@ -18,7 +18,7 @@ The conservation laws which describe the motion of the flow are a set of nonline
 
 Another difficulty is that the boundaries in the problem are not completely defined, that is, only the shape of the body is known a priori. The other boundaries consisting of the bow shock and the sonic lines have to he determined as weIl as the flow properties in the region of flow.
 
-{% include figure image_path="blunt_body_problem.png" alt="blunt-body" caption="The blunt body problem" %}
+![The blunt body problem.](blunt_body_problem.png)
 
 The key thing to remember is that there is no analytical solution yet.
 
@@ -28,12 +28,12 @@ It was not until G.Moretti and M.Abbett's idea that this becomes computationally
 
 The ana1ysis is started by assuming an arbitrary shock profile AB, as shown in fig. 1.2.
 
-{% include figure image_path="hydro-shock.png" alt="hydro-shock" caption="." %}
+![Hydrydynamic shock illustration.](hydro-shock.png)
 
 The region that is analysed is that part of the flow field which is bounded by the assumed shock, the body surface, the plane of symmetry (AD in fig. 1.2) and an arbitrary upper boundary which must be in the supersonic region of the flow, that is, downstream of the sonic 1ine. The reason that the upper boundary shou1d be "innnersed" in the supersonic part of the f1ow, is to ensure that no distrubances are propagated back into the region under consideration; since for supersonic flows, disturbances are only propagated downstream. Thus referring to fig. 1.2, the region of flow represented by ABCD is the one under consideration.
 This region is then divided into a network of points and the flow parameters inc1uding pressure, density and velocity are initia11y assumed for each point.
 
-{% include figure image_path="hyperboloidal_body.png" alt="hyperboloidal" caption="." %}
+![Hyperboloidal body](hyperboloidal_body.png)
 
 A time interva1 $\Delta t$ is then considered and using a modified method of characteristics the shock shape and location are re-ca1cu1ated, as well as the flow parameters just behind the shock which must satisfy the Rankine-Hugoniot equations.
 Simi1ar1y on the body surface the flow variables are found using the same modified method of characteristics.
@@ -46,7 +46,7 @@ Thus, the flow over the whole region ABCD can be calculated for a time step $\De
 
 A proper initial condition would speed up the computation process significantly. However, I believe any initial condition should converge to the same steady state solution.
 
-{% include figure image_path="initial_shock_profile.png" alt="initial-shock" caption="." %}
+![Initial shock profile.](initial_shock_profile.png)
 
 ### Governing Equations
 
