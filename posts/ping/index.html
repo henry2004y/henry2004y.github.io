@@ -190,7 +190,12 @@ rtt min/avg/max/mdev = 6.334/7.367/25.469/1.011 ms</code></pre>
 </section>
 <section id="router" class="level2">
 <h2 class="anchored" data-anchor-id="router">Router</h2>
-<p>Router provides wired and wifi connection that links you to the modem. It is similar to a network traffic control center for multiple devices. For my network instability and connection problems, they seemed to be fixed by: * changing wires (less likely, but the first thing to check) * upgrading the firmware of the router (solved the instability issue) * <a href="https://www.cablematters.com/blog/Networking/what-is-mac-address-cloning">cloning device MAC address</a> (solved WAN identification issue as shown <a href="https://community.tp-link.com/us/home/forum/topic/157141">here</a>)</p>
+<p>Router provides wired and wifi connection that links you to the modem. It is similar to a network traffic control center for multiple devices. For my network instability and connection problems, they seemed to be fixed by:</p>
+<ul>
+<li>changing wires (less likely, but the first thing to check)</li>
+<li>upgrading the firmware of the router (solved the instability issue)</li>
+<li><a href="https://www.cablematters.com/blog/Networking/what-is-mac-address-cloning">cloning device MAC address</a> (solved WAN identification issue as shown <a href="https://community.tp-link.com/us/home/forum/topic/157141">here</a>)</li>
+</ul>
 <p>Regarding firmware, nowadays routers, even though most of them do have a CPU, they don’t have an operating system. Instead, they are more like embedded systems that rely upon firmwares. In my case, upgrading the firmware does provide much more stable connection.</p>
 <p>Another side note is that based on the ping tests, wired connection through the router is slower than direct wired connection: about every minute I see a response time decrease from 8ns to 16ns, while the direct wired connection shows a less varying response time.</p>
 
