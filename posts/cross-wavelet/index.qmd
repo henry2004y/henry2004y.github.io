@@ -6,7 +6,7 @@ categories: [math]
 date-modified: "2021-11-15"
 ---
 
-Before we talk about cross-wavelet transform (CWT)[^CWT_name], we need to understand wavelet transform (WT). Before we learn wavelet transform, we'd better have a good understanding of Fourier transform. Take a look at [wavelet transform]({{ site.baseurl }}{% post_url 2021-11-15-wavelet %}) before moving on.
+Before we talk about cross-wavelet transform (CWT)[^CWT_name], we need to understand wavelet transform (WT). Before we learn wavelet transform, we'd better have a good understanding of Fourier transform. Take a look at [Wavelet Transform](../wavelet/index.qmd) before moving on.
 
 The cross-wavelet transform (CWT) method is a technique that characterizes the interaction between the wavelet transform (WT) of two individual time-series.[^CWT_ref]
 
@@ -64,19 +64,17 @@ Two synthetic time-series were created. The two time-series, s1 (Figure 2A) and 
 
 ## Discriminate the Properties of Time-Series
 
-Following the statistical test described in [Wavelet Transform]({{ site.baseurl }}{% post_url 2021-11-15-wavelet %}), we can obtain what is usually known as *the cone of influence*, which is the region under the thin black lines in Figure 1.
+Following the statistical test described in [Wavelet Transform](../wavelet/index.qmd), we can obtain what is usually known as *the cone of influence*, which is the region under the thin black lines in Figure 1.
 
 ## Tools
 
 ### MATLAB
 
 MATLAB's wavelet toolbox provides [wcoherence](https://se.mathworks.com/help/wavelet/ref/wcoherence.html) for computing the cross-wavelet tranform. The key formula is
-
-\\[
+$$
 \frac{| S(C_x^\ast(a,b) C_y(a,b) ) |^2}{S(| C_x(a,b) |^2)\cdot S(| C_y(a,b) |^2)}
-\\]
-
-where \\( C_x(a,b) \\) and \\( C_y(a,b) \\) denote the continuous wavelet transforms of x and y at scales a and positions b. The superscript * is the complex conjugate and S is a smoothing operator in time and scale.
+$$
+where $C_x(a,b)$ and $C_y(a,b)$ denote the continuous wavelet transforms of x and y at scales a and positions b. The superscript * is the complex conjugate and S is a smoothing operator in time and scale.
 
 ### Julia
 
