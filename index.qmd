@@ -1,5 +1,5 @@
 ---
-title: "Hongyang's Blog"
+title: "Hongyang's Website"
 listing:
   contents: posts
   sort: "date desc"
