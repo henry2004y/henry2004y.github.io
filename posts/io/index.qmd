@@ -1,0 +1,20 @@
+---
+title: IO Hardwares
+author: "Hongyang Zhou"
+date: "2021-04-07"
+categories: [hardware]
+---
+
+Data access speed is important. In many applications, it is more important to have faster data access speed than higher CPU frequency.
+
+There are several new types of data storage hardwares, which are closer to the speed of RAM compared with the SATA HDD:
+
+* SATA SSD: solid state drive, commonly seen nowadays on even PCs.
+* NVMe SSD: a new protocol for flash media storage. 10x faster address seek time than SATA SSD.
+
+Typical file transfer speeds: 
+| HDD | SATA SSD  | NVMe SSD |
+|-----|-----------|----------|
+|200MBps| 550MBps | 3GBps |
+
+Among the NVMe devices, Intel Optane is currently the most expensive one.

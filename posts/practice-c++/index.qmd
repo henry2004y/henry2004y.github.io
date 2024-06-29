@@ -1,0 +1,135 @@
+---
+title: Practicing C++
+author: "Hongyang Zhou"
+date: "2020-09-02"
+categories: [programming]
+---
+
+If scientists read coding standards and recommendations like [C++ Core Guidelines](http://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines) in the first place, then it is less likely that science codes will be poor in performance and unmaintainable.
+
+Quoted from [A Tour of C++](https://stroustrup.com/tour2.html):
+> With the growth of the language and its standard library, the problem of popularizing effective programming styles became critical. It is extremely difficult to make large groups of programmers depart from something that works for something better. There are still people who see C++ as a few minor additions to C and people who consider 1980s Object-Oriented programming styles based on massive class hierarchies the pinnacle of development. Many are struggling to use C++11 well in environments with lots of old C++ code. On the other hand, there are also many who enthusiastically overuse novel facilities. For example, some programmers are convinced that only code using massive amounts of template metaprogramming is true C++.
+> What is Modern C++? In 2015, I set out to answer this question by developing a set of coding guidelines supported by articulated rationales. I soon found that I was not alone in grappling with that problem and together with people from many parts of the world, notably from Microsoft, Red Hat, and Facebook, we started the "C++ Core Guidelines" project [Stroustrup,2015]. This is an ambitious project aiming at complete type-safety and complete resource-safety as a base for simpler, faster, and more maintainable code [Stroustrup,2015b]. In addition to specific coding rules with rationales, we back up the guidelines with static analysis tools and a tiny support library. I see something like that as necessary for moving the C++ community at large forward to benefit from the improvements in language features, libraries, and supporting tools.
+
+## Performance Tips
+
+* Learn a profiler, e.g. Intel Advisor & VTunes, and go through the suggestions.
+
+* Use preincrement rather than postincrement if possible to avoid extra saving of previous value, since the canonical form of postincrement looks like
+```cpp
+T T::operator++(int)
+{
+  T old( *this ); // remember our original value
+  ++*this;        // always implement postincrement
+                  //  in terms of preincrement
+  return old;     // return our original value
+}
+```
+This is mostly useful for iterators but not arrays, because compilers are generally smart enough to optimize for array loops.
+
+* pass objects by (const) reference to functions
+
+* return objects by (const) reference whenever practical
+
+* make sure you declare a reference variable when you need it:
+```cpp
+class Foo
+{
+    const BigObject & bar();
+};
+
+// ... somewhere in code ...
+//BigObject obj = foo.bar();  // OOPS!  This creates a copy!
+
+const BigOject &obj = foo.bar();  // does not create a copy
+```
+
+* Don't declare (actually, define) object variables before their use/initialization (as in C). This necessitates that the constructor AND assigment operator functions will run, and for complex objects, could be costly.
+
+* Use heap memory (dynamic allocation) only when necessary. Many C++ programmers use the heap by default. Dynamic allocations and deallocations are expensive.
+
+* Minimize the use of temporaries (particularly with string-based processing). Stroustrup presents a good technique for defining the logical equivalent of ternary and higher-order arithmetic operators in "The C++ Programming Language."
+
+## Styling Tips
+
+* Since C++11, there is a so called "range-based for loop", which acts like
+```cpp
+vector<int> vi;
+...
+for(auto i : vi) 
+   cout << "i = " << i << endl;
+```
+
+If you prefer the iterator style, you can write something like
+```cpp
+for(std::vector<T>::iterator it = v.begin(); it != v.end(); ++it) {
+   it->doSomething();
+}
+```
+
+* The keyword `virtual` in front of function declaration in subclasses is not necessary, but it helps readability if one only sees the subclass. 
+
+* The keyword `auto` is helpful for readability, but don't abuse it.
+
+## Syntaxes
+
+* After C++11, iterators is the preferred way of looping through vectors. Together with `auto`, it makes things nice and clean:
+```cpp
+auto numbers = std::vector<int>{1, 1, 2, 3, 5, 8};
+for (auto iter = numbers.begin(); iter != numbers.end(); ++iter)
+{
+   std::cout << *iter << '\n';
+}
+
+for (auto& iter = numbers.begin(); iter != numbers.end(); ++iter)
+{
+   std::cout << iter << '\n';
+}
+```
+However, be careful when you refer to, e.g. vector of vectors:
+```cpp
+for(vector< vector<int> >::iterator row = dataset.begin(); row != dataset.end(); ++row)
+{
+   //for(vector<int>::iterator col = row->begin(); col != row->end(); ++col)
+   for(auto col = (*row).begin(); col != end(*row); ++col)
+   {
+      cout << *col << ' ';
+   }
+   std::cout << std::endl;
+}
+```
+Without the parentheses before and after `*row`, the compiler will make a binding error about which should the `begin` function applys to!
+Check a later bullet point of using arrow operator instead.
+
+Alternatively, the above can be easily achieved by
+```cpp
+for ( const auto v : dataset )
+{
+   for ( auto x : v ) std::cout << x << ' ';
+   std::cout << std::endl;
+}
+```
+
+* Arrow operator: the following two expressions are equivalent
+```cpp
+foo->bar()
+(*foo).bar()
+```
+
+* In abstract classes you can see virtual functions. If you see any
+```cpp
+virtual void getParameters()=0;
+```
+inside a class declaration, it indicates that this is a pure virtual function, i.e., one that needs to be implemented in the derived classes.
+
+* `static` keyword
+
+"static" for variables, class members and functions have different meanings. Check [this tutorial](https://www.geeksforgeeks.org/static-keyword-cpp/).
+
+* `private` and `protected` keywords
+
+Private members are only accessible within the class defining them.
+
+Protected members are accessible in the class that defines them and in classes that inherit from that class.
+
+* `const` & `constexpr` keywords

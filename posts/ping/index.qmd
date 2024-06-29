@@ -1,0 +1,51 @@
+---
+title: Internet Connection
+author: "Hongyang Zhou"
+date: "2020-04-19"
+categories: [software, hardware]
+date-modified: "2021-10-13"
+---
+
+Since I moved to the new apartment, the intermittent internet interruption has been bothering me.
+However, this provides me a good opportunity to learn about basic network connection concepts and diagnostic knowledge.
+
+## Speed
+
+The most common unit for connection speed is mega bit per second (Mbps).
+Compared to the common numbers shown as the download and upload speed in softwares meta byte per second (MBps), you need to divide by 8.
+
+In Finland for example, the basic network service that is almost free provides 10 Mbps upload/download speed.
+For common use cases, this is actually enough if you do one job on one device.
+However, if you perform multple tasks at the same time, you will encounter unwanted delays.
+Typically for a family, 100 Mbps is enough.
+
+## Stability
+
+For tasks like gaming, stability is often more important than speed.
+Packet loss is the term used to measure how much information is lost in the network.
+Jitter is another term for high variations in connection speed, which acts as another quantity of stability.
+
+Fixing stability issues are much harder than speed.
+
+## Ping
+
+`ping` is de-facto tool for network checking, available on all platforms.
+It will show you in the end of its execution summary statistics like the following:
+```shell
+--- 142.250.74.142 ping statistics ---
+2342 packets transmitted, 2341 received, 0.0426985% packet loss, time 4193057ms
+rtt min/avg/max/mdev = 6.334/7.367/25.469/1.011 ms
+```
+
+## Modem
+
+## Router
+
+Router provides wired and wifi connection that links you to the modem. It is similar to a network traffic control center for multiple devices. For my network instability and connection problems, they seemed to be fixed by:
+* changing wires (less likely, but the first thing to check)
+* upgrading the firmware of the router (solved the instability issue)
+* [cloning device MAC address](https://www.cablematters.com/blog/Networking/what-is-mac-address-cloning) (solved WAN identification issue as shown [here](https://community.tp-link.com/us/home/forum/topic/157141))
+
+Regarding firmware, nowadays routers, even though most of them do have a CPU, they don't have an operating system. Instead, they are more like embedded systems that rely upon firmwares. In my case, upgrading the firmware does provide much more stable connection.
+
+Another side note is that based on the ping tests, wired connection through the router is slower than direct wired connection: about every minute I see a response time decrease from 8ns to 16ns, while the direct wired connection shows a less varying response time. 

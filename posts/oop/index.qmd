@@ -1,0 +1,59 @@
+---
+title: Object Oriented Programming
+subtitle: Personal experiences
+author: "Hongyang Zhou"
+date: "2020-04-15"
+categories: [programming]
+---
+
+## Thoughts about OOP
+
+Since the 1990s, the idea of object oriented programming is prevailing in the science community. Scientists had started to code in Fortran in the 1960s, and later in C, and later in C++.
+
+The requirements for a general physics code can be summarized as follows:
+
+* Capability to accurately model the physical phenomena of interest.
+* Extensibility and reusability for adding new models or modifying existing models.
+* Encapsulation of algorithms to localize the impact of code modifications.
+* Efficiency of algorithms and architecture, including optimization of speed and storage.
+* Fatal error trapping to prevent user-induced crashes, including unstable regimes of operation.
+* Error trapping or warning for simulation regimes characterized by inaccuracy.
+
+There are some common drawbacks with the legacy structured codes:
+
+* Overuse of the error-prone and low-efficiency global variables.
+* Limited capability of including new schemes and extending the current model.
+
+I am not a fanatical suitor of the C++ style class type OOP. One thing that is often annoying to me is when someone provide a very complicated class and say "hey, take a look at this fancy world I've built for you". Yes, indeed, it may be powerful, but the learning curves are deep and there are many functionalities that I don't necessarily need. It would be so much better if someone can provide me with a clean implementation of the definition of the object, and let me play with it without bothering the intrinsic provided methods.
+
+We all need the idea of OOP to a certain degree. For example, a PIC code nowadays is often considered well-organized if there are objects of particles, fields; a visualization toolkit should have basic triangles and tetrahedrons defined to start with. However, as a "hacker" to other's code without knowing the complete picture, is it possible for me to simply take the part I need and run?
+
+This is hard in C++, but relatively easy in Julia. There are several reasons behind:
+
+* C++ codes are typically huge, with the information one wants buried in the tens of thousands of lines.
+* The polymorphism and dependency of the C++ class sometimes make it hard to quickly get something to work, especially for the outsiders.
+* Typically C++ classes methods are more difficult to interpret than the equivalent functions.
+* You may even fail to compile the C++ code in the first place. Contrarily, you can see the results and errors on-the-go with Julia.
+
+One key feature of Julia is multiple dispatch. Instead of focusing on objects, we can focus on methods, or operations. In other words, instead of focusing on nouns, we can focus on verbs.
+I can easily imagine the AMReX or VTK library being rewritten in Julia, without too much headache, for someone in the future to sneak out with the part of interest and reuse in his or her own code.
+
+##
+
+More thoughts about OOP in the region of CFD. Generality requires:
+
+* numerical schemes, as an individual module, works for most but not all grid structure
+* different grid structures, including structured, unstructured, 1D/2D/3D, curved boundary
+* uniform treatment of source terms
+* IO formats
+* different paradigms of parallelization
+
+Ultimately, what you want is whenever you see an equation with generic terms like several derivatives, cross product, etc., you can quickly solve it numerically in the region you want.
+
+##
+
+One specific reason I don't like the design of BATSRUS, a module-based Fortran code, is that most functions are not pure. This means that more often than not a key function call involves modifying variables not being passed as arguments. This may be ok for writing the code, but bad for reading. To a certain degree, C++ class functions have the similar behavior, but you know everything is at least within a class object, as contrary to module usage in Fortran where you can literally dump one module into another without even noticing.
+
+## Closing Remarks
+
+Learn from the past and step forward.

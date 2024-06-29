@@ -1,0 +1,23 @@
+---
+title: Remote Access through X11
+subtitle: XWindow forwarding
+author: "Hongyang Zhou"
+date: "2019-10-25"
+categories: [visual]
+---
+
+## Mac
+
+When you ssh to a remote server, you may need to open graphic software through x11. Check the following things to avoid the displaying error **X11 forwarding request failed on channel 0**:
+
+* `ssh -X user@server` or `ssh -Y user@server`
+* On local machine, modify the `X11forwarding` to `yes` in `/etc/ssh/sshd_config`
+* in `/etc/ssh/ssh_config`, add `XAuthLocation /usr/X11/bin/xauth` (The location of xauth may change from version to version!)
+
+## WSL2
+
+WSL2 requires XWindow for GUI applications.
+This [guide](https://techcommunity.microsoft.com/t5/windows-dev-appconsult/running-wsl-gui-apps-on-windows-10/ba-p/1493242) provides a good summary of how to set it up on your Win10.
+I have only tried the first option VcXsrv Windows X Server, which works great but I have to remember to launch it with the correct settings everytime before I start a GUI from WSL2.
+
+Update: As of 2024, WSL2 comes with GUI support. However, the biggest issue with WSL2 is that it lacks a robust way to release unused memory to the system, which in the long run causes OOM errors.

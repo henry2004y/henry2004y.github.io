@@ -1,0 +1,73 @@
+---
+title: Paraview Usage Notes
+author: "Hongyang Zhou"
+date: "2019-10-27"
+categories: [visual]
+---
+
+Paraview is a powerful tool for visualization and postprocessing, but it requires some effort to get familiar with it. The learning curve suddenly becomes steep at some point.
+
+## Common Issues
+
+* Reader
+  * Filename does not support ~
+  * The data are not actually read until you call `Render()` or `UpdatePipeline()`
+
+* Clip and Slice
+  Clip is for volume while slice is only for surface
+
+* Understanding Stream Tracer  
+  From the official document:
+  >Stream Tracer filter generates streamlines in a vector field from a collection of seed points. Production of streamlines terminates if:
+  >* a streamline crosses the exterior boundary of the input dataset (ReasonForTermination=1)
+  >* an initialization issue (ReasonForTermination=2)
+  >* computing an unexpected value (ReasonForTermination=3)
+  >* reached the Maximum Streamline Length input value (ReasonForTermination=4)
+  >* reached the Maximum Steps input value (ReasonForTermination=5)
+  >* velocity was lower than the Terminal Speed input value (ReasonForTermination=6).  
+  >This filter operates on any type of dataset, provided it has point-centered vectors. The output is polygonal data containing polylines.
+
+  Mostly I don't need to compute vorticity, even though it is available. Surface streamline is available.
+
+  The cell data attribute for streamlines displays the streamlines as Poly-Line, with forward and backward integration separately.
+
+* Bad X server connection
+
+  As quoted from the discourse:
+  > An X server is required for all ParaView packages except the osmesa package, even if offscreen rendering is used and no window is opened. This is because most OpenGL applications on linux still depend on X to draw anything, even if no window appears.
+
+  On Frontera, simply by `module load swr qt5 ospray paraview` won't work, because the default paraview module requires X server. Kitware provides a headless version with no dependency on the X server named `osmema`, and that's the right one to load.
+
+* Contour plot for vector components
+
+  By default in `edit/settings`, under the `data processing options`, the `Auto conversion properties` is off. Turn this on to allow the contour filter to be used for vector objects.
+
+## Unsolved Issues
+
+* Why can't I do stream tracing on the original unstructured data? Currently I can only use the stream tracer filter for the clipped data.
+
+* Get field topology from stream tracing
+
+* Surface contour for the AMReX distributed data with no ghost cell information. As a comparison, VisIt does not have this issue.
+
+* User-defined file format reader. In principle we shall be able to write either C++ or Python reader, but there has not been such a thing as a clear tutorial. For these kind of tasks, it is almost impossible to make it smooth without asking a user's feedback. (This is probably one of the reasons why IKEA's furniture installation instructions are so good!) A tool exists for porting a VisIt plugin to ParaView. Maybe I should try to make it work for the Vlasiator output format.
+
+## Comparing with Tecplot
+
+I have no doubt that Tecplot is a good software, but I gradually shifted towards ParaView because it's open source and free.
+Same things happen in many different fields: a paid software would lose users to its free competitors if the latter becomes powerful enough.
+Honestly ParaView is still buggy and unstable compared to Tecplot, but one shining feature of ParaView is that it is built upon a very good open source file format VTK and it supports a wide range of different formats.
+Tecplot, from my personal experience, is way behind in this category.
+Service and maintainence can earn you money, but not the code itself. Look at the boosting Python community.
+
+As a side note, if I were to start writing a new model, I will not design my own file format. The better way is to be compatible with one of the existing mainstream format for saving effort in data processing.
+
+## Comparing with VisIt
+
+VisIt is another big project based upon VTK. My feeling is that in all circumstances, the GUI part feel old fashioned. Is it a curse developed by research institutes only?
+
+## VTK Library
+
+Read the VTK textbook
+
+I found a library binding called [PyVista](https://docs.pyvista.org/). I want to develop a Julia version of it.

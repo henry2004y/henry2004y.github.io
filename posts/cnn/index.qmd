@@ -1,0 +1,88 @@
+---
+title: Introduction to CNN
+author: "Hongyang Zhou"
+date: "2019-1-25"
+categories: [math]
+date-modified: "2023-08-23"
+---
+
+You can watch the [video](https://www.youtube.com/watch?v=FmpDIaiMIeA) for a nice walk-through. Here is just some notes from that video. A nice interactive playground based on tensorflow can be found [here](https://playground.tensorflow.org/).
+
+Deciding is hard for computers, because traditional algorithms are literal.
+**Tricky cases**
+* translation
+* scaling
+* rotation
+* weight
+
+CNN matches features, which are just pieces of an image.
+
+## Steps
+
+Filtering
+
+1. Line up the feature and the image patch
+
+2. Multiply each image pixel by the corresponding feature pixel
+
+3. Add them up
+
+4. Divide by the total number of pixels in the feature
+
+Pooling: shrinking the image stack
+
+1. Pick a window size (usually 2 or 3)
+
+2. Pick a stride (usually 2)
+
+3. Walk your window across your filtered images
+
+4. From each window, take the maximum value
+
+Pooling layer: a stack of images becomes a stack of smaller images
+
+Normalization
+
+Keep the math from breaking by tweaking each of the values just a little bit; change everything negative to zero.
+
+Rectified linear units (ReLUs)
+
+Normalization layer: a stack of images with no negative values
+
+Layers get stacked: the output of one becomes the input of the next. Convolution --> ReLU --> Pooling
+Deep stacking: layers can be repeated many times.
+
+Final layer in the toolbox is called fully connected layer. Here, every value gets a vote. Vote depends on how strongly a value predicts the results. A nice cool thing about this is that it can also be stacked: sometimes these are called hidden units in neural network.
+
+Putting it all together, a set of pixels becomes a set of votes.
+
+The key parts of neural network, weights and features, come from backward propagation. All these are learned!
+
+Error = right answer - actual answer
+
+These error signals drive the process called gradient descent: for each pixel and voting weight, adjust it up and down and see how the error changes.
+
+## Hyperparameters
+
+* Convolution
+  * Number of features
+  * Size of features
+* Pooling
+  * Window size
+  * Window stride
+* Fully-connected
+  * Number of Neurons
+
+## Not just images
+
+CNN works for 2D/3D data. Things closer together are more closely related than things far away. For example, for sound data, the rows represent intensity in each frequency band, and the columns represent different time steps; for text data, the position in the sentence becomes column, and row is word in dictionary. In the text case, it is hard to argue whether order matters: the trick is to pick a window that spans the entire column top to bottom, and then slide it left to right. In that way it capture all of the words, but it only captures a few positions at a time.
+
+## Limitations
+
+CNN is only designed for capturing local "spatial" patterns in data. ("Spatial" in the sense that things close to each other matter.) If the data can't be made to look like an "image", CNN is not as useful. For instance, customer data (one row for one customer, one column for an item like name, address, etc.)
+
+Rule of thumb: if your data is just as useful after swapping any of your columns with each other, then you can't use convolutional neural networks.
+
+## Conclusion
+
+CNN is great at finding patterns and using them to classify images.

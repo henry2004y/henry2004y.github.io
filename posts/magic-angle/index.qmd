@@ -1,0 +1,9 @@
+---
+title: Magic Angle
+subtitle: The magic behind MRI and reinforced rubber hose
+author: "Hongyang Zhou"
+date: "2020-03-03"
+categories: [science]
+---
+
+What is magic angle, and how does it work??

@@ -1,0 +1,20 @@
+---
+title: Chromium Browsers
+author: "Hongyang Zhou"
+date: "2021-02-24"
+categories: [softward]
+---
+
+When I bought a new laptop a few months ago, I decided to get a new Win10. Now the default browser on Win10 is Edge, which is built upon Google's Chromium kernel.
+Things went well in the beginning. I compared the usage of Edge and Chrome, and found that the former consumes less memory than the latter, and the response times were both decent.
+I chose to use Edge for most regular works, and added an extension for blocking ads.
+
+Until 2 weeks ago, some weird things happened. Besides the default home page, Edge also opened another url which displays `traffic-pixel` in the beginning and quickly jumped to Google search engine.
+WHen Edge was opened on the background, the new tag of Google will randomly pop out, which is really annoying.
+I thought this might be a virus, even though a seemingly innocent one. However, I didn't find anything at all by searching in Google.
+Then I switched to Bing, and changed a few keywords. The first result with a link to Reddit immediately caught my eye: there were some guys discussing about this 19 days ago!
+Under their investigation, the culprit is the Edge extension AdBlocker! Indeed when I turned it off, the auto-generated new tag never come back again.
+Apparently Google's engineers did some hack into this extension because AdBlocker targets at blocking ads on YouTube.
+
+I should be more careful about using Chromium extensions, especially on Edge. The available choices are limited on the market.
+Maybe the better choice is to install extensions from Chrome if I really want to.

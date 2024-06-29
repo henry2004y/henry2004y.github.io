@@ -1,0 +1,64 @@
+---
+title: Make for a Better World
+subtitle: Towards a robust compilation process
+author: "Hongyang Zhou"
+date: "2021-03-12"
+categories: [programming, software]
+date-modified: "2023-10-10"
+---
+
+## GNU Make
+
+There are many different types of make system, among which the most famous one is GNU make.
+`make` is a tool designed for compiling programs into executables, but it also can be used for executing consecutive commands which have internal dependencies.
+The essense of `make` is _dependency_: it aims at figuring out the dependencies in your workflow with minimal effort.
+To some extent, I usually think of it as shell scripts with dependency control.
+
+To take advantage of this powerful tool, we need a basic understanding of the wildcard and the dependency logic.
+When you first start with Makefiles, you would tend to explicit state every task as do on command line.
+However, this is exactly the redundancy `make` wants to free you from.
+Take a look at [Makefile in Practice](http://nuclear.mutantstargoat.com/articles/make/#a-makefile-for-99-of-your-programs), which is a great introduction to most commonly used features.
+
+### Tips for `make`
+
+- By default `make` looks for the makefile in the current level of the directory. You can use `-C` to specify the location of the target makefile.
+
+## CMake
+
+Although `make` has been very popular for compiling programs on a Unix-like system, it certainly cannot do everything alone.
+People who write code on multiple different platforms became annoyed by the fact that they need to create different Makefiles for different platforms, given it Linux, Mac, or Windows. [^1]
+This is where Kitware's CMake comes into play.
+In essence, `cmake` is a cross-platform tool for generating Makefiles.
+It also adds the capability of testing and deploying which may often be better than the `make` equivalence.
+When you automate multiple things together, magic can happen. Someone even says that using `cmake` force you to build better modular project. I would tend to use this for my next large C++ project.
+
+Basic tutorials on CMake can be found: [Hello-World-CMake](http://derekmolloy.ie/hello-world-introductions-to-cmake/) and [Modern Simple CMake](https://codevion.github.io/#!cpp/cmake.md).[^2]
+For some latest features, it would be better to check the [official website](https://cmake.org/).
+For installing cmake, checkout [modern cmake](https://cliutils.gitlab.io/modern-cmake/).
+
+Here I list my conceptual understanding of `cmake`.
+
+- The top level `CMakeLists.txt` is the configuration file where we specify everything globally.
+- `-S` specifies where to find the `CMakeLists.txt` source file
+- `-B` specifies where to store the generated makefile, together with some other generated configuration files.
+- Must-have in the `CMakeLists.txt`
+  - `cmake_minimum_required(VERSION x.xx.x)`;
+  - `project(MYCOOLPROJECT)`;
+  - `add_executable(${PROJECT_NAME} main.cpp)`: executable name and source codes.
+- Similar to the makefiles, `CMakeLists.txt` can be hierarchy, meaning that for each component/library, you can have a separate `CMakeLists.txt`. At the upper level, use `add_subdirectory(SUBDIR)` to specify where the underlying `CMakeLists.txt` is, `targe_include_directories(${PROJECT_NAME} PUBLIC MYLIB)` to specify the library headers, `target_link_directories(${PROJECT_NAME} MYLIB)` to locate the library objects, and `target_link_libraries(${PROJECT_NAME} MYLIB)` to specify the linking stage. At the lower level, the most important command to compile an object file is `add_library(MYLIB lib.cpp lib.h)`.
+- `cmake` has this industry standard trick to add code version into the executable. Check [this video](https://youtu.be/K3bx7NYSXVk) for a quick demo.[^3]
+
+[^1]: I remember when I first arrived at Michigan, Gabor told me that our Fortran code BATSRUS is only available on Linux and Mac. Well, that's because we are using only `make`!
+
+[^2]: Even better than the official tutorial!
+
+[^3]: In early 2020, Gabor implemented something like this in SWMF by himself. Vlasiator also has similar stuff, but is more brute-force like.
+
+## Meson
+
+There are even newer build systems, e.g. [Meson](https://mesonbuild.com/). Meson is written in Python, targeting at a simpler, faster CMake.
+
+- "Simpler", thanks for the robustness and cleaness in Python.
+- "Faster", thanks for the underlying low-level assembler [Ninja](https://ninja-build.org/).
+
+Meson only depends on core Python libraries. It is recommended to install Meson through `pip`.

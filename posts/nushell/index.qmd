@@ -1,0 +1,23 @@
+---
+title: Nushell
+subtitle: A new type of shell
+author: "Hongyang Zhou"
+date: "2022-09-25"
+categories: [software]
+---
+
+I am glad to see the evolving of modern shells. I enjoy using zsh, but now there are even fancier ones: [nushell](https://www.nushell.sh/). It highlights three features:
+
+* cross-platform: works on Linux, MacOS, and Windows
+* everything is data: Nu pipelines use structured data so you can safely select, filter, and sort the same way every time. Stop parsing strings and start solving problems.
+* extensibility: it's easy to extend Nu using a powerful plugin system.
+
+## More than a shell
+
+From what I can tell by reading the documentation, scripting in nu is like programming in a compiled language. The developers of nu are ambitious: they want to incorporate some parts of data processing into a shell, but the question is, is it worth to rely on a shell language instead of a more powerful language for data analysis?
+
+Anyway, it already feels like an exciting CLI tool to use. And it is written in Rust!
+
+## Prompt
+
+Prompt is what you see when you type a command. It can show a lot of useful tips, saving your time and making user experience smooth and pleasant. [starship](https://github.com/starship/starship) is a shell prompt written also in Rust that works smoothly with nushell.

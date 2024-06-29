@@ -1,0 +1,9 @@
+---
+title: Computer Hardware for Coding
+subtitle: Reprint From BioJulia
+author: "Hongyang Zhou"
+date: "2020-05-04"
+categories: [programming, computer]
+---
+
+Here is a [post](https://biojulia.net/post/hardware/) for scientists on how to write nice codes given the knowledge of computer hardwares. Very nice.

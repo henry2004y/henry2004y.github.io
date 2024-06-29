@@ -1,0 +1,37 @@
+---
+title: Editors
+subtitle: Emacs, Vim, Atom, VSCode, and Typora
+author: "Hongyang Zhou"
+date: "2020-07-24"
+categories: [softwares]
+---
+
+## From Atom to VSCode
+
+I have just learned from the Juno team that they are going to shift towards Visual Studio Code in the future. The main decision behind this is that after GitHub was bought by Microsoft in 2018, the development of Atom has been greatly slowed down. Microsoft is pushing towards Visual Studio Code, which is their long term support editor. I have experiences in both Atom and VSCode. While Juno in Atom does has some features I like (e.g. Git commit control), Atom itself has some very annoying designs like the "clever" panels to save memory and the indentation switch between tabs and whitespaces. VSCode does a much better job in code formatting, and the built-in support for command line interfaces is much faster than that in Atom. When I write Julia code and do local tests, often I prefer opening another bash window so that I can speed things up. This is definitely not satisfying. Therefore the transition from Atom to VSCode for the Juno team makes sense, and it is also another example for demonstrating the importance of having a nice basic infrastructure for an extensible project and long-term support from big tech giants.
+
+Sometimes, monopolies are good.
+
+### VSCode
+
+VSCode has very nice support for many languages. A nice tutorial to follow can be found [here](https://medium.com/@li.nguyen_15905/setting-up-vscode-for-mpi-programming-b6665da6b4ad). Generally speaking, you only need to add the relevant extensions and set up the paths in the config files (`.vscode/*.json`).
+
+VSCode has a remote access feature that allows you to edit files on a remote machine through ssh. On the remote side this requires ~100MB space, otherwise the connection will return error. A workaround using symbolic link is described [here](https://wiki.helsinki.fi/display/it4sci/Visual+Studio+Code).
+
+An advanced usage [tutorial](https://www.youtube.com/watch?v=ifTF3ags0XI) posted by Fireship contains tips for saving you from using mouses and duplicate tasks.
+
+## Command Line Editors
+
+After all these years, classical command line editors like vim and Emacs are still there, while more and more young fellows are shifting towards a GUI based editor with integrated support. The only reason we are still using vim and Emacs is that it is the faster and stabler approach to edit your code on a remote server which may suffer from all kinds of connectivity issues. However, if you are able to configure your environment and connect with faster Internet, the new generation of editors are for sure better options.
+
+There are still some parts that these command line editors shine over IDEs. For example, Emacs has very good support for Fortran formatting and default distinction between tabs and spaces.
+
+## Typora
+
+If you prefer markdowns, Typora is an excellent choice. Using together with the online figure generator [draw.io](https://app.diagrams.net/), you can literally create any notes you want. I love markdown simply because of its integration with web, which is much better than LaTeX.
+
+Note that Typora uses mathjax as the backend LaTeX support, which is a more complete but slightly slower approach compared with KaTeX, which is a lightweight LaTeX backend that is commonly used for displaying maths, e.g., in the Julia documentations.
+
+## Overleaf
+
+Last but not least, Overleaf is a good online LaTeX editor. Mostly I use LaTeX for writing papers, but I also have been using it for scientific notes and course works.

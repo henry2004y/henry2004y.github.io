@@ -1,0 +1,73 @@
+---
+title: Learning AMReX
+author: "Hongyang Zhou"
+date: "2020-07-18"
+categories: [programming]
+date-modified: "2024-03-14"
+---
+
+## First Impression
+
+AMReX examples are organized in separate folders. This looks nice to me, similar to the building blocks of OpenFOAM.
+
+The Fortran interface looks really nice.
+
+A key thing in a good parallel mesh library is to hide MPI communications.
+
+A notion of IO processor and non-IO processor is established.
+
+I can tell they are experts. Quotes:
+
+> AMReX has a Fortran module, `amrex_mempool_module` that can be used to allocate memory for Fortran pointers. The reason that such a module exists in AMReX is that memory allocation is often very slow in multi-threaded OpenMP parallel regions. AMReX `amrex_mempool_module` provides a much faster alternative approach, in which each thread has its own memory pool.
+
+AMReX has built-in multigrid solver. FLEKS is using the multi-block GMRES solver in SWMF, but I also ported that part into pure C++ implementation. It is actually a good chance to see if the MG solver works here. However, note that multigrid is usually for solving elliptic problems (e.g. Poisson's equation), which is often the most time-consuming part that we try to avoid.
+
+AMReX, because it is built upon C++, differs type copies and references. For example, `BoxArray` is a key type in AMR for storing all boxes on the same level. Doing things like
+
+```cpp
+ba[3].coarsen(2);  // DO NOT DO THIS!  Doesn't do what one might expect.
+```
+
+will only modify a copy instead of the original array.
+
+Checkout `std::shared_ptr`.
+
+The distribution of boxes in the domain involves the math of space filling curves. This is perhaps the most interesting question in load balancing.
+
+Functions written in the C++ header files are mostly either inline functions or template functions, for example, the diffusion update kernel in the HeatConduction example.
+
+AMReX uses a subset of cores to do parallel I/O. If all processors attempt to access the disk directly, they will all end up waiting.
+
+## Notes
+
+Ann Almgren from Lawrence-Berkeley gave a presentation on AMR with some application introduction to AMReX.
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/wE3tdL_p6Ms" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+[Hands-on training materials](https://amrex-codes.github.io/NERSCPerformancePortabilityTraining/) including
+
+- Spinning fluid
+- Spinning particles
+- Pachinko
+
+[Example codes for ATPESC](https://github.com/AMReX-Codes/ATPESC-codes)
+
+## Thoughts
+
+AMR is, from my experience, easier said than done.
+
+It would be a pain to build your work upon something that is not easily understandable.
+I think AMReX beats BATL in every aspect. It has nice documentation, clear syntax, and neat interfaces. I can tell that while BATL is designed by smart scientists, AMReX is motivated by scientific projects and carefully designed by expert programmers.
+Let us go back a few years and think about history. BATL was written in 2011-2012 before MHD-PIC coulping, which, in my point of view, is clearly motivated by the coupling project. That was actually a really nice time spot when the whole group can switch to OOP and design a general mesh library. Unfortunately, being biased towards pure functional programming and only BATSRUS in mind, we missed that great opportunity. Thus it results in today's BATL, being fully integrated only for BATSRUS, and not suitable for even multithreads control, let along GPU. AMReX is publicly release in 2017, as a descendant for GUMBO. It was born at a time when all the mainstream massively parallel techiques becomes mature and ready for use. It covers almost all the possibilities in physics simulation using structured grid, which will eventually make it shining over other competitors. I would also say that its developers are really appreciated for making it open source. This is how work done in one group can benefit all other groups and raise fame and honor in the community. Science is not a stand-alone project. With really good fundations we can easily find collaborators and make amazing work.
+
+## Julia wrapper
+
+I really want a Julia wrapper over AMReX. There is an experimental project of a Python wrapper, and I also see a shared binary in the Julia registry. But neither of them is functional.
+
+## Envisions
+
+- [ ] Go through the tutorials
+- [ ] Think about how to map the functionalities of BATL to AMReX
+- [ ] Understand the source code structure
+- [ ] Write a Julia wrapper for AMReX.
+- [ ] Write a new code in the form of a mixture of BATSRUS kernel and AMReX.

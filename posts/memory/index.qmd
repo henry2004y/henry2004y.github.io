@@ -1,0 +1,30 @@
+---
+title: Linux Memory
+author: "Hongyang Zhou"
+date: "2021-10-18"
+categories: [hardware, software]
+date-modified: "2021-10-19"
+---
+
+Since I started working with Vlasiator, I have encountered many issues related to memory usage. Now it's a good time to go over some basics in Linux's memory management.
+
+## Pages
+
+From [Anticipating Your Memory Needs](https://blogs.oracle.com/linux/post/anticipating-your-memory-needs):
+> The Linux kernel organizes physical memory in units of pages of a certain size called base pages. For example, the default base page size when running on Intel processors is 4KB. These pages are allocated to user and kernel tasks as they need memory. When processing large amounts of data from slower disk devices, the Linux kernel uses a page cache to cache contents, like disk blocks, to speed up access to frequently accessed data. The kernel allocates all the memory not currently in use to the page cache. As the kernel needs to allocate more memory for other tasks, it can reclaim pages from the page cache since the contents in the page cache can be restored from disk blocks when the need arises. Reclamation happens as the kernel starts to run low on free memory pages.
+
+From my experience on Ubuntu 18 with 16 GB of memory, the Linux kernel usually leaves ~ 1 GB free memory. So if I understand it correctly, all the other available memory not actually in use is in page cache. I believe this number is configurable as a percentage of the total available memory.
+
+## Watermarks
+
+There are three watermarks that trigger various actions for free memory management: high, low, and min. These represent the _remaining_ free memory of the current system.
+
+* **High**: when there is more than high in the remaining memory, the system thinks that the current memory usage pressure is not big.
+* **Low**: when the remaining memory is low, the system will think that the memory is insufficient, and will trigger _kswapd_ kernel thread to recycle the memory
+* **min**: when the remaining memory is less than min, the system memory pressure is very large. Generally, the memory less than min will not be allocated. By default, the memory less than min is reserved for special use. It belongs to reserved page box and is used for atomic memory request operation.
+
+You can find a similar introduction to zone watermarks in [Chapter 2 Describing Physical Memory](https://www.kernel.org/doc/gorman/html/understand/understand005.html) for the Linux kernel.
+
+## Memory Consumption Patterns
+
+> Different workloads have different memory consumption patterns. Some workloads allocate and free memory at a steady rate like a media streaming program that is reading disk blocks, rendering the media, freeing up already rendered data and fetching more data to render. Other workloads like scientific modeling might allocate a large number of pages over a period of time to read in data from disk, then they perform data computation on this accumulated data while allocating smaller amounts of memory and finally they may release all the memory holding data before starting next modeling run. Still some workloads like transaction processing have periodic spikes of memory allocation requests that keep recurring over long periods of times.

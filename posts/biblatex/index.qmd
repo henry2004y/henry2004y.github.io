@@ -1,0 +1,18 @@
+---
+title: Behaviour of BibLaTeX
+subtitle: Details you may neglect
+author: "Hongyang Zhou"
+date: "2019-12-20"
+categories: [latex]
+date-modified: "2020-03-22"
+---
+
+biblatex will display author's first name to distinguish different authors with the same last name.
+You may accidentally have the same author but different spelling, however it will still appears as two authors to biblatex.
+
+biblatex also tracks all the authors in the list, not just the first author.
+
+Another interesting question is how biblatex distinguish different paper reference by the same author in the same year?
+
+Quote from StackOverFlow:
+> This is almost certainly to do with using the uniquename and uniquelist options which are enabled by default in most bundled styles. These options mean that biber automatically disambiguates names by using initials or full names, depending on which other names are cited. See the biblatex manual which explains this with some comprehensive examples. If you set uniquename=false and uniquelist=false I'll warrant that the "strange" behaviour you see stops.

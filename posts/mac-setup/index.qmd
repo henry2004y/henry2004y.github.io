@@ -1,0 +1,81 @@
+---
+title: Mac Setup
+subtitle: Software installation and usage on Mac OS
+author: "Hongyang Zhou"
+date: "2020-08-20"
+categories: [software]
+---
+
+Part of this post originates from Dan Welling's article *Your Mac as a Linux Box*.
+
+## Background
+
+In the late 90s, MacOS - the operating system used on Macintosh computers - had become a bloated, clumsy mess.
+Apple's solution was to turn to Unix-based technology developed by the NeXT company (founded by Steve Jobs during his "sabatical" from Apple).
+The result was the now widely used OS X, the most widely used operating system outside of Microsoft's Windows platforms.
+Because OS X is, at its core, a Unix system, it was quickly adopted by (amongst others) scientists who need both the open-source and command line capabilities of Unix/Linux systems, but also need access to popular point-and-click programs such as MS Office, MATLAB, and others.
+OS X is therefore the "best-of-both-worlds" for scientists.
+
+The move from a traditional Linux systems to OS X comes at a price, however.
+Apple insists on several non-standard implementations of languages (e.g., python), window managers, and file system layouts.
+This means that to unlock the full Unix/Linux-like capability of your Mac, you need to do a bit more setup work.
+This guide attempts to get you set up so that you can start coding like a Linux pro!
+
+Note that this process will take _time_.
+Getting software, installing packages, and getting up-and-running requires plenty of time to download and compile libraries and packages.
+Make sure you're ready before you start.
+
+## Accessing the Terminal
+
+For some historical reason (ok, it's just IDL...), my group at Michigan prefers X11 on Mac, or more precisely XQuartz, for accessing GUIs from the command line locally and remotely. I have suffered from it for years and glad to see that it is not necessary anymore for many newer programs and machines.
+Given the fact that the default shell on latest Mac now is zsh, just ignore the other options.
+
+## Editing the Configuration File
+
+Start from the popular recommendation and build your own upon it. Be careful about the PATHs: many newcomer issues happen when searching paths are not set appropriately!
+
+## Sudo Access
+
+Since this is in the Unix world, you need to eventually become familiar with sudo access. Checkout the many useful tutorials online, or just start with `sudo -h`.
+
+## Package Management
+
+Software installation is, in general, a pain. On a Mac, typically, people recommend MacPorts and HomeBrew for installing depedencies.
+Also note that the MPI library and other possible dependencies must also be compatible with your choice of installation.
+
+For example, at some point you may need to install the "real" gcc compilers (not the wrapper over clang) on you Mac.
+For sure you can download the source code and do a native installation, but it is just, hard.
+Package management tools are your best friends here. I will only talk about MacPorts, as I have little experience with HomeBrew.
+It's easy to install gcc on Mac with MacPorts:
+
+```sh
+sudo port selfupdate
+sudo port install gcc10
+sudo port install openmpi-gcc10
+```
+
+If you don't want the old versions, simply uninstall them:
+
+```sh
+port contents openmpi-gcc9
+sudo port uninstall openmpi-gcc9
+```
+
+After everything looks good, you need also remember to set the correct link in `/opt/local/bin`:
+
+```sh
+sudo ln -s gfortran-mp-10 gfortran
+sudo ln -s gcc-mp-10 gcc
+sudo ln -s g++-mp-10 g++
+```
+
+Find the tools that suit your needs. If you find something better, then just use it.
+For instance, my advisor recommended tkdiff for comparing the differences between two files: honestly it is pretty good, but I have abandoned it because the built-in text comparing tool in VSCode is simply better. However, some tools like `latexdiff` (which is written in Perl) is amazingly good and I have not seen any competitors for the job.
+
+## Epilogue
+
+Working from the command line is immensely powerful and becomes second nature the more you use it.
+It's not without its issues, though, so be ready for more challenges.
+The trend I have seen for the recent years being that every popular platforms adopt their way to connect to the Linux world, including Windows with the Windows SubLinux system (WSL2).
+It seems more likely that people in the future will code with remote access to the actual machines, so then you won't even bother with the tedious configurations with every new machine.
+In the end, it is an excellent way to get science done as efficiently as possible.

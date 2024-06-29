@@ -1,0 +1,65 @@
+---
+title: R Notes
+author: "Hongyang Zhou"
+date: "2023-01-06"
+categories: [programming]
+date-modified: "2023-01-07"
+---
+
+R is popular among statisticians and biologists. It is one of the most commonly used languages in data analysis.
+
+## Basics
+
+R's basic syntax is C-like. There are a few special usages compared to other languages:
+
+1. `<-` is R's way to express assign a value to a variable. It can also direct the other way, i.e. `->`. Sometimes it is equivalent to `=`, but in some places only `<-` is allowed. The recommended way is to use `<-` and forget that equals is ever allowed.
+2. `<--` is R's global assigner. It can set global variables in a local scope.
+3. `c()` is for combine scalars into vectors.
+4. `list()` is for creating a collection with multiple object types (similar to `tuple` in other languages).
+5. R's vectorization is similar to MATLAB, but not strictly consistent. If you attempt to use a non-vectorized function on a vector, you will get warnings. `apply()` is like `map()` in Julia. There are more functions in the apply family.
+6. R uses one-based indexes (GREAT!).
+7. Integers in R are shown as e.g. `2L`. `3` is assumed to be the same as `3.0`, i.e. `numeric`.
+8. Terminating R expressions: R doesn't need semicolons to end a line of code (while it's possible to put multiple commands on a single line separated by semicolons, you don't see that very often). Instead, R uses line breaks (i.e., new line characters) to determine when an expression has ended.
+9. Last but not least, R is a case-sensitive language, consistent with the trend in most modern languages.
+
+## Popular Packages
+
+* `ggplot2`: grammar of graphics. The most famous package in the R community.
+
+```r
+library(ggplot2)
+
+# Delete the points outside the limits
+g + xlim(c(0, 0.1)) + ylim(c(0, 1000000))
+ggplot(midwest, aes(x=area, y=poptotal)) + 
+  geom_point(col="steelblue", size=3) + # Add scatter points
+  geom_smooth(method="lm") + # Add smoothing layer with a linear model "lm"
+  coord_cartesian(xlim=c(0,0.1), ylim=c(0, 1000000)) + # Zoom in
+  labs(title="Area Vs Population", subtitle="From midwest dataset", y="Population", x="Area", caption="Midwest Demographics") # Add titles and axis labels
+```
+
+* `tidyverse`: providing a complete and consistent set of tools for working with functions and vectors.
+
+```r
+library(purrr)
+
+mtcars |> 
+  split(mtcars$cyl) |>  # from base R
+  map(\(df) lm(mpg ~ wt, data = df)) |> 
+  map(summary) %>%
+  map_dbl("r.squared")
+#>         4         6         8 
+#> 0.5086326 0.4645102 0.4229655
+```
+
+This example illustrates some of the advantages of purrr functions over the equivalents in base R:
+
+* The first argument is always the data, so purrr works naturally with the pipe.
+
+* All purrr functions are type-stable. They always return the advertised output type (map() returns lists; map_dbl() returns double vectors), or they throw an error.
+
+* All `map()` functions accept functions (named, anonymous, and lambda), character vector (used to extract components by name), or numeric vectors (used to extract by position).
+
+## Advanced R
+
+The tricks are more-or-less similar to MATLAB and Python, such as vectorization, lazy evaluation, and integrating faster languages like C++. See more in [Advanced R](https://adv-r.hadley.nz/index.html).

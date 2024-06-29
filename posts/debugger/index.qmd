@@ -1,0 +1,52 @@
+---
+title: Debugger
+author: "Hongyang Zhou"
+date: "2021-04-14"
+categories: [programming]
+date-modified: "2022-06-30"
+---
+
+One way of debugging segmentation fault is using GDB. It is such a deep learning curve that no one ever claims he or she fully understands the complete usages.
+Here is just my experience of debugging a C++ code with GDB.
+
+## Compilation
+
+The most important compilation flag is `-g`: this enables the program to store information that can be used when backtracing.
+Nowadays often you don't need to turn off many compilation flags. For safety, use `-O0`; if you want to give it a try, use `-O2`.
+
+## Debugging
+
+If you set `ulimit -c unlimited`, the program is allowed to use all the available resources in the current platform.
+Therefore [Core dump](https://en.wikipedia.org/wiki/Core_dump) files can be generated at runtime.
+Core files are created when a program encounters a run-time error.
+It is an image of the memory used by the program, and debuggers such as gdb can access it to find out the state of the program at the time of the error.
+
+Then we can enter GDB REPL by
+
+```sh
+gdb executable core
+```
+
+and type `bt` or `backtrace` to see the lines of codes that crash.
+Note that line numbers display is a magic, and I rarely get the luck to see it.
+However, there is a higher chance that you can see the variable or function name instead of question marks or hexacodes.
+
+## Parallel Debugging
+
+At least Intel MPI libraries allow
+
+```sh
+mpirun <mpi options> -gdb program.exe
+```
+
+## Remarks
+
+It is relatively easy to deal with memory errors in simple codes. However, for more complicated codes, you can easily get lost in the data structures and pointers.
+Read the code if you can to learn the basic ideas. Then use a development tool such as VTune to do a systematic check if you have time.
+
+If you run gdb directly at runtime, you may encounter many false-positives in memory issues, and the real problem will be buried underneath.
+This is not ideal for debugging.
+
+## Other Resources
+
+Check out other tutorials on this topic!

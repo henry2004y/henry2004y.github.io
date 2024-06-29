@@ -1,0 +1,363 @@
+---
+title: Advanced Python
+author: "Hongyang Zhou"
+date: "2021-10-15"
+categories: [programming]
+date-modified: "2024-01-16"
+---
+
+> Good languages stop you from writing stupid codes; bad languages allow you to write more stupid codes.
+> Do not live on ancient code until death!
+> Latest things are not necessarily better: balance between new technology and old experience.
+
+Even though I think Python is slow, it does not mean that I cannot learn it or learn from it. Now it seems more and more obvious to me that there are some neat advanced tricks you can do in Python.
+
+New things are cool. However, they don't always work. For example, pytorch hasn't been able to work with Python 12 two months after its release.
+
+A nice intermediate python course:
+[Python for Scientific Computing — Python for Scientific Computing documentation](https://aaltoscicomp.github.io/python-for-scicomp/)
+It is not about the language itself, but more about how to use it efficiently as a researcher.
+
+[Refurb](https://github.com/dosisod/refurb) is a tool for refurbishing and modernizing Python codebases.
+
+## Installation
+
+More often than not I find myself unsatisfied with the default Python or package version on a target machine. In these cases we may want to install Python ourselves. If any of the following commands require higher privileges, simply add sudo in the front and type your password.
+
+1. Download source code:
+
+```sh
+wget https://www.python.org/ftp/python/3.11.7/Python-3.11.7.tgz
+```
+
+2. Extract archive:
+
+```sh
+tar xzvf Python-3.11.7.tgz
+```
+
+3. Configure Makefile:
+
+```sh
+./configure --enable-optimizations --enable-shared
+```
+
+[`--enables-shared`](https://docs.python.org/3/using/configure.html#linker-options) is important for external programs calling Python methods and APIs on the binary level.
+
+4. Compile and install:
+
+```sh
+make altinstall
+```
+
+`altinstall` is used to prevent replacing the default python binary file `/usr/bin/python`.
+
+5. Check:
+
+```sh
+python3.11 -V
+pip3.11 -V
+```
+
+If on Windows, it would be as simple as downloading the official executable file and follow the installer.
+
+### Package Manager: PIP
+
+The default package manager for Python is `pip`. It can be installed following the [guideline](https://pip.pypa.io/en/stable/installation/) or via the installation manager app. It is recommended to use pip as
+
+```sh
+python3.11 -m pip install -U matplotlib
+```
+
+instead of calling `pip` alone to prevent mismatch of pip and python version.
+
+### Dependency Manager: Pipenv
+
+```sh
+python -m pip install -U pipenv
+```
+
+[A simple demonstration](https://docs.python-guide.org/dev/virtualenvs/#installing-packages-for-your-project).
+
+### Dependency Manager: Poetry
+
+[Poetry](https://python-poetry.org/docs/) is a better dependency manager. I should use `poetry` over `pipenv` if possible.
+
+### Virtual Environments
+
+It is possible to handle your customized Python packages with Virtual Environment at a lower level. While `pipenv` is attached to a specific Python version, virtual environments completely isolate the python executable as well as all the required packages. The basic workflow is:
+
+* Find a specific Python version
+* Create a directory for your packages, e.g `python352`
+* `virtualenv python352` to start the virtual environment
+* `source bin/activate` to activate the virtual environment
+* `module load Python/3.8.6-GCCcore-10.2.0`
+* `pip install --prefix python352 mypackage` to install the required packages
+
+To leave virtual environments, just say `deactivate`.
+
+```sh
+module load Python/3.8.2-GCCcore-9.3.0
+virtualenv ~/proj/virtual_python3.8.2/
+source /home/hongyang/proj/virtual_python3.8.2/bin/activate
+```
+
+However, see [Conda][#miniconda] for a better approach.
+
+### Miniconda
+
+I found conda, or miniconda a more reliable way to handle packages as a bundle. Even miniconda is pretty large though (claimed to be 300 MB when first installed, but quickly became 3GB+). Miniconda comes with its own Python version and `pip` tool.
+
+## Recap of the basics
+
+Let's start from some common operations that for non-native Python programmers like me can be easily confused.
+
+```python
+x = [1,2] # in native Python, there is only list type, no array/vector type
+y = [3,4]
+ls_sum = x + y # [1,2,3,4], similar to [x;y] in Julia
+```
+
+```python
+a = [0] * 2 # equivalent to repeat([0], 2) in Julia 
+```
+
+Variable bindings:
+
+```python
+x = [1,2]
+y = [3,4]
+z = x
+x += y # equivalent to append!(x, y) in Julia, not x = [x;y] because of z
+```
+
+```python
+for i in range(istart:iend) # equivalent to istart:iend-1 in many other languages
+   ...
+```
+
+```python
+x = [1,2,3,4]
+x[-1] # equivalent to x[end], i.e. the last element
+```
+
+By default Python adopts arbitrary precision arithmetic to avoid overflow issues. This is not the case for most languages.
+
+Ok, now we move on to talk about some cool stuffs and tricks in Python.
+
+## Type hint
+
+After Python 3.5, you can now add type hints to function arguments. This will help you guarantee that the correct argument types have been passed. Besides avoiding bugs, it is also very helpful for automating the translation from Python to other languages.[^1]
+
+[^1]: [Transpiler of Python to many other languages](https://github.com/py2many/py2many)
+
+Python从3.5版本以后也支持函数参数的类型指定了。看来MATLAB和Python也都在逐步改进啊。但是这个只是用来做标记的，实际运行的时候不会检查；所以我们需要一个static type checker。在3.8版本以后有专门的原生库支持这项功能。
+
+## Function arguments
+
+The flexibility of Python can be reflected from the fact how function arguments work. You are allowed to mix position args, keyword args, and varargs all together. Check [this video](https://youtu.be/R8-oAqCgHag) for more!
+
+## Decorators
+
+This is really cool stuff. In Julia they are called macros, but essentially the same thing. In computer science, they belong to the category of metaprogramming. Decorator allows you to modify the raw code before the interpreter comes in to “decorate” your code. This applies to, for instance, the implementation of memoization, dataclass after Python 3.7, logging wrapper and many more. I have also seen this in ParaViews’ Python interface.
+
+To be a master in Python, you have to use it elegantly.
+
+```python
+@property
+@total_ordering
+@dataclass
+```
+
+## Scripts VS Methods
+
+For a script, alway add
+
+```python
+If __name__ == '__main__':
+    main()
+```
+
+to the end! This is a good practice
+
+* To tell users that this is a script that can actually run, but not a library
+* To avoid accidental global variables
+* To make your script runs faster (because it’s inside a function)
+
+## fstrings
+
+This is introduced after 3.6, which is a new way to handle string outputs.
+
+```python
+name = "Eric"
+age = 74
+a = 10.1234
+print(f"Hello, {name}. You are {age}.")
+print(f"{2 * 37}")
+print(f"{name.lower()} is funny.")
+print(f'{a:.2f}') # '10.12'
+
+# Multiline f-Strings
+name = "Eric"
+profession = "comedian"
+affiliation = "Monty Python"
+message_oneline = (
+    f"Hi {name}. "
+    f"You are a {profession}. "
+    f"You were in {affiliation}."
+)
+
+message_multiline = f"""
+    Hi {name}. 
+    You are a {profession}. 
+    You were in {affiliation}.
+"""
+```
+
+## DataClasses
+
+Wow, this is a great alternative in many situations to the traditional classes after 3.7! The main advantage is to avoid boilerplate codes.
+
+```python
+from dataclasses import dataclass
+
+@dataclass
+class Person:
+    name: str
+    address: str
+    active: bool = True
+    email_addresses: list[str] = field(default_factory=list)
+
+def main() -> None:
+    person = Person(name="John, address="123 Main St")
+    print(person)
+```
+
+Bonus tip: Python class properties can be read-only by making them immutable.
+
+```python
+from dataclasses import dataclass
+
+@dataclass(frozen=True)
+class Person:
+    name: str
+    address: str
+```
+
+## Special Numbers
+
+If I remember correctly, the integers -5-256 are treated differently (hard-coded, i.e. always refer to the same constants):
+
+```python
+a = 2
+b = 2
+a is b # true
+c = 257
+d = 257
+c is d # false
+```
+
+Note that this is NOT the case in Julia. (Check with `===`.)
+
+## Numpy
+
+One lesson I learned about Numpy was that it is very tricky to mix numpy types with intrinsic Python types.
+To convert a numpy type to an intrinsic numeric type, we need the `item()` method:
+
+```python
+import numpy as np
+a = (4, 4, 4)
+b = np.prod(a) # <class 'numpy.uint64'>
+c = np.prod(a).item() # <class 'int'>
+```
+
+A practical application is whether we should use tuples or numpy arrays to store coordinates.
+Unlike Julia where the compiler can specialize tuples, Python tuples can contain any type of elements which is less efficient in storage.
+numpy arrays guarantee the consistence of the type of each array, which makes it a better choice for storing coordinates.
+However, the downside is that numpy arrays are mutable. To overcome this, we can set the `WRITEABLE` flag for the array to `False`:
+
+```python
+import numpy as np
+
+a = np.arange(3)
+a.flags.writeable = False
+
+# a[0] = 0
+# ValueError: assignment destination is read-only
+```
+
+This makes numpy arrays immutable!
+
+## Ellipsis
+
+Python has a special literal called Ellipsis, or `...`. It is used for several different purposes:
+
+* As a convenient slice notation, especially with Numpy:
+
+```python
+import numpy as np
+
+dimensions = np.random.randint(1,10)
+items_per_dimension = 2
+max_items = items_per_dimension**dimensions
+axes = np.repeat(items_per_dimension, dimensions)
+arr = np.arange(max_items).reshape(axes)
+```
+
+In this example, you’re creating an array that can have up to ten dimensions. You could use NumPy’s `.ndim()` to find out how many dimensions arr has. But in a case like this, using `...` is a better way:
+
+```python
+arr[..., 0]
+```
+
+Check out [NumPy: Ellipsis (...)](https://note.nkmk.me/en/python-numpy-ellipsis/) for ndarray to discover more use cases for these three little dots.
+
+* As a type hint for homogeneous types or substitute for a list of arguments to a callable:
+
+```python
+numbers: tuple[int, ...] # must be a tuple that contains only integers
+
+# Allowed:
+numbers = ()
+numbers = (1,)
+numbers = (4, 5, 6, 99)
+
+# Not allowed:
+numbers = (1, "a")
+numbers = [1, 3]
+```
+
+Using `...` within a tuple type hint means that you expect all items to be of the same type in the tuple.
+
+```python
+from typing import Callable
+
+def add_one(i: int) -> int:
+    return i + 1
+
+def multiply_with(x: int, y: int) -> int:
+    return x * y
+
+def as_pixels(i: int) -> str:
+    return f"{i}px"
+
+def calculate(i: int, action: Callable[..., int], *args: int) -> int:
+    return action(i, *args)
+
+# Works:
+calculate(1, add_one)
+calculate(1, multiply_with, 3)
+
+# Doesn't work:
+calculate(1, 3)
+calculate(1, as_pixels)
+```
+
+By using `Callable[..., int]``, you say that you don’t mind how many and which types of arguments the callable accepts. Yet, you’ve specified that it must return an integer.
+
+* As a “nop” placeholder for code that hasn't been written yet:
+
+```python
+def will_do_something():
+    ...
+```

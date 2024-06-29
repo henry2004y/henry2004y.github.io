@@ -1,0 +1,28 @@
+---
+title: Remote Access through SSH
+author: "Hongyang Zhou"
+date: "2021-02-19"
+categories: [software]
+---
+
+## Proxy Jump
+
+[Tutorial on proxy jump](https://www.cyberciti.biz/faq/linux-unix-ssh-proxycommand-passing-through-one-host-gateway-server/)
+
+## CI Workflow
+
+It is very tricky to make SSH connections in CI workflows like GitHub Actions and Gitlab CI.
+I have suffered from both during the past few month: each spent me about a day to find a magic trick to make it work.
+The difficulty comes from accessing private servers from a docker machine.
+You need to setup the private and public keys properly and overcome multiple issues like `Host key verification failed` when you tries to access to a machine for the first time, 
+proxy jump through another server, etc.
+
+For example, I need to turn off ssh host key checking for the first time access on the university server and use a proxy jump to acccess data from the actual machine behind:
+```
+ssh -o StrictHostKeyChecking=no hongyang@login.physics.helsinki.fi
+ssh -o StrictHostKeyChecking=no -J hongyang@login.physics.helsinki.fi hongyang@turso.cs.helsinki.fi
+scp -r -o 'ProxyCommand ssh hongyang@login.physics.helsinki.fi -W %h:%p' \
+hongyang@turso.cs.helsinki.fi:proj/reference.tar.gz testpackage/tests/
+```
+
+Thanks to all the people online sharing their experience on all kinds of issues!

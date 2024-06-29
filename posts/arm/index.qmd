@@ -1,0 +1,55 @@
+---
+title: ARM-64 Architecture
+subtitle: Performance Benchmark
+author: "Hongyang Zhou"
+date: "2020-09-10"
+categories: [hardware, programming]
+---
+
+There is probably a ongoing trend of adopting arm chips to commercial and even high performance computing world.
+I got a chance to try out the new Raspberry Pi 4 with 64-bit quad core processor running at 1.5 GHz and 8 GB of memory. The base frequency is 0.6 GHz, and when running tasks, it will reach 1.5 GHz. The baseline temperature at 0.6 GHz is 41 degrees Celcius.
+Earlier this year they launched a true 64-bit Linux distribution for arm. Now it's time to get a first-hand feeling about it.
+
+Julia has an official distribution for the 64-bit arm system.
+Running my unit test for the Batsrus.jl package takes 33.2 seconds, while on my MacBookPro 2016 it's around 9.5 seconds. So it's about 3.5x slower on a single core.
+It is possible to overclock to about 2.05 GHz. At this clock rate, the test finishes in 27.4 seconds, with highest temperature reaching 47.7 degrees Celcius.
+
+I tried to test my plotting package in Julia, but had no luck in a successful installation.
+
+As for the multi-core performance, I tried my version of BATSRUS. When I compiled for the first time, it complained to me during linking phase:
+```
+FaceGradient.f90:(.text+0x3bb4): relocation truncated to fit: R_AARCH64_TLSLE_ADD_TPREL_HI12 against symbol `__facegradient_MOD_dcoorddxyz_ddfd' defined in .tbss section in Tmp_/FaceGradient.o
+```
+Searching on the web leads me to an error related to [32/64 bit system](https://stackoverflow.com/questions/10486116/what-does-this-gcc-error-relocation-truncated-to-fit-mean).
+According to the suggestion, adding `-fPIC` flag solved the problem.
+
+Then for the shocktube test, compiled with `gfortran -O3`, the results are shown in the following table:
+
+| Platform | # of MPI | # of threads | Timings [s] |
+| :------  | :------ |:--- |:--- |
+| Pi ARM 1.5 GHz | 1 | 1 | 2.97 |
+| Pi ARM 1.5 GHz | 1 | 2 | 1.85 |
+| Pi ARM 1.5 GHz | 1 | 4 | 1.55 |
+| Pi ARM 1.5 GHz | 2 | 1 | 2.12 |
+| Pi ARM 1.5 GHz | 4 | 1 | 2.27 |
+| Pi ARM 2.05 GHz | 1 | 1 | 2.20 |
+| Pi ARM 2.05 GHz | 1 | 2 | 2.40 |
+| Pi ARM 2.05 GHz | 1 | 4 | 2.82 |
+| Pi ARM 2.05 GHz | 2 | 1 | 1.75 |
+| Pi ARM 2.05 GHz | 4 | 1 | 2.06 |
+| Mac i7 2.2 GHz | 1 | 1 | 1.18 |
+| Mac i7 2.2 GHz | 1 | 2 | 0.85 |
+| Mac i7 2.2 GHz | 1 | 4 | 0.67 |
+| Mac i7 2.2 GHz | 2 | 1 | 0.82 |
+| Mac i7 2.2 GHz | 4 | 1 | 0.68 |
+| x86 Cascade Lake 2.7 GHz | 1 | 1 | 1.19 |
+| x86 Cascade Lake 2.7 GHz | 1 | 2 | 0.88 |
+| x86 Cascade Lake 2.7 GHz | 1 | 4 | 0.72 |
+| x86 Cascade Lake 2.7 GHz | 2 | 1 | 1.22 |
+| x86 Cascade Lake 2.7 GHz | 4 | 1 | 0.75 |
+
+So it's about 2.5x slower on both single core and multi-cores compared to MacBookPro and one of the top supercomputers. Still reasonable. No idea why the overclock performance degrades for parallel runs. With 4 MPI processes, the highest temperature reaches about 58 degrees Celcius. With 4 threads, the highest temperature reaches 50 degrees, and it's about 30% slower than 4 MPI. What's puzzling me is that the parallel performance is in general really bad. 
+
+However, I was told the other day that a Monte Carlo code that is using random number generators gives about 1% difference in the result of a very accurate molecular dynamics simulation compared to AMD and Intel CPUs. This is a big warning flag if you want to dive deep into ARM.
+
+Until now, I still don't understand why a presumably multi-core program like MPI written in C/C++ or Fortran will trigger the fan while Julia ones don't.

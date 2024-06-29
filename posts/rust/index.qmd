@@ -1,0 +1,86 @@
+---
+title: Rust
+author: "Hongyang Zhou"
+date: "2022-01-25"
+categories: [programming]
+date-modified: "2022-04-21"
+---
+
+[Rust](https://www.rust-lang.org/)是我一直想了解的语言；唯一的障碍可能就是即使会了一些Rust，短期内看不到哪里能够实际用上。然而学习一门新东西，并不总能立刻看到用途的。
+
+## 入门
+
+官方的一本书和一套练习册足够好，不需要再去找第三方资料了。
+
+### 安装和运行
+
+* 异常丝滑，这是传统C/C++生态圈无法比拟的。
+* Hello world可执行文件只有几兆，匹敌所有编译语言。
+* 所有依赖统一由Cargo管理，不存在找不到的问题。
+* Cargo自带了编译和运行功能，相当于集成了Make。
+
+### Core features
+
+* Rust has a _strong, static type system_. However, it also has _type inference_. Every type must be known at compile time.
+* Rust allows shadowing of variables.
+* Ownership is a key concept to the language.
+  * Each value in Rust has a variable that’s called its owner.
+  * There can only be one owner at a time.
+  * When the owner goes out of scope, the value will be dropped.
+* Zero-based indexing.
+* In function signatures, you must declare the type of each parameter.
+* Distinguished expression and statement.
+* Rust will never automatically create “deep” copies of data.
+* References (&) refer to some value without taking ownership of it.
+  * At any given time, you can have either one mutable reference or any number of immutable references.
+  * References must always be valid.
+* Rust deliberately avoids the concept of _null_ for safety.
+* Traits are Rust's way of doing generic programming.
+* Matches are _exhaustive_: we must exhaust every last possibility in order for that code to be valid.
+* Iterators
+* Closures
+* Automatic referencing and dereferencing, so the equivalent of `->` operator in C++ is not needed.
+* Lifetimes
+  * Elision rules:
+    1. Each parameter that is a reference gets its own lifetime parameter.
+    2. If there is exactly one input lifetime parameters, that lifetime is assigned to all output
+    lifetime parameters.
+    3. If there are multiple input lifetime parameters, but one of them is &self or &mut self because
+    this is a method, the lifetime of self is assgiend to all output lifetime parameters.
+
+### Recommended convention
+
+* All whitespaces, no tags.
+* Whitespace between curly braces.
+* Opening curly brace on the same line.
+* All uppercase with underscores between words for constants.
+* Snake case for function and variable names.
+* Specify the parent module when calling the function to make it clear that the function isn't locally defined.
+* Specify the full path when bringing in structs, enums, and other items with `use`.
+* CamelCase for types.
+
+## 项目
+
+项目和语言之间是相辅相成的关系：快速搭建的、成熟的项目框架是语言成熟落地的标志。
+
+### plotters
+
+官方绘图库，自己吹得天花乱坠，仍在开发阶段。但值得关注。
+
+### Tauri
+
+这几年采用网络技术开发桌面应用的Electron项目很火，包括我经常使用的Visual Studio Code在内很多大项目都是基于Electron框架开发的。而基于Rust从零开始开发的跨平台竞品[Tauri](https://github.com/tauri-apps/tauri)，能把Linux版本的installer大小砍到1/12，内存使用砍到1/2.5，启动时间砍到1/2。所有的新东西诞生的目的就是为了弥补前一代的缺陷，包括Rust本身也一样。基于一个基本想法，带领一个技术潮流。我愿意看到更多Rust项目挑战存在几十年的C++生态圈。
+
+## 个人体验
+
+这套关于堆上面的拥有和变量借贷的逻辑一开始需要一段时间适应，但适应了以后会觉得事情本该如此。回想多少次因为莫名其妙的内存问题导致的segmentation fault，Rust诞生的初衷，就是再也不想在运行时看到这些错误了。
+
+Rust的type inference和Julia的师出同门，和C++的`auto`也类似。而更进一步，Rust中绝大部分时候变量的lifetime也是inferred,而Julia中是garbage collected，C++中则全是程序员的责任。在某些情况下，Rust compiler需要程序员帮忙才能分析出输入输出的lifetime，这就引入了大部分别的语言没有的lifetime annotations。
+
+我扫了一眼Rust的2021中文年度报告，至少在工业界，Rust的普及程度远高于Julia，并且思考下来目前为止由于缺乏静态编译能力，Julia没有任何可能超越Rust。坦诚地说，如果我同时精通二者，我会选择Rust作为核心库的创建基础，而Julia作为前端封装的部分替代Python的功能。
+
+从Python和JIT技术的一路演化中我们了解到，目前的编译器对于底层和上层的接口处的优化几乎是无能为力的——这也是为什么Chris曾经花了很大篇幅试图说明为什么Numba注定会是个失败的项目。我看到了一种未来的可能性，就是在编译器的IR部分打通语言之间的界限，让跨语言的优化成为可能。
+
+张汉东,2021年Rust年度报告的作者，写道：
+> Rust的出现并不是要你去用它重写一切，而是希望你可以用它创造新的未来。
+> We choose to use Rust, not because it is easy, but because it is hard, because that goal will serve to organize and measure the best of our energies and skills, because that challenge is one that we are willing to accept, one we are unwilling to postpone, and one which we intend to win, and the others, too.

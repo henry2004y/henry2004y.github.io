@@ -1,0 +1,35 @@
+---
+title: Linux Distros and WSL2
+author: "Hongyang Zhou"
+date: "2021-02-19"
+categories: [software]
+date-modified: "2021-10-08"
+---
+
+Being annoyed by the CENTOS linux distro from Redhat, I've decided to take a look at some latest distros available.
+There are several amazing ones already! If I have time, I would love to try this [Garuda](https://garudalinux.org/) ASAP.
+There has never been a linux version that shocked me at first sight; this one did.
+It is an unbelieveable attempt that with this level of frontend design they claim that it is performance-focused, with all the latest tools at your hand.
+One quote that caught my eye was
+> Any unused memory is waste memory.
+
+If I decide to have my own desktop server, this will be my OS.
+
+## WSL2
+
+I started playing with the Windows Sub-Linux system since its initial version.
+WSL1 is a good attempt, but not good enough: it is not a real linux kernel such that a lot of softwares has compatibility issues.
+WSL2 is a huge improvement. More than a year later after its debut, I have no complains about anything I want from linux.
+With native VSCode remote support, Nvidia shared CUDA driver between Windows and Linux, and XWindow display, this can now be claimed finished for scientific software developers. Amazing! This also lifts my burden of dual OSs on one machine. Definitely a game changer.
+
+Around mid 2021, Microsoft released [wslg](https://devblogs.microsoft.com/commandline/the-initial-preview-of-gui-app-support-is-now-available-for-the-windows-subsystem-for-linux-2/) for native GUI support. This means that we no longer need any 3rd party Xwindow server to display graphics! If anything is not working properly at first, check the GitHub repo and look for the troubleshooting wiki page first. My issue was that because my previous x server changed `DISPLAY` environment variable, the new built-in x window server could not work properly. The easy fix is to comment out the related setting in the shell config file.
+
+## Motivation
+
+One big reason Microsoft is taking incorporating Linux seriously is their shift from a PC system and software company to a cloud service provider. Since they are making big money with Azure, they have been consistently contributing to Linux kernel and providing more and more support for Linux integrity into the Windows world.
+
+## Reason for Linux's Success on Supercomputers
+
+* Free --> low cost
+* Customizable --> easily adapted to a new machine
+* Easy transition from Unix --> similar syntax, no steep learning curve for Unix users
