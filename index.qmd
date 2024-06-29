@@ -1,5 +1,5 @@
 ---
-title: "Hongyang's Website"
+title: "景田日志"
 listing:
   contents: posts
   sort: "date desc"
