@@ -12,7 +12,7 @@ website:
         href: https://github.com/henry2004y
 format:
   html:
-    theme: cosmos
+    theme: spacelab
     css: styles.css
 
 

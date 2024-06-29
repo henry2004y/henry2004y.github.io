@@ -130,7 +130,7 @@ end
 axs[end].set_xlabel("time [s]", fontsize="large")
 ```
 
-{% include figure image_path="tfd_doppler_compare.png" alt="tfd_doppler" caption="Comparison between different time-frequency transforms with an analytical signal of Doppler shift." %}
+![Comparison between different time-frequency transforms with an analytical signal of Doppler shift.](tfd_doppler_compare.png)
 
 Notes:
 
