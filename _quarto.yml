@@ -2,12 +2,14 @@ project:
   type: website
 
 website:
-  title: "Hongyang's Blog"
+  title: "景田日志"
   site-url: https://henry2004y.github.io
   description: "This is Hongyang Zhou's personal Blog."
   navbar:
     right:
       - about.qmd
+      - link.qmd
+      - publication.qmd
       - icon: github
         href: https://github.com/henry2004y
 format:

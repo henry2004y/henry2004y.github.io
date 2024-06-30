@@ -1,8 +1,5 @@
 ---
 title: "Links"
-author: "Hongyang Zhou"
-date: "2024-06-29"
-categories: [resources]
 ---
 
 [Plasma Key Notes](https://henry2004y.github.io/KeyNotes/)
