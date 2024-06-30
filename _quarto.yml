@@ -15,6 +15,9 @@ website:
 format:
   html:
     theme: spacelab
+    theme:
+      light: spacelab
+      dark: [spacelab, theme-dark.scss]
     css: styles.css
 
 
