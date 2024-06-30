@@ -9,7 +9,7 @@
 <meta name="author" content="Hongyang Zhou">
 <meta name="dcterms.date" content="2021-09-24">
 
-<title>Hongyang’s Blog - Green’s Function</title>
+<title>景田日志 - Green’s Function</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -69,6 +69,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -81,7 +110,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title">Hongyang’s Blog</span>
+    <span class="navbar-title">景田日志</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -93,6 +122,14 @@ ul.task-list li input[type="checkbox"] {
   <li class="nav-item">
     <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../link.html"> 
+<span class="menu-text">Links</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publication.html"> 
+<span class="menu-text">Publication List</span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/henry2004y"> <i class="bi bi-github" role="img">
@@ -153,9 +190,13 @@ ul.task-list li input[type="checkbox"] {
 <iframe width="560" height="315" src="https://www.youtube.com/embed/ism2SfZgFJg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
 </iframe>
 <p>最早在数理方程的时候接触到格林函数，但一直是懵懵懂懂的。在实际的演算中几乎用不到，于是一直也没真明白。稍微回顾一下。</p>
-<p>First of all， Green’s function is used for solving ODEs with the form \[ Ly(x) = f(x) \] where y is the unknown variable, f is the applied force/source function, and L is a linear operator.</p>
-<p>Linearity is the crux of the idea: if we can decompose the solution into some kind of element solutions, then by combining them together we can get the final solution. Dirac function \( (x) \) is the “strange” function we define for representing the elemental solutions, usually in the form of \( (x-) \), where \( \) is the location of the source and x is the location of influence.</p>
-<p>The solution \[ y(x) = f() G(x;) d \] only applies for homogenous initial/boundary conditions, i.e.&nbsp;each \( G(x;) \) must satisfy the same initial/boundary condition. This is the key reason why solving an ODE with Green’s function cannot be applied to general problems.</p>
+<p>First of all， Green’s function is used for solving ODEs with the form <span class="math display">\[
+Ly(x) = f(x)
+\]</span> where y is the unknown variable, f is the applied force/source function, and L is a linear operator.</p>
+<p>Linearity is the crux of the idea: if we can decompose the solution into some kind of element solutions, then by combining them together we can get the final solution. Dirac function <span class="math inline">\(\delta(x)\)</span> is the “strange” function we define for representing the elemental solutions, usually in the form of <span class="math inline">\(\delta(x-\xi)\)</span>, where <span class="math inline">\(\xi\)</span> is the location of the source and x is the location of influence.</p>
+<p>The solution <span class="math display">\[
+y(x) = \int f(\xi) G(x;\xi) d\xi
+\]</span> only applies for homogenous initial/boundary conditions, i.e.&nbsp;each <span class="math inline">\(G(x;\xi)\)</span> must satisfy the same initial/boundary condition. This is the key reason why solving an ODE with Green’s function cannot be applied to general problems.</p>
 
 
 

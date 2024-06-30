@@ -2,8 +2,6 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/publication/index.html",
-      "/posts/links/index.html",
       "/posts/basketball-court/index.html",
       "/posts/time-frequency-transform/index.html",
       "/posts/haskell/index.html",
