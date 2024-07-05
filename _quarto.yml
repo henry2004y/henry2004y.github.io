@@ -10,6 +10,7 @@ website:
       - about.qmd
       - link.qmd
       - publication.qmd
+      - resume.qmd
       - icon: github
         href: https://github.com/henry2004y
 format:
