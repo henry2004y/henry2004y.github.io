@@ -163,7 +163,7 @@ format:
   \end{multicols}
 \end{large}
 \vspace{-0.3cm}
-* Studying Earth and planetary magnetosphere with numerical simulations
+* Studying Earth and planetary magnetospheres with numerical simulations
 * Developing kinetic shock and foreshock models
 
 \vspace{7pt}
@@ -171,7 +171,7 @@ format:
 <!-- EXPERIENCE : 2ND BULLET -->
 \begin{large}
   \begin{multicols}{2}
-    \begin{flushleft}{\bf Understanding Ultra-Low Frequency (ULF) Waves in Hybrid Vlasov Simulations}\end{flushleft}
+    \begin{flushleft}{\bf Hybrid Vlasov Ultra-Low Frequency (ULF) Wave Simulations}\end{flushleft}
     \begin{flushright}2020/11-2023/05\end{flushright}
   \end{multicols}
   \vspace{-0.17cm}
@@ -181,13 +181,13 @@ format:
 \end{large}
 \vspace{-0.3cm}
 * Developed time-varying boundary conditions in \href{https://www.helsinki.fi/en/researchgroups/vlasiator}{Vlasiator} and the postprocessing package \href{https://henry2004y.github.io/Vlasiator.jl/stable/}{Vlasiator.jl}
-* Studied ULF waves properties in Earth's magnetosheath and foreshock region using global 2D simulations
+* Studied ULF waves properties in Earth's magnetosheath and foreshock using global 2D simulations
 \vspace{7pt}
 
 <!-- EXPERIENCE : 3RD BULLET -->
 \begin{large}
   \begin{multicols}{2}
-    \begin{flushleft}{\bf Numerical model development for \href{https://github.com/SWMFsoftware/SWMF}{SWMF}}\end{flushleft}
+    \begin{flushleft}{\bf \href{https://github.com/SWMFsoftware/SWMF}{SWMF} Model Development}\end{flushleft}
     \begin{flushright}2015-2020\end{flushright}
   \end{multicols}
   \vspace{-0.17cm}
@@ -204,7 +204,7 @@ format:
 <!-- EXPERIENCE : 4TH BULLET -->
 \begin{large}
   \begin{multicols}{2}
-    \begin{flushleft}{\bf MHD-EPIC simulation of Ganymede's magnetosphere}\end{flushleft}
+    \begin{flushleft}{\bf MHD-EPIC Simulation of Ganymede's Magnetosphere}\end{flushleft}
     \begin{flushright}2016-2020\end{flushright}
   \end{multicols}
   \vspace{-0.17cm}
@@ -218,49 +218,97 @@ format:
 
 \vspace{7pt}
 
+<!-- TEACHING : 1ST BULLET-->
+\begin{large}{\bf TEACHING}
+  \vspace{3pt}
+  \hrule
+  \begin{multicols}{2}
+    \begin{flushleft}{\bf Space Applications of Plasma Physics}\end{flushleft}
+    \begin{flushright}University of Helsinki\end{flushright}
+  \end{multicols}
+  \vspace{-0.17cm}
+  \begin{multicols}{2}
+    \begin{flushleft}\textit{Guest Lecturer}\end{flushleft}
+    \begin{flushright}2022\end{flushright}
+  \end{multicols}
+\end{large}
+\vspace{-0.3cm}
+
+\vspace{7pt}
+
+<!-- TEACHING : 2ND BULLET -->
+\begin{large}
+  \begin{multicols}{2}
+    \begin{flushleft}{\bf Plasma Physics}\end{flushleft}
+    \begin{flushright}University of Helsinki\end{flushright}
+  \end{multicols}
+  \vspace{-0.17cm}
+  \begin{multicols}{2}
+    \begin{flushleft}\textit{Guest Lecturer}\end{flushleft}
+    \begin{flushright}2022\end{flushright}
+  \end{multicols}
+\end{large}
+\vspace{-0.3cm}
+
+\vspace{7pt}
+
+<!-- TEACHING : 3RD BULLET -->
+\begin{large}
+  \begin{multicols}{2}
+    \begin{flushleft}{\bf Electrodynamics}\end{flushleft}
+    \begin{flushright}USTC\end{flushright}
+  \end{multicols}
+  \vspace{-0.17cm}
+  \begin{multicols}{2}
+    \begin{flushleft}\textit{Teaching Assistant}\end{flushleft}
+    \begin{flushright}2015\end{flushright}
+  \end{multicols}
+\end{large}
+\vspace{-0.3cm}
+
+\vspace{7pt}
+
 <!-- PUBLICATIONS : 1ST BULLET -->
 \begin{large}
 {\bf SELECTED PUBLICATIONS}
   \vspace{3pt}
   \hrule
-  \begin{flushleft}\textit{Kinetic signatures, dawn-dusk asymmetries, and flux transfer events associated with Mercury's dayside magnetopause reconnection from 3D MHD-AEPIC simulations}\end{flushleft}
+  \begin{flushleft}Kinetic signatures, dawn-dusk asymmetries, and flux transfer events associated with Mercury's dayside magnetopause reconnection from 3D MHD-AEPIC simulations\end{flushleft}
   \vspace{-0.2cm}
-  Li, Changkun and Jia, Xianzhe and Chen, Yuxi and T{\'o}th, G{\'a}bor and {\bf Zhou, Hongyang} and Slavin, James A and Sun, Weijie and Poh, Gangkai,   JGR, 2024
-  \begin{flushleft}\textit{Dayside Pc2 Waves Associated With Flux Transfer Events in a 3D Hybrid-Vlasov Simulation}\end{flushleft}
+  \textit{Li, Changkun and Jia, Xianzhe and Chen, Yuxi and T{\'o}th, G{\'a}bor and {\bf Zhou, Hongyang} and Slavin, James A and Sun, Weijie and Poh, Gangkai},   JGR, 2024
+  \begin{flushleft}Dayside Pc2 Waves Associated With Flux Transfer Events in a 3D Hybrid-Vlasov Simulation\end{flushleft}
   \vspace{-0.2cm}
-  Tesema, Facil and Palmroth, Minna and Turc, Lucile and {\bf Zhou, Hongyang} and Cozzani, Giulia and Alho, Markku and Pfau-Kempf, Yann and Horaites, Konstantinos and Zaitsev, Ivan and Grandin, Maxime,   GRL, 2024
-  \begin{flushleft}\textit{Vlasiator. jl: A Julia package for processing Vlasiator data}\end{flushleft}
+  \textit{Tesema, Facil and Palmroth, Minna and Turc, Lucile and {\bf Zhou, Hongyang} and Cozzani, Giulia and Alho, Markku and Pfau-Kempf, Yann and Horaites, Konstantinos and Zaitsev, Ivan and Grandin, Maxime},   GRL, 2024
+  \begin{flushleft}Vlasiator. jl: A Julia package for processing Vlasiator data\end{flushleft}
   \vspace{-0.2cm}
-  {\bf Zhou, Hongyang}, Journal of Open Source Software, 2023
-  \begin{flushleft}\textit{FLEKS: A flexible particle-in-cell code for multi-scale plasma simulations}\end{flushleft}
+  \textit{{\bf Zhou, Hongyang}}, Journal of Open Source Software, 2023
+  \begin{flushleft}FLEKS: A flexible particle-in-cell code for multi-scale plasma simulations\end{flushleft}
   \vspace{-0.2cm}
-  Chen, Yuxi and T{\'o}th, G{\'a}bor and {\bf Zhou, Hongyang} and Wang, Xiantong, CPC, 2023
-  \begin{flushleft}\textit{Magnetospheric Response to a Pressure Pulse in a Three-Dimensional Hybrid-Vlasov Simulation}\end{flushleft}
+  \textit{Chen, Yuxi and T{\'o}th, G{\'a}bor and {\bf Zhou, Hongyang} and Wang, Xiantong}, CPC, 2023
+  \begin{flushleft}Magnetospheric Response to a Pressure Pulse in a Three-Dimensional Hybrid-Vlasov Simulation\end{flushleft}
   \vspace{-0.2cm}
-  Horaites, Konstantinos and Rintam{\"a}ki, E and Zaitsev, I and Turc, L and Grandin, M and Cozzani, G and {\bf Zhou, H} and Alho, M and Suni, J and Kebede, F and others, JGR, 2023
-  \begin{flushleft}\textit{Magnetotail plasma eruptions driven by magnetic reconnection and kinetic instabilities}\end{flushleft}
+  \textit{Horaites, Konstantinos and Rintam{\"a}ki, E and Zaitsev, I and Turc, L and Grandin, M and Cozzani, G and {\bf Zhou, H} and Alho, M and Suni, J and Kebede, F and others}, JGR, 2023
+  \begin{flushleft}Magnetotail plasma eruptions driven by magnetic reconnection and kinetic instabilities\end{flushleft}
   \vspace{-0.2cm}
-  Palmroth, Minna and Pulkkinen, Tuija I and Ganse, Urs and Pfau-Kempf, Yann and Koskela, Tuomas and Zaitsev, Ivan and Alho, Markku and Cozzani, Giulia and Turc, Lucile, {\bf Zhou, Hongyang} and others, Nature Geoscience, 2023
-  \begin{flushleft}\textit{Magnetospheric responses to solar wind Pc5 density fluctuations: Results from 2D hybrid Vlasov simulation}\end{flushleft}
+  \textit{Palmroth, Minna and Pulkkinen, Tuija I and Ganse, Urs and Pfau-Kempf, Yann and Koskela, Tuomas and Zaitsev, Ivan and Alho, Markku and Cozzani, Giulia and Turc, Lucile, {\bf Zhou, Hongyang} and others}, Nature Geoscience, 2023
+  \begin{flushleft}Magnetospheric responses to solar wind Pc5 density fluctuations: Results from 2D hybrid Vlasov simulation\end{flushleft}
   \vspace{-0.2cm}
-  {\bf Zhou, Hongyang} and Turc, Lucile and Pfau-Kempf, Yann and Battarbee, Markus and Tarvus, Vertti and Dubart, Maxime and George, Harriet and Cozzani, Giulia and Grandin, Maxime and Ganse, Urs, Frontiers in Astronomy and Space Sciences, 2022
-  \begin{flushleft}\textit{A global view of Pc3 wave activity in near-Earth space: Results from hybrid-Vlasov simulations}\end{flushleft}
+  \textit{{\bf Zhou, Hongyang} and Turc, Lucile and Pfau-Kempf, Yann and Battarbee, Markus and Tarvus, Vertti and Dubart, Maxime and George, Harriet and Cozzani, Giulia and Grandin, Maxime and Ganse, Urs}, Frontiers in Astronomy and Space Sciences, 2022
+  \begin{flushleft}A global view of Pc3 wave activity in near-Earth space: Results from hybrid-Vlasov simulations\end{flushleft}
   \vspace{-0.2cm}
-  Turc, Lucile and {\bf Zhou, Hongyang} and Tarvus, Vertti and Ala-Lahti, Matti and Battarbee, Markus and Pfau-Kempf, Yann and Johlander, Andreas and Ganse, Urs and Dubart, Maxime and George, Harriet and others, Frontiers in Astronomy and Space Sciences, 2022
-  \begin{flushleft}\textit{Reconnection-driven dynamics at Ganymede's upstream magnetosphere: 3-D global Hall MHD and MHD-EPIC simulations}\end{flushleft}
+  \textit{Turc, Lucile and {\bf Zhou, Hongyang} and Tarvus, Vertti and Ala-Lahti, Matti and Battarbee, Markus and Pfau-Kempf, Yann and Johlander, Andreas and Ganse, Urs and Dubart, Maxime and George, Harriet and others}, Frontiers in Astronomy and Space Sciences, 2022
+  \begin{flushleft}Reconnection-driven dynamics at Ganymede's upstream magnetosphere: 3-D global Hall MHD and MHD-EPIC simulations\end{flushleft}
   \vspace{-0.2cm}
-  {\bf Zhou, Hongyang} and T{\'o}th, G{\'a}bor and Jia, Xianzhe and Chen, Yuxi, JGR, 2020
-  \begin{flushleft}\textit{Efficient OpenMP parallelization to a complex MPI parallel magnetohydrodynamics code}\end{flushleft}
+  \textit{{\bf Zhou, Hongyang} and T{\'o}th, G{\'a}bor and Jia, Xianzhe and Chen, Yuxi}, JGR, 2020
+  \begin{flushleft}Efficient OpenMP parallelization to a complex MPI parallel magnetohydrodynamics code\end{flushleft}
   \vspace{-0.2cm}
-  {\bf Zhou, Hongyang} and T{\'o}th, G{\'a}bor, Journal of Parallel and Distributed Computing, 2020
-  \begin{flushleft}\textit{Embedded kinetic simulation of Ganymede's magnetosphere: Improvements and inferences}\end{flushleft}
+  \textit{{\bf Zhou, Hongyang} and T{\'o}th, G{\'a}bor}, Journal of Parallel and Distributed Computing, 2020
+  \begin{flushleft}Embedded kinetic simulation of Ganymede's magnetosphere: Improvements and inferences\end{flushleft}
   \vspace{-0.2cm}
-  {\bf Zhou, Hongyang} and T{\'o}th, G{\'a}bor and Jia, Xianzhe and Chen, Yuxi and Markidis, Stefano, JGR, 2019
+  \textit{{\bf Zhou, Hongyang} and T{\'o}th, G{\'a}bor and Jia, Xianzhe and Chen, Yuxi and Markidis, Stefano}, JGR, 2019
 \end{large}
 
 \vspace{7pt}
-
-
 
 <!-- SKILLS -->
 \begin{large}{\bf SKILLS}
@@ -270,6 +318,6 @@ format:
 \vspace{-0.16cm}
 **Programming Languages** - Julia, Fortran, C, C++, MATLAB, Python, IDL, CUDA, Rust, Perl, LaTeX
 
-**Visualization Tools** - Paraview, VisIt, Tecplot 
+**3D Visualization Tools** - Paraview, VisIt, Tecplot 
 
-**Languages** - English, Chinese
+**Languages** - English, Mandarin
