@@ -268,11 +268,33 @@ format:
 
 \vspace{7pt}
 
-<!-- PUBLICATIONS : 1ST BULLET -->
-\begin{large}
-{\bf SELECTED PUBLICATIONS}
+<!-- SKILLS -->
+\begin{large}{\bf SKILLS}
   \vspace{3pt}
   \hrule
+\end{large}
+\vspace{-0.16cm}
+**Programming Languages** - Julia, Fortran, C, C++, MATLAB, Python, IDL, CUDA, Rust, Perl, LaTeX
+
+**3D Visualization Tools** - Paraview, VisIt, Tecplot 
+
+**Languages** - English, Mandarin
+
+<!-- PUBLICATIONS : 1ST BULLET -->
+\begin{large}
+{\bf PUBLICATIONS}
+  \vspace{3pt}
+  \hrule
+  \begin{flushleft}Hybrid-Vlasov modelling of ion velocity distribution functions associated with the Kelvin-Helmholtz
+instability with a density and temperature asymmetry (under revision)\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{Tarvus, Vertti and Lurc, Lucile and {\bf Zhou, Hongyang} and Nakamura, Takuma and Settino, Adriana and Blasl, Kevin and Cozzani, Giulia and others},   AAS, 2024
+  \begin{flushleft}Source of Drift-dispersed Electrons in Martian Crustal Magnetic Fields\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{Zhang, Chi and {\bf Zhou, Hongyang} and Dong, Chuanfei and Harada, Yuki and Yamauchi, Masatoshi and Xu, Shaosui and Nilson, Hans and Ebihara, Yusuke and Curry, Shannon M. and Qin, Junfeng and Mitchell, David L. and Brain, David A.},   Astrophysical Journal, 2024
+  \begin{flushleft}Finding reconnection lines and flux rope axes via local coordinates in global ion-kinetic magnetospheric simulations\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{Alho, M., Cozzani, G., Zaitsev, I., Kebede, F. T., Ganse, U., Battarbee, M., Bussov, M., Dubart, M., Hoilijoki, S., Kotipalo, L., Papadakis, K., Pfau-Kempf, Y., Suni, J., Tarvus, V., Workayehu, A., {\bf Zhou, H.}, and Palmroth, M.},   Annales Geophysicae, 2024
   \begin{flushleft}Kinetic signatures, dawn-dusk asymmetries, and flux transfer events associated with Mercury's dayside magnetopause reconnection from 3D MHD-AEPIC simulations\end{flushleft}
   \vspace{-0.2cm}
   \textit{Li, Changkun and Jia, Xianzhe and Chen, Yuxi and T{\'o}th, G{\'a}bor and {\bf Zhou, Hongyang} and Slavin, James A and Sun, Weijie and Poh, Gangkai},   JGR, 2024
@@ -285,18 +307,30 @@ format:
   \begin{flushleft}FLEKS: A flexible particle-in-cell code for multi-scale plasma simulations\end{flushleft}
   \vspace{-0.2cm}
   \textit{Chen, Yuxi and T{\'o}th, G{\'a}bor and {\bf Zhou, Hongyang} and Wang, Xiantong}, CPC, 2023
+  \begin{flushleft}Enabling technology for global 3D + 3V hybrid-Vlasov simulations of near-Earth space\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{Ganse, U. and Koskela, T. and Battarbee, M. and Pfau-Kempf, Y. and Papadakis, K. and Alho, M. and Bussov, M. and Cozzani, G. and Dubart, M. and George, H. and Gordeev, E. and Grandin, M. and Horaites, K. and Suni, J. and Tarvus, V. and Kebede, F. T. and Turc, L. and {\bf Zhou, H.} and Palmroth, M.}, Physics of Plasmas, 2023
   \begin{flushleft}Magnetospheric Response to a Pressure Pulse in a Three-Dimensional Hybrid-Vlasov Simulation\end{flushleft}
   \vspace{-0.2cm}
-  \textit{Horaites, Konstantinos and Rintam{\"a}ki, E and Zaitsev, I and Turc, L and Grandin, M and Cozzani, G and {\bf Zhou, H} and Alho, M and Suni, J and Kebede, F and others}, JGR, 2023
+  \textit{Horaites, Konstantinos and Rintam{\"a}ki, E and Zaitsev, I and Turc, L and Grandin, M and Cozzani, G and {\bf Zhou, Hongyang} and Alho, M and Suni, J and Kebede, F and others}, JGR, 2023
   \begin{flushleft}Magnetotail plasma eruptions driven by magnetic reconnection and kinetic instabilities\end{flushleft}
   \vspace{-0.2cm}
   \textit{Palmroth, Minna and Pulkkinen, Tuija I and Ganse, Urs and Pfau-Kempf, Yann and Koskela, Tuomas and Zaitsev, Ivan and Alho, Markku and Cozzani, Giulia and Turc, Lucile, {\bf Zhou, Hongyang} and others}, Nature Geoscience, 2023
+  \begin{flushleft}First 3D hybrid-Vlasov global simulation of auroral proton precipitation and comparison with satellite observations\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{Grandin, M. and Luttikhuis, T. and Battarbee, M. and Cozzani, G. and {\bf Zhou, H.} and Turc, L. and Pfau-Kempf, Y.},   Journal of Space Weather and Space Climate, 2023
   \begin{flushleft}Magnetospheric responses to solar wind Pc5 density fluctuations: Results from 2D hybrid Vlasov simulation\end{flushleft}
   \vspace{-0.2cm}
   \textit{{\bf Zhou, Hongyang} and Turc, Lucile and Pfau-Kempf, Yann and Battarbee, Markus and Tarvus, Vertti and Dubart, Maxime and George, Harriet and Cozzani, Giulia and Grandin, Maxime and Ganse, Urs}, Frontiers in Astronomy and Space Sciences, 2022
   \begin{flushleft}A global view of Pc3 wave activity in near-Earth space: Results from hybrid-Vlasov simulations\end{flushleft}
   \vspace{-0.2cm}
   \textit{Turc, Lucile and {\bf Zhou, Hongyang} and Tarvus, Vertti and Ala-Lahti, Matti and Battarbee, Markus and Pfau-Kempf, Yann and Johlander, Andreas and Ganse, Urs and Dubart, Maxime and George, Harriet and others}, Frontiers in Astronomy and Space Sciences, 2022
+  \begin{flushleft}Quasi-parallel Shock Reformation Seen by Magnetospheric Multiscale and Ion-kinetic Simulations\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{A. Johlander and M. Battarbee and L. Turc and U. Ganse and Y. Pfau-Kempf and M. Grandin and J. Suni and V. Tarvus and M. Bussov and {\bf H. Zhou} and others}, GRL, 2022
+  \begin{flushleft}Estimating inner magnetospheric radial diffusion using a hybrid-Vlasov simulation\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{H. George and E. Kilpua and A. Osmane and S. Lejosne and L. Turc and M. Grandin and M. M. H. Kalliokoski and S. Hoilijoki and U. Ganse and M. Alho and M. Battarbee and M. Bussov and M. Dubart and A. Johlander and T. Manglayev and K. Papadakis and Y. Pfau-Kempf and J. Suni and {\bf H. Zhou} and M. Palmroth}, Frontiers in Astronomy and Space Sciences, 2022
   \begin{flushleft}Reconnection-driven dynamics at Ganymede's upstream magnetosphere: 3-D global Hall MHD and MHD-EPIC simulations\end{flushleft}
   \vspace{-0.2cm}
   \textit{{\bf Zhou, Hongyang} and T{\'o}th, G{\'a}bor and Jia, Xianzhe and Chen, Yuxi}, JGR, 2020
@@ -307,17 +341,3 @@ format:
   \vspace{-0.2cm}
   \textit{{\bf Zhou, Hongyang} and T{\'o}th, G{\'a}bor and Jia, Xianzhe and Chen, Yuxi and Markidis, Stefano}, JGR, 2019
 \end{large}
-
-\vspace{7pt}
-
-<!-- SKILLS -->
-\begin{large}{\bf SKILLS}
-  \vspace{3pt}
-  \hrule
-\end{large}
-\vspace{-0.16cm}
-**Programming Languages** - Julia, Fortran, C, C++, MATLAB, Python, IDL, CUDA, Rust, Perl, LaTeX
-
-**3D Visualization Tools** - Paraview, VisIt, Tecplot 
-
-**Languages** - English, Mandarin
