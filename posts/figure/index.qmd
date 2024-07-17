@@ -1,0 +1,109 @@
+---
+title: Figure Processing
+author: "Hongyang Zhou"
+date: "2020-06-01"
+categories: [visual]
+date-modified: "2024-07-17"
+---
+
+## Image Compression
+
+I have tried an excellent PNG file compressor online: [TinyPNG](https://tinypng.com/). Usually this can compress a figure by about 60% without lossing visually detectable quality! This should always be used whenever possible.
+
+Unlike JPEG, PNG doesn't typically have a lossy compression scheme. What TinyPNG can achieve is something I haven't really found an alternative for. I made a donation of $5 to them. Great work!
+
+- `ffmpeg` has some built-in compressor when combining figures into movies, so it make less sense to compress each figure before passing them to `ffmpeg`.
+- When merging images, the size reduction is lost for the combined image because 24-bit colors is the default settings for PNG savings. We need to optimize the image again.
+
+This video explains many things about the differences between PNG and JPEG:
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/0jNIYWBDULI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+So basically, if you can count the number of colors in your image (e.g. most scientific plottings), use PNG. Even though PNG supports 24-bit colors, 8-bit (256 colors) is enough for most scientific images. This is the most important trick used in TinyPNG.
+
+## Image Manipulation
+
+There are many online image merging and splitting tools available. However, we can also process images by writing some codes in Julia! This can be easily achieved with [Images.jl](https://juliaimages.org/latest/examples/spatial_transformation/SpatialTransformations/).
+
+### Basics
+
+In Julia, images as multidimensional arrays are stored in column-major order, which means that for an image with size `size(img) = (512, 768)`, the first index corresponds to the vertical axis (column, height) and the second to the horizontal axis (row, width).
+
+To use Images.jl, add `using Images` to the beginning of the script.
+
+### Cropping
+
+The syntax is
+
+```julia
+img_source[y1:y2, x1:x2]
+```
+
+For example, to crop an image from sides by 1/8 of img_source each side and leave it as it is from top to bottom,
+
+```julia
+img_cropped = @view img_source[ :,floor(Int, 1/8*img_size[2]) : floor(Int, 7/8*img_size[2])]
+```
+
+### Resizing
+
+Resizing is a method to resize an image to a given specific output image shape.
+
+```julia
+img_square = imresize(img_source, (400, 400))
+```
+
+### Rescaling
+
+Rescale operation resizes an image by a given scaling factor. The scaling factor can either be a single floating point value, or multiple values - one along each axis. Image scaling is the process of changing the size of an image while preserving the original aspect ratio.
+
+```julia
+img_small = imresize(img_source, ratio=1/4);
+img_short = imresize(img_source, ratio=(1/4, 1));
+```
+
+### Merging
+
+- Layout: 1 on the left, 2 rows on the right
+
+```julia
+dir = "./"
+ima = load(dir*"1a.png")
+imb = load(dir*"1b.png")
+imc = load(dir*"1c.png")
+sa = size(ima)
+im_right = vcat(imb, imc) # 1b and 1c have the same sizes
+sright = size(im_right)
+
+# Resize the image
+percentage_scale = sa[1] / sright[1]
+new_size = trunc.(Int, sright .* percentage_scale)
+im_right_rescaled = imresize(im_right, new_size)
+
+im = hcat(ima, im_right_rescaled)
+save("1.png", im)
+```
+
+- Layout: 2 rows * 2 columns
+
+```julia
+dir = "./"
+ima = load(dir*"2a.png")
+imb = load(dir*"2b.png")
+imc = load(dir*"2c.png")
+imd = load(dir*"2d.png")
+sa = size(ima)
+sc = size(imc)
+# Resize the bottom image
+percentage_scale = sa[2] / sc[2]
+new_size = trunc.(Int, sc .* percentage_scale)
+im_rescaled = imresize(imc, new_size)
+
+im_left = vcat(ima, im_rescaled) # 1a and 1b have the same sizes
+im_rescaled = imresize(imd, new_size)
+
+im_right = vcat(imb, im_rescaled) # 1a and 1b have the same sizes
+
+im = hcat(im_left, im_right)
+save("1.png", im)
+```
