@@ -3,10 +3,14 @@ title: Making Videos from Figures
 author: "Hongyang Zhou"
 date: "2019-10-25"
 categories: [visual]
-date-modified: "2024-07-20"
+date-modified: "2024-07-21"
 ---
 
-An animation is simply frames of figures. It is pretty helpful to be proficient at generating a set of figures and combining them into a video.
+An animation is simply frames of figures. It is pretty helpful to be proficient at generating a set of figures and combining them into a video. However, naively combining figures into animations ends up in huge files: for a 1920x1080 resolution video at a frame rate of 24, one minute takes 24*60*1920*1080*3 ~ 9 GB! Video files stored in computers take advantage of multiple compression techniques to reduce the storage requirements, including intra prediction (帧内预测), inter prediction (帧间预测), transform (转换), quantization (量化)，deblocking filter (去区块滤波器), entropy encoding (熵编码). These can be summarized into three main modules as described in H.265/HEVC:
+
+* Coding unit (CU，编码单位)
+* Predict unit (PU，预测单位)
+* Transform unit (TU, 转换单位)
 
 ## Making Figures
 
@@ -65,6 +69,10 @@ I have encountered several issues when using **ffmpeg**:
 
 H.265 is superior in most cases, but it is not fully supported on all video players and platforms. Try to use H.265 if possible to save half the storage space compared with H.264.
 
+比起H.264/AVC，H.265/HEVC提供了更多不同的工具来降低码率，以编码单位来说，最小的8x8到最大的64x64。信息量不多的区域（颜色变化不明显，比如一张汽车图片中车体的红色部分和地面的灰色部分）划分的宏块较大，编码后的码字较少，而细节多的地方（比如轮胎）划分的宏块就相应的小和多一些，编码后的码字较多，这样就相当于对图像进行了有重点的编码，从而降低了整体的码率，编码效率就相应提高了。同时，H.265的帧内预测模式支持33种方向（H.264只支持8种），并且提供了更好的运动补偿处理和矢量预测方法。
+
+在相同的图像质量下，相比于H.264，通过H.265编码的视频码流大小比H.264减小约39%-44%。通过主观视觉测试得出的数据显示，在码率减少51%-74%的情况下，H.265编码视频的质量还能与H.264编码视频质量近似甚至比之更好。本质上，这代表着比预期的信噪比更好。
+
 ### TL;DR
   
 Finally, the following command works for converting figures into videos:
@@ -74,6 +82,12 @@ ffmpeg -r 12 -pattern_type glob -i '*.png' -vcodec libx265 -vf scale=1080:-2 -pi
 ```
 
 If `libx265` is not supported, you can revert back to `libx264`.
+
+To transcode into H.265 using FFmpeg,
+
+```shell
+ffmpeg -i input.mp4 -map 0 -c copy -c:v libx265 output.mp4
+```
 
 ## Merging videos
 
