@@ -172,7 +172,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">May 22, 2024</p>
+      <p class="date-modified">July 21, 2024</p>
     </div>
   </div>
     
@@ -183,7 +183,12 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>An animation is simply frames of figures. It is pretty helpful to be proficient at generating a set of figures and combining them into a video.</p>
+<p>An animation is simply frames of figures. It is pretty helpful to be proficient at generating a set of figures and combining them into a video. However, naively combining figures into animations ends up in huge files: for a 1920x1080 resolution video at a frame rate of 24, one minute takes 24<em>60</em>1920<em>1080</em>3 ~ 9 GB! Video files stored in computers take advantage of multiple compression techniques to reduce the storage requirements, including intra prediction (帧内预测), inter prediction (帧间预测), transform (转换), quantization (量化)，deblocking filter (去区块滤波器), entropy encoding (熵编码). These can be summarized into three main modules as described in H.265/HEVC:</p>
+<ul>
+<li>Coding unit (CU，编码单位)</li>
+<li>Predict unit (PU，预测单位)</li>
+<li>Transform unit (TU, 转换单位)</li>
+</ul>
 <section id="making-figures" class="level2">
 <h2 class="anchored" data-anchor-id="making-figures">Making Figures</h2>
 <p>Guidelines in making figures from time-series data:</p>
@@ -226,11 +231,20 @@ From one of the answers posted on <a href="https://stackoverflow.com/questions/2
 <li><em>Order of files are messed up.</em></li>
 </ol>
 <p>The best practice is to pad zeros such that all the file names have the same width.</p>
+<section id="h.264-v.s-h.265" class="level4">
+<h4 class="anchored" data-anchor-id="h.264-v.s-h.265">H.264 v.s H.265</h4>
+<p>H.265 is superior in most cases, but it is not fully supported on all video players and platforms. Try to use H.265 if possible to save half the storage space compared with H.264.</p>
+<p>比起H.264/AVC，H.265/HEVC提供了更多不同的工具来降低码率，以编码单位来说，最小的8x8到最大的64x64。信息量不多的区域（颜色变化不明显，比如一张汽车图片中车体的红色部分和地面的灰色部分）划分的宏块较大，编码后的码字较少，而细节多的地方（比如轮胎）划分的宏块就相应的小和多一些，编码后的码字较多，这样就相当于对图像进行了有重点的编码，从而降低了整体的码率，编码效率就相应提高了。同时，H.265的帧内预测模式支持33种方向（H.264只支持8种），并且提供了更好的运动补偿处理和矢量预测方法。</p>
+<p>在相同的图像质量下，相比于H.264，通过H.265编码的视频码流大小比H.264减小约39%-44%。通过主观视觉测试得出的数据显示，在码率减少51%-74%的情况下，H.265编码视频的质量还能与H.264编码视频质量近似甚至比之更好。本质上，这代表着比预期的信噪比更好。</p>
+</section>
 </section>
 <section id="tldr" class="level3">
 <h3 class="anchored" data-anchor-id="tldr">TL;DR</h3>
 <p>Finally, the following command works for converting figures into videos:</p>
-<pre class="shell"><code>ffmpeg -r 12 -pattern_type glob -i '*.png' -vcodec libx264 -vf scale=1080:-2 -pix_fmt yuv420p pi.mp4</code></pre>
+<pre class="shell"><code>ffmpeg -r 12 -pattern_type glob -i '*.png' -vcodec libx265 -vf scale=1080:-2 -pix_fmt yuv420p pi.mp4</code></pre>
+<p>If <code>libx265</code> is not supported, you can revert back to <code>libx264</code>.</p>
+<p>To transcode into H.265 using FFmpeg,</p>
+<pre class="shell"><code>ffmpeg -i input.mp4 -map 0 -c copy -c:v libx265 output.mp4</code></pre>
 </section>
 </section>
 <section id="merging-videos" class="level2">
