@@ -3,7 +3,7 @@ title: Making Videos from Figures
 author: "Hongyang Zhou"
 date: "2019-10-25"
 categories: [visual]
-date-modified: "2024-07-21"
+date-modified: "2024-07-23"
 ---
 
 An animation is simply frames of figures. It is pretty helpful to be proficient at generating a set of figures and combining them into a video. However, naively combining figures into animations ends up in huge files: for a 1920x1080 resolution video at a frame rate of 24, one minute takes 24*60*1920*1080*3 ~ 9 GB! Video files stored in computers take advantage of multiple compression techniques to reduce the storage requirements, including intra prediction (帧内预测), inter prediction (帧间预测), transform (转换), quantization (量化)，deblocking filter (去区块滤波器), entropy encoding (熵编码). These can be summarized into three main modules as described in H.265/HEVC:
@@ -75,11 +75,13 @@ H.265 is superior in most cases, but it is not fully supported on all video play
 
 ### TL;DR
   
-Finally, the following command works for converting figures into videos:
+Finally, the following command works for converting figures into videos:[^1]
 
 ```shell
 ffmpeg -r 12 -pattern_type glob -i '*.png' -vcodec libx265 -vf scale=1080:-2 -pix_fmt yuv420p pi.mp4
 ```
+
+[^1]: Since this command uses `glob`, it does not work on Windows.
 
 If `libx265` is not supported, you can revert back to `libx264`.
 
