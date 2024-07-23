@@ -172,7 +172,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">July 21, 2024</p>
+      <p class="date-modified">July 23, 2024</p>
     </div>
   </div>
     
@@ -240,7 +240,7 @@ From one of the answers posted on <a href="https://stackoverflow.com/questions/2
 </section>
 <section id="tldr" class="level3">
 <h3 class="anchored" data-anchor-id="tldr">TL;DR</h3>
-<p>Finally, the following command works for converting figures into videos:</p>
+<p>Finally, the following command works for converting figures into videos:<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <pre class="shell"><code>ffmpeg -r 12 -pattern_type glob -i '*.png' -vcodec libx265 -vf scale=1080:-2 -pix_fmt yuv420p pi.mp4</code></pre>
 <p>If <code>libx265</code> is not supported, you can revert back to <code>libx264</code>.</p>
 <p>To transcode into H.265 using FFmpeg,</p>
@@ -256,7 +256,13 @@ From one of the answers posted on <a href="https://stackoverflow.com/questions/2
 
 </section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Since this command uses <code>glob</code>, it does not work on Windows.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
