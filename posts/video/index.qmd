@@ -3,7 +3,7 @@ title: Making Videos from Figures
 author: "Hongyang Zhou"
 date: "2019-10-25"
 categories: [visual]
-date-modified: "2024-07-23"
+date-modified: "2024-07-31"
 ---
 
 An animation is simply frames of figures. It is pretty helpful to be proficient at generating a set of figures and combining them into a video. However, naively combining figures into animations ends up in huge files: for a 1920x1080 resolution video at a frame rate of 24, one minute takes 24*60*1920*1080*3 ~ 9 GB! Video files stored in computers take advantage of multiple compression techniques to reduce the storage requirements, including intra prediction (帧内预测), inter prediction (帧间预测), transform (转换), quantization (量化)，deblocking filter (去区块滤波器), entropy encoding (熵编码). These can be summarized into three main modules as described in H.265/HEVC:
@@ -98,5 +98,7 @@ Note that this is different from concatenating frames in multiple videos.
 From [this thread](https://unix.stackexchange.com/questions/233832/merge-two-video-clips-into-one-placing-them-next-to-each-other):
 
 ```shell
-ffmpeg -i left.mp4 -i right.mp4 -filter_complex hstack output.mp4
+ffmpeg -i left.mp4 -i right.mp4 -filter_complex hstack -vcodec libx265 output.mp4
 ```
+
+By default FFmpeg outputs H.265 encoded videos.
