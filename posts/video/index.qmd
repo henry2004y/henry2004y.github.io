@@ -94,6 +94,9 @@ ffmpeg -i input.mp4 -map 0 -c copy -c:v libx265 output.mp4
 ## Merging videos
 
 Note that this is different from concatenating frames in multiple videos.
+We have three convenient filters to use: `vstack`, `hstack`, and `xstack`.
+
+- Merge two videos horizontally
 
 From [this thread](https://unix.stackexchange.com/questions/233832/merge-two-video-clips-into-one-placing-them-next-to-each-other):
 
@@ -102,3 +105,12 @@ ffmpeg -i left.mp4 -i right.mp4 -filter_complex hstack -vcodec libx265 output.mp
 ```
 
 By default FFmpeg outputs H.265 encoded videos.
+
+- Merge three videos horizontally
+
+```shell
+ffmpeg -i input0 -i input1 -i input2 -filter_complex "[0:v][1:v][2:v]hstack=inputs=3[v]" -map "[v]" -vcodec libx265 output
+```
+
+`[0:v]` and `[1:v]` refer to the first and second video streams from the first and second inputs.
+The `-map` option determines which streams should be included in the output file.
