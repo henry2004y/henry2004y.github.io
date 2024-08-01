@@ -172,7 +172,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">July 23, 2024</p>
+      <p class="date-modified">July 31, 2024</p>
     </div>
   </div>
     
@@ -251,7 +251,8 @@ From one of the answers posted on <a href="https://stackoverflow.com/questions/2
 <h2 class="anchored" data-anchor-id="merging-videos">Merging videos</h2>
 <p>Note that this is different from concatenating frames in multiple videos.</p>
 <p>From <a href="https://unix.stackexchange.com/questions/233832/merge-two-video-clips-into-one-placing-them-next-to-each-other">this thread</a>:</p>
-<pre class="shell"><code>ffmpeg -i left.mp4 -i right.mp4 -filter_complex hstack output.mp4</code></pre>
+<pre class="shell"><code>ffmpeg -i left.mp4 -i right.mp4 -filter_complex hstack -vcodec libx265 output.mp4</code></pre>
+<p>By default FFmpeg outputs H.265 encoded videos.</p>
 
 
 </section>

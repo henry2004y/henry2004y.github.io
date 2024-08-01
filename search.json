@@ -1845,7 +1845,7 @@
     "href": "posts/video/index.html#merging-videos",
     "title": "Making Videos from Figures",
     "section": "Merging videos",
-    "text": "Merging videos\nNote that this is different from concatenating frames in multiple videos.\nFrom this thread:\nffmpeg -i left.mp4 -i right.mp4 -filter_complex hstack output.mp4"
+    "text": "Merging videos\nNote that this is different from concatenating frames in multiple videos.\nFrom this thread:\nffmpeg -i left.mp4 -i right.mp4 -filter_complex hstack -vcodec libx265 output.mp4\nBy default FFmpeg outputs H.265 encoded videos."
   },
   {
     "objectID": "posts/video/index.html#footnotes",
