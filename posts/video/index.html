@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.55">
+<meta name="generator" content="quarto-1.5.56">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -249,10 +249,18 @@ From one of the answers posted on <a href="https://stackoverflow.com/questions/2
 </section>
 <section id="merging-videos" class="level2">
 <h2 class="anchored" data-anchor-id="merging-videos">Merging videos</h2>
-<p>Note that this is different from concatenating frames in multiple videos.</p>
+<p>Note that this is different from concatenating frames in multiple videos. We have three convenient filters to use: <code>vstack</code>, <code>hstack</code>, and <code>xstack</code>.</p>
+<ul>
+<li>Merge two videos horizontally</li>
+</ul>
 <p>From <a href="https://unix.stackexchange.com/questions/233832/merge-two-video-clips-into-one-placing-them-next-to-each-other">this thread</a>:</p>
 <pre class="shell"><code>ffmpeg -i left.mp4 -i right.mp4 -filter_complex hstack -vcodec libx265 output.mp4</code></pre>
 <p>By default FFmpeg outputs H.265 encoded videos.</p>
+<ul>
+<li>Merge three videos horizontally</li>
+</ul>
+<pre class="shell"><code>ffmpeg -i input0 -i input1 -i input2 -filter_complex "[0:v][1:v][2:v]hstack=inputs=3[v]" -map "[v]" -vcodec libx265 output</code></pre>
+<p><code>[0:v]</code> and <code>[1:v]</code> refer to the first and second video streams from the first and second inputs. The <code>-map</code> option determines which streams should be included in the output file.</p>
 
 
 </section>
