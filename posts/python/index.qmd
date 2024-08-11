@@ -3,7 +3,7 @@ title: Advanced Python
 author: "Hongyang Zhou"
 date: "2021-10-15"
 categories: [programming]
-date-modified: "2024-01-16"
+date-modified: "2024-08-11"
 ---
 
 > Good languages stop you from writing stupid codes; bad languages allow you to write more stupid codes.
@@ -14,11 +14,14 @@ Even though I think Python is slow, it does not mean that I cannot learn it or l
 
 New things are cool. However, they don't always work. For example, pytorch hasn't been able to work with Python 12 two months after its release.
 
-A nice intermediate python course:
+* Practical tips and tricks:
+[nkmk.me](https://note.nkmk.me/en/python/)
+
+* A nice intermediate Python course:
 [Python for Scientific Computing — Python for Scientific Computing documentation](https://aaltoscicomp.github.io/python-for-scicomp/)
 It is not about the language itself, but more about how to use it efficiently as a researcher.
 
-[Refurb](https://github.com/dosisod/refurb) is a tool for refurbishing and modernizing Python codebases.
+* [Refurb](https://github.com/dosisod/refurb) is a tool for refurbishing and modernizing Python codebases.
 
 ## Installation
 
