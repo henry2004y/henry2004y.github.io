@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.56">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -170,7 +170,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">August 23, 2023</p>
+      <p class="date-modified">September 5, 2024</p>
     </div>
   </div>
     
@@ -181,7 +181,7 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>You can watch the <a href="https://www.youtube.com/watch?v=FmpDIaiMIeA">video</a> for a nice walk-through. Here is just some notes from that video. A nice interactive playground based on tensorflow can be found <a href="https://playground.tensorflow.org/">here</a>.</p>
+<p>You can watch the <a href="https://www.youtube.com/watch?v=FmpDIaiMIeA">video</a> for a nice walk-through. Here is just some notes from that video. A nice interactive playground based on tensorflow can be found <a href="https://playground.tensorflow.org/">here</a>. An introduction based on PyTorch can be found <a href="https://www.tomasbeuzen.com/deep-learning-with-pytorch/chapters/chapter5_cnns-pt1.html">here</a>.</p>
 <p>Deciding is hard for computers, because traditional algorithms are literal. <strong>Tricky cases</strong> * translation * scaling * rotation * weight</p>
 <p>CNN matches features, which are just pieces of an image.</p>
 <section id="steps" class="level2">
@@ -195,12 +195,12 @@ ul.task-list li input[type="checkbox"] {
 </ol>
 <p>Pooling: shrinking the image stack</p>
 <ol type="1">
-<li><p>Pick a window size (usually 2 or 3)</p></li>
+<li><p>Pick a window size (usually 3)</p></li>
 <li><p>Pick a stride (usually 2)</p></li>
 <li><p>Walk your window across your filtered images</p></li>
 <li><p>From each window, take the maximum value</p></li>
 </ol>
-<p>Pooling layer: a stack of images becomes a stack of smaller images</p>
+<p>Pooling layer: a stack of images becomes a stack of smaller images to reduce the number of features</p>
 <p>Normalization</p>
 <p>Keep the math from breaking by tweaking each of the values just a little bit; change everything negative to zero.</p>
 <p>Rectified linear units (ReLUs)</p>
