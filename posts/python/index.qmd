@@ -3,7 +3,7 @@ title: Advanced Python
 author: "Hongyang Zhou"
 date: "2021-10-15"
 categories: [programming]
-date-modified: "2024-08-11"
+date-modified: "2024-11-29"
 ---
 
 > Good languages stop you from writing stupid codes; bad languages allow you to write more stupid codes.
@@ -86,6 +86,61 @@ python -m pip install -U pipenv
 
 [Poetry](https://python-poetry.org/docs/) is a better dependency manager. I should use `poetry` over `pipenv` if possible.
 
+Use `pipx` to install poetry for avoiding self update issues.
+
+Optional dependencies are not installed by default:
+
+```bash
+D:\Computer\pyvlasiator>poetry install
+Installing dependencies from lock file
+
+Package operations: 0 installs, 0 updates, 7 removals
+
+  - Removing contourpy (1.3.1)
+  - Removing cycler (0.12.1)
+  - Removing fonttools (4.55.0)
+  - Removing kiwisolver (1.4.7)
+  - Removing matplotlib (3.9.2)
+  - Removing pillow (11.0.0)
+  - Removing pyparsing (3.2.0)
+
+Installing the current project: pyvlasiator (0.1.0)
+
+D:\Computer\pyvlasiator>poetry install --all-extras
+Installing dependencies from lock file
+
+Package operations: 7 installs, 0 updates, 0 removals
+
+  - Installing contourpy (1.3.1)
+  - Installing cycler (0.12.1)
+  - Installing fonttools (4.55.0)
+  - Installing kiwisolver (1.4.7)
+  - Installing pillow (11.0.0)
+  - Installing pyparsing (3.2.0)
+  - Installing matplotlib (3.9.2)
+
+Installing the current project: pyvlasiator (0.1.0)
+```
+
+While using `pytest`, any Python scripts with `test` in their name will be executed. 
+
+#### Registering in PyPI
+
+Follow this [guide](https://packaging.python.org/en/latest/tutorials/packaging-projects/).
+
+On Windows, put .pypirc under `C:\Users\YourName\.pypirc` for avoiding typing API-tokens when uploading.
+
+```bash
+python -m build
+python -m twine upload dist/*
+```
+
+Install from PyPI:
+
+```bash
+python -m pip install pyvlasiator
+```
+
 ### Virtual Environments
 
 It is possible to handle your customized Python packages with Virtual Environment at a lower level. While `pipenv` is attached to a specific Python version, virtual environments completely isolate the python executable as well as all the required packages. The basic workflow is:
@@ -110,6 +165,10 @@ However, see [Conda][#miniconda] for a better approach.
 ### Miniconda
 
 I found conda, or miniconda a more reliable way to handle packages as a bundle. Even miniconda is pretty large though (claimed to be 300 MB when first installed, but quickly became 3GB+). Miniconda comes with its own Python version and `pip` tool.
+
+### venv
+
+`venv` is available by default in Python 3.3 and later, and installs `pip` into created virtual environments in Python 3.4 and later (Python versions prior to 3.12 also installed Setuptools).
 
 ## Recap of the basics
 
