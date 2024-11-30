@@ -1,0 +1,9 @@
+---
+title: Notes on Large Language Models
+author: "Hongyang Zhou"
+date: "2024-07-25"
+categories: [math]
+date-modified: "2024-07-25"
+---
+
+Bilibili, 大模型微调，LoRA

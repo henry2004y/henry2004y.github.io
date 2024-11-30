@@ -124,6 +124,18 @@ Installing the current project: pyvlasiator (0.1.0)
 
 While using `pytest`, any Python scripts with `test` in their name will be executed. 
 
+When a new version of a dependent package is released in PyPI, poetry does not automatically update its cache. To manually synchronize the package version list, first cleanup the cache:
+
+```bash
+poetry cache clear --all .
+```
+
+and then update:
+
+```bash
+poetry install
+```
+
 #### Registering in PyPI
 
 Follow this [guide](https://packaging.python.org/en/latest/tutorials/packaging-projects/).

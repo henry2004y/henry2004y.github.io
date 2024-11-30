@@ -1,0 +1,9 @@
+---
+title: 染发剂
+author: "Hongyang Zhou"
+date: "2024-08-19"
+categories: [math]
+date-modified: "2024-08-19"
+---
+
+老妈需要了解市场上的染发剂是否对人体有损伤。

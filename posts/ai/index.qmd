@@ -1,0 +1,18 @@
+---
+title: Machine Learning Overview and Examples
+author: "Hongyang Zhou"
+date: "2024-08-10"
+categories: [math]
+date-modified: "2024-08-10"
+---
+
+> A computer program is said to learn from experience E with respect to some class of tasks T and performance measure P if its performance at tasks in T, as measured by P, improves with experience E.
+> -- Tom M. Mitchell, 1997
+
+## 感悟
+
+无监督聚类的核心思路有两种，一是距离，而是密度。
+
+## References
+
+* [AI by Doing](https://aibydoing.com/intro)
