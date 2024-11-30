@@ -133,7 +133,7 @@ poetry cache clear --all .
 and then update:
 
 ```bash
-poetry install
+poetry update
 ```
 
 #### Registering in PyPI
