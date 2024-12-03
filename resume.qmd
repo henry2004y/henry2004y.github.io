@@ -88,7 +88,7 @@ format:
   \hrule
   \begin{multicols}{2}
     \begin{flushleft}{\bf University of Michigan}\end{flushleft}
-    \begin{flushright}Ann Arbor, MA\end{flushright}
+    \begin{flushright}Ann Arbor, MI\end{flushright}
   \end{multicols}
   \vspace{-0.17cm}
   \begin{multicols}{2}
