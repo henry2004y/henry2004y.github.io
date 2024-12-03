@@ -286,7 +286,7 @@ format:
   \vspace{3pt}
   \hrule
   \begin{flushleft}Hybrid-Vlasov modelling of ion velocity distribution functions associated with the Kelvin-Helmholtz
-instability with a density and temperature asymmetry (under revision)\end{flushleft}
+instability with a density and temperature asymmetry\end{flushleft}
   \vspace{-0.2cm}
   \textit{Tarvus, Vertti and Lurc, Lucile and {\bf Zhou, Hongyang} and Nakamura, Takuma and Settino, Adriana and Blasl, Kevin and Cozzani, Giulia and others},   AAS, 2024
   \begin{flushleft}Source of Drift-dispersed Electrons in Martian Crustal Magnetic Fields\end{flushleft}
