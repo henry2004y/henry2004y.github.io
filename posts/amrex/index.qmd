@@ -52,6 +52,674 @@ Ann Almgren from Lawrence-Berkeley gave a presentation on AMR with some applicat
 
 [Example codes for ATPESC](https://github.com/AMReX-Codes/ATPESC-codes)
 
+### Compilation
+
+AMReX supports both GNU Make and CMake.
+
+### Main Components
+
+* `AMReX.H` for the top level definitions.
+* `AMReX_Print.H` for printing.
+* `AMReX_ParmParse.H` for parsing input parameters. 
+* `AMReX_PlotFileUtil.H` for plotting.
+* `AMReX_MultiFab.H` for MultiFab support.
+* `AMReX_MFParallelFor.H` for newer loop syntax over MultiFabs.
+* `AMReX_MultiFabUtil.H`
+* `AMReX_Particles.H`
+* `AMReX_ParticleMesh.H`
+
+It is a common practice to import the `amrex` namespace:
+
+```cpp
+using namespace amrex
+```
+
+There are many predefined macros and constant defined in `amrex`, e.g. `BL_SPACEDIM`, `AMREX_SPACEDIM` and `AMREX_D_DECL`.
+
+### Hello World
+
+Key points:
+1. Wrap everything within `Initialize` and `Finalize` for deterministic behaviors.
+
+```cpp
+#include <AMReX.H>
+#include <AMReX_Print.H>
+
+int main(int argc, char* argv[])
+{
+    amrex::Initialize(argc,argv);
+    {
+        amrex::Print() << "Hello world from AMReX version " << amrex::Version() << "\n";
+    }
+    amrex::Finalize();
+}
+```
+
+Refs:
+* [HelloWorld with GNU Make](https://amrex-codes.github.io/amrex/tutorials_html/HelloWorld.html#guided-hello-world)
+* https://github.com/atmyers/ecp-tutorials/tree/main/01_HelloWorld
+
+### Parsing Parameters
+
+Given an input file
+
+```
+an_int_scalar = 2
+a_bool_scalar = true
+a_real_array = 1. 2. 3. 4.
+
+a_prefix.a_real_scalar = 99.0
+a_prefix.a_string = "option"
+a_prefix.an_int_array = 4 5 6
+```
+
+```cpp
+#include <AMReX.H>
+#include <AMReX_ParmParse.H>
+#include <AMReX_Print.H>
+
+void test_parameters ();
+
+int main(int argc, char* argv[])
+{
+    amrex::Initialize(argc, argv);
+
+    test_parameters();
+
+    amrex::Finalize();
+}
+
+void test_parameters ()
+{
+    {
+        amrex::ParmParse pp;
+        int i;
+        bool b;
+        std::vector<amrex::Real> ra;
+        pp.get("an_int_scalar", i);
+        pp.get("a_bool_scalar",b);
+        pp.getarr("a_real_array", ra);
+        amrex::Print() << "an_int_scalar = " << i << "\n"
+                       << "a_bool_scalar = " << b << "\n";
+        amrex::Print() << "a_real_array = ";
+        for (auto x : ra) {
+            amrex::Print() << x << " ";
+        }
+        amrex::Print() << "\n";
+    }
+
+    {
+        amrex::ParmParse pp("a_prefix");
+        std::vector<int> ia;
+        amrex::Real r;
+        std::string s;
+        pp.getarr("an_int_array", ia);
+        pp.get("a_real_scalar", r);
+        pp.get("a_string", s);
+        amrex::Print() << "an_int_array = ";
+        for (auto x : ia) {
+            amrex::Print() << x << " ";
+        }
+        amrex::Print() << "\n";
+        amrex::Print() << "a_prefix.a_real_scalar = " << r << "\n"
+                       << "a_prefix.a_string = " << s << "\n";
+    }
+}
+```
+
+### MultiFab
+
+A MultiFab is a C++ class in AMReX (from `AMReX_MultiFab.H`) the stores and operates on multidimensional arrays in parallel. It contains:
+
+* Grid information in the form of a BoxArray that contains one or more components (scalar values) for a single level of the mesh.
+* A distribution map, that allows for parallel processing of data in the MultiFab.
+* Ghost cells that facilitate a variety of mesh refinement, boundary conditions, and particle algorithms.
+
+```cpp
+#include <AMReX.H>
+#include <AMReX_Print.H>
+#include <AMReX_MultiFab.H> //For the method most common at time of writing
+#include <AMReX_MFParallelFor.H> //For the second newer method
+#include <AMReX_PlotFileUtil.H> //For ploting the MultiFab
+
+
+int main(int argc, char* argv[])
+{
+    amrex::Initialize(argc,argv);
+    {
+        amrex::Print() << "Hello world from AMReX version " << amrex::Version() << "\n";
+        // Goals:
+        // Define a MultiFab
+        // Fill a MultiFab with data
+        // Plot it
+
+        // Parameters
+
+        // Number of data components at each grid point in the MultiFab
+        int ncomp = 1;
+        // how many grid cells in each direction over the problem domain
+        int n_cell = 32;
+        // how many grid cells are allowed in each direction over each box
+        int max_grid_size = 16;
+
+        //BoxArray -- Abstract Domain Setup
+
+
+        // integer vector indicating the lower coordindate bounds
+        amrex::IntVect dom_lo(0,0,0);
+        // integer vector indicating the upper coordindate bounds
+        amrex::IntVect dom_hi(n_cell-1, n_cell-1, n_cell-1);
+        // box containing the coordinates of this domain
+        amrex::Box domain(dom_lo, dom_hi);
+
+
+        // will contain a list of boxes describing the problem domain
+        amrex::BoxArray ba(domain);
+
+        // chop the single grid into many small boxes
+        ba.maxSize(max_grid_size);
+
+        // Distribution Mapping
+        amrex::DistributionMapping dm(ba);
+
+        //Define MuliFab
+        amrex::MultiFab mf(ba, dm, ncomp, 0);
+
+        //Geometry -- Physical Properties for data on our domain
+        amrex::RealBox real_box ({0., 0., 0.}, {1. , 1., 1.});
+
+        amrex::Geometry geom(domain, &real_box);
+
+
+        //Calculate Cell Sizes
+        amrex::GpuArray<amrex::Real,3> dx = geom.CellSizeArray();  //dx[0] = dx dx[1] = dy dx[2] = dz
+
+
+        //Fill a MultiFab with Data
+        //At the time of writing this is still the most commonly seen method.
+        for(amrex::MFIter mfi(mf); mfi.isValid(); ++mfi){
+            const amrex::Box& bx = mfi.validbox();
+            const amrex::Array4<amrex::Real>& mf_array = mf.array(mfi);
+
+            amrex::ParallelFor(bx, [=] AMREX_GPU_DEVICE(int i, int j, int k){
+
+                amrex::Real x = (i+0.5) * dx[0];
+                amrex::Real y = (j+0.5) * dx[1];
+                amrex::Real z = (k+0.5) * dx[2];
+
+                amrex::Real r_squared = ((x-0.5)*(x-0.5)+(y-0.5)*(y-0.5)+(z-0.5)*(z-0.5))/0.01;
+
+                mf_array(i,j,k) = 1.0 + std::exp(-r_squared);
+
+            });
+         }
+
+        //A second newer method
+        //In this approach the same functionality is contained in a
+        //single ParallelFor function.
+
+        /*
+        const amrex::MultiArray4<amrex::Real>& mf_arrs = mf.arrays();
+        const amrex::IntVect ngs(ngrow);
+
+        amrex::ParallelFor(mf, ngs, [=] AMREX_GPU_DEVICE( int nbx, int i, int j, int k) noexcept {
+
+            amrex::Real x = (i+0.5) * dx[0];
+            amrex::Real y = (j+0.5) * dx[1];
+            amrex::Real z = (k+0.5) * dx[2];
+
+            amrex::Real r_squared = ((x-0.5)*(x-0.5)+(y-0.5)*(y-0.5)+(z-0.5)*(z-0.5))/0.01;
+
+            mf_arrs[nbx](i,j,k) = 1.0 + std::exp(-r_squared);
+
+        });
+        */
+
+        //Plot MultiFab Data
+        WriteSingleLevelPlotfile("plt001", mf, {"comp0"}, geom, 0., 0);
+
+
+
+    }
+    amrex::Finalize();
+}
+```
+
+I think the newer looping syntax is better for GPU.
+
+### Heat Equation
+
+In this Heat Equation example we use two MultiFabs to hold the current and previous values of Phi. Since each `MultiFab` is distributed separately among parallel processes, this approach can be easily extended for AMR.
+
+```cpp
+#include <AMReX.H>
+#include <AMReX_PlotFileUtil.H>
+#include <AMReX_ParmParse.H>
+
+
+int main (int argc, char* argv[])
+{
+    amrex::Initialize(argc,argv);
+    {
+
+    // **********************************
+    // DECLARE SIMULATION PARAMETERS
+    // **********************************
+
+    // number of cells on each side of the domain
+    int n_cell;
+
+    // size of each box (or grid)
+    int max_grid_size;
+
+    // total steps in simulation
+    int nsteps;
+
+    // how often to write a plotfile
+    int plot_int;
+
+    // time step
+    amrex::Real dt;
+
+    // **********************************
+    // READ PARAMETER VALUES FROM INPUT DATA
+    // **********************************
+    // inputs parameters
+    {
+        // ParmParse is way of reading inputs from the inputs file
+        // pp.get means we require the inputs file to have it
+        // pp.query means we optionally need the inputs file to have it - but we must supply a default here
+        amrex::ParmParse pp;
+
+        // We need to get n_cell from the inputs file - this is the number of cells on each side of
+        //   a square (or cubic) domain.
+        pp.get("n_cell",n_cell);
+
+        // The domain is broken into boxes of size max_grid_size
+        pp.get("max_grid_size",max_grid_size);
+
+        // Default nsteps to 10, allow us to set it to something else in the inputs file
+        nsteps = 10;
+        pp.query("nsteps",nsteps);
+
+        // Default plot_int to -1, allow us to set it to something else in the inputs file
+        //  If plot_int < 0 then no plot files will be written
+        plot_int = -1;
+        pp.query("plot_int",plot_int);
+
+        // time step
+        pp.get("dt",dt);
+    }
+
+    // **********************************
+    // DEFINE SIMULATION SETUP AND GEOMETRY
+    // **********************************
+
+    // make BoxArray and Geometry
+    // ba will contain a list of boxes that cover the domain
+    // geom contains information such as the physical domain size,
+    // number of points in the domain, and periodicity
+    amrex::BoxArray ba;
+    amrex::Geometry geom;
+
+    // define lower and upper indices
+    amrex::IntVect dom_lo(0,0,0);
+    amrex::IntVect dom_hi(n_cell-1, n_cell-1, n_cell-1);
+
+    // Make a single box that is the entire domain
+    amrex::Box domain(dom_lo, dom_hi);
+
+    // Initialize the boxarray "ba" from the single box "domain"
+    // Note that one can either initialize ba at the time of declaration,
+    // or define the domain as here after the declaration.
+    ba.define(domain);
+
+    // Break up boxarray "ba" into chunks no larger than "max_grid_size" along a direction
+    ba.maxSize(max_grid_size);
+
+    // Define the physical box, [0,1] in each direction.
+    amrex::RealBox real_box({ 0., 0., 0.}, { 1., 1., 1.});
+
+    // periodic in all direction
+    amrex::Array<int,3> is_periodic{1,1,1};
+
+    // Define a Geometry object
+    // Same as the boxarray, a geometry object can be defined afterwards.
+    geom.define(domain, real_box, amrex::CoordSys::cartesian, is_periodic);
+
+    // extract dx from the geometry object
+    amrex::GpuArray<amrex::Real,3> dx = geom.CellSizeArray();
+
+    // Nghost = number of ghost cells for each array
+    int Nghost = 1;
+
+    // Ncomp = number of components for each array
+    int Ncomp = 1;
+
+    // How Boxes are distrubuted among MPI processes
+    amrex::DistributionMapping dm(ba);
+
+    // we allocate two phi multifabs; one will store the old state, the other the new.
+    amrex::MultiFab phi_old(ba, dm, Ncomp, Nghost);
+    amrex::MultiFab phi_new(ba, dm, Ncomp, Nghost);
+
+    // time = starting time in the simulation
+    amrex::Real time = 0.0;
+
+    // **********************************
+    // INITIALIZE DATA LOOP
+    // **********************************
+
+    // loop over boxes
+    for (amrex::MFIter mfi(phi_old); mfi.isValid(); ++mfi)
+    {
+        const amrex::Box& bx = mfi.validbox();
+
+        const amrex::Array4<amrex::Real>& phiOld = phi_old.array(mfi);
+
+        // set phi = 1 + e^(-(r-0.5)^2)
+        amrex::ParallelFor(bx, [=] AMREX_GPU_DEVICE(int i, int j, int k)
+        {
+
+            // **********************************
+            // SET VALUES FOR EACH CELL
+            // **********************************
+
+            amrex::Real x = (i+0.5) * dx[0];
+            amrex::Real y = (j+0.5) * dx[1];
+            amrex::Real z = (k+0.5) * dx[2];
+            amrex::Real rsquared = ((x-0.5)*(x-0.5)+(y-0.5)*(y-0.5)+(z-0.5)*(z-0.5))/0.01;
+            phiOld(i,j,k) = 1. + std::exp(-rsquared);
+        });
+    }
+
+    // **********************************
+    // WRITE INITIAL PLOT FILE
+    // **********************************
+
+    // Write a plotfile of the initial data if plot_int > 0
+    if (plot_int > 0)
+    {
+        int step = 0;
+        const std::string& pltfile = amrex::Concatenate("plt",step,5);
+        WriteSingleLevelPlotfile(pltfile, phi_old, {"phi"}, geom, time, 0);
+    }
+
+
+    // **********************************
+    // MAIN TIME EVOLUTION LOOP
+    // **********************************
+
+    for (int step = 1; step <= nsteps; ++step)
+    {
+        // fill periodic ghost cells
+        phi_old.FillBoundary(geom.periodicity());
+
+        // new_phi = old_phi + dt * Laplacian(old_phi)
+        // loop over boxes
+        for ( amrex::MFIter mfi(phi_old); mfi.isValid(); ++mfi )
+        {
+            const amrex::Box& bx = mfi.validbox();
+
+            const amrex::Array4<amrex::Real>& phiOld = phi_old.array(mfi);
+            const amrex::Array4<amrex::Real>& phiNew = phi_new.array(mfi);
+
+            // advance the data by dt
+            amrex::ParallelFor(bx, [=] AMREX_GPU_DEVICE (int i, int j, int k)
+            {
+
+                // **********************************
+                // EVOLVE VALUES FOR EACH CELL
+                // **********************************
+
+                phiNew(i,j,k) = phiOld(i,j,k) + dt *
+                    ( (phiOld(i+1,j,k) - 2.*phiOld(i,j,k) + phiOld(i-1,j,k)) / (dx[0]*dx[0])
+                     +(phiOld(i,j+1,k) - 2.*phiOld(i,j,k) + phiOld(i,j-1,k)) / (dx[1]*dx[1])
+                     +(phiOld(i,j,k+1) - 2.*phiOld(i,j,k) + phiOld(i,j,k-1)) / (dx[2]*dx[2])
+                        );
+            });
+        }
+
+        // **********************************
+        // INCREMENT
+        // **********************************
+
+        // update time
+        time = time + dt;
+
+        // copy new solution into old solution
+        amrex::MultiFab::Copy(phi_old, phi_new, 0, 0, 1, 0);
+
+        // Tell the I/O Processor to write out which step we're doing
+        amrex::Print() << "Advanced step " << step << "\n";
+
+
+        // **********************************
+        // WRITE PLOTFILE AT GIVEN INTERVAL
+        // **********************************
+
+        // Write a plotfile of the current data (plot_int was defined in the inputs file)
+        if (plot_int > 0 && step%plot_int == 0)
+        {
+            const std::string& pltfile = amrex::Concatenate("plt",step,5);
+            WriteSingleLevelPlotfile(pltfile, phi_new, {"phi"}, geom, time, step);
+        }
+    }
+
+
+    }
+    amrex::Finalize();
+    return 0;
+}
+```
+
+### ParticleMesh
+
+Provided the input file:
+
+```
+# Domain size
+
+nx = 128 # number of grid points along the x axis
+ny = 128 # number of grid points along the y axis 
+nz = 128 # number of grid points along the z axis
+
+# Maximum allowable size of each subdomain in the problem domain; 
+#    this is used to decompose the domain for parallel calculations.
+max_grid_size = 32
+
+# Number of particles per cell
+nppc = 10
+
+# Verbosity
+verbose = true   # set to true to get more verbosity
+```
+
+```cpp
+#include <iostream>
+
+#include <AMReX.H>
+#include <AMReX_MultiFab.H>
+#include <AMReX_MultiFabUtil.H>
+#include <AMReX_Particles.H>
+#include <AMReX_PlotFileUtil.H>
+#include <AMReX_ParticleMesh.H>
+
+using namespace amrex;
+
+struct TestParams {
+  int nx;
+  int ny;
+  int nz;
+  int max_grid_size;
+  int nppc;
+  bool verbose;
+};
+
+void testParticleMesh(TestParams& parms)
+{
+  RealBox real_box;
+  for (int n = 0; n < BL_SPACEDIM; n++) {
+    real_box.setLo(n, 0.0);
+    real_box.setHi(n, 1.0);
+  }
+
+  IntVect domain_lo(AMREX_D_DECL(0, 0, 0));
+  IntVect domain_hi(AMREX_D_DECL(parms.nx - 1, parms.ny - 1, parms.nz-1));
+  const Box domain(domain_lo, domain_hi);
+
+  // This sets the boundary conditions to be doubly or triply periodic
+  int is_per[BL_SPACEDIM];
+  for (int i = 0; i < BL_SPACEDIM; i++)
+    is_per[i] = 1;
+  Geometry geom(domain, &real_box, CoordSys::cartesian, is_per);
+
+  BoxArray ba(domain);
+  ba.maxSize(parms.max_grid_size);
+  if (parms.verbose && ParallelDescriptor::IOProcessor()) {
+    std::cout << "Number of boxes              : " << ba.size() << '\n';
+    std::cout << "Box sizes                    : " << ba[0].size() << '\n';
+  }
+
+  DistributionMapping dmap(ba);
+
+  MultiFab partMF(ba, dmap, 1 + BL_SPACEDIM, 1);
+  partMF.setVal(0.0);
+
+  typedef ParticleContainer<1 + 2*BL_SPACEDIM> MyParticleContainer;
+  MyParticleContainer myPC(geom, dmap, ba);
+  myPC.SetVerbose(false);
+
+  int num_particles = parms.nppc * parms.nx * parms.ny * parms.nz;
+  if (ParallelDescriptor::IOProcessor())
+    std::cout << "Total number of particles    : " << num_particles << '\n' << '\n';
+
+  bool serialize = true;
+  int iseed = 451;
+  Real mass = 10.0;
+
+  MyParticleContainer::ParticleInitData pdata = {mass, AMREX_D_DECL(1.0, 2.0, 3.0), AMREX_D_DECL(0.0, 0.0, 0.0)};
+  myPC.InitRandom(num_particles, iseed, pdata, serialize);
+
+  int nc = 1 + BL_SPACEDIM;
+  const auto plo = geom.ProbLoArray();
+  const auto dxi = geom.InvCellSizeArray();
+  amrex::ParticleToMesh(myPC, partMF, 0,
+      [=] AMREX_GPU_DEVICE (const MyParticleContainer::ParticleType& p,
+                            amrex::Array4<amrex::Real> const& rho)
+      {
+          amrex::Real lx = (p.pos(0) - plo[0]) * dxi[0] + 0.5;
+          amrex::Real ly = (p.pos(1) - plo[1]) * dxi[1] + 0.5;
+          amrex::Real lz = (p.pos(2) - plo[2]) * dxi[2] + 0.5;
+
+          int i = amrex::Math::floor(lx);
+          int j = amrex::Math::floor(ly);
+          int k = amrex::Math::floor(lz);
+
+          amrex::Real xint = lx - i;
+          amrex::Real yint = ly - j;
+          amrex::Real zint = lz - k;
+
+          amrex::Real sx[] = {1.-xint, xint};
+          amrex::Real sy[] = {1.-yint, yint};
+          amrex::Real sz[] = {1.-zint, zint};
+
+          for (int kk = 0; kk <= 1; ++kk) {
+              for (int jj = 0; jj <= 1; ++jj) {
+                  for (int ii = 0; ii <= 1; ++ii) {
+                      amrex::Gpu::Atomic::AddNoRet(&rho(i+ii-1, j+jj-1, k+kk-1, 0),
+                                              sx[ii]*sy[jj]*sz[kk]*p.rdata(0));
+                  }
+              }
+          }
+
+          for (int comp=1; comp < nc; ++comp) {
+             for (int kk = 0; kk <= 1; ++kk) {
+                  for (int jj = 0; jj <= 1; ++jj) {
+                      for (int ii = 0; ii <= 1; ++ii) {
+                          amrex::Gpu::Atomic::AddNoRet(&rho(i+ii-1, j+jj-1, k+kk-1, comp),
+                                                  sx[ii]*sy[jj]*sz[kk]*p.rdata(0)*p.rdata(comp));
+                      }
+                  }
+              }
+          }
+      });
+
+  MultiFab acceleration(ba, dmap, BL_SPACEDIM, 1);
+  acceleration.setVal(5.0);
+
+  nc = BL_SPACEDIM;
+  amrex::MeshToParticle(myPC, acceleration, 0,
+      [=] AMREX_GPU_DEVICE (MyParticleContainer::ParticleType& p,
+                            amrex::Array4<const amrex::Real> const& acc)
+      {
+          amrex::Real lx = (p.pos(0) - plo[0]) * dxi[0] + 0.5;
+          amrex::Real ly = (p.pos(1) - plo[1]) * dxi[1] + 0.5;
+          amrex::Real lz = (p.pos(2) - plo[2]) * dxi[2] + 0.5;
+
+          int i = amrex::Math::floor(lx);
+          int j = amrex::Math::floor(ly);
+          int k = amrex::Math::floor(lz);
+
+          amrex::Real xint = lx - i;
+          amrex::Real yint = ly - j;
+          amrex::Real zint = lz - k;
+
+          amrex::Real sx[] = {1.-xint, xint};
+          amrex::Real sy[] = {1.-yint, yint};
+          amrex::Real sz[] = {1.-zint, zint};
+
+          for (int comp=0; comp < nc; ++comp) {
+              for (int kk = 0; kk <= 1; ++kk) {
+                  for (int jj = 0; jj <= 1; ++jj) {
+                      for (int ii = 0; ii <= 1; ++ii) {
+                          p.rdata(4+comp) += sx[ii]*sy[jj]*sz[kk]*acc(i+ii-1,j+jj-1,k+kk-1,comp);
+                      }
+                  }
+              }
+          }
+      });
+
+  WriteSingleLevelPlotfile("plot", partMF,
+                           {"density", "vx", "vy", "vz"},
+                           geom, 0.0, 0);
+
+  myPC.Checkpoint("plot", "particle0");
+}
+
+int main(int argc, char* argv[])
+{
+  amrex::Initialize(argc,argv);
+
+  ParmParse pp;
+
+  TestParams parms;
+
+  pp.get("nx", parms.nx);
+  pp.get("ny", parms.ny);
+  pp.get("nz", parms.nz);
+  pp.get("max_grid_size", parms.max_grid_size);
+  pp.get("nppc", parms.nppc);
+  if (parms.nppc < 1 && ParallelDescriptor::IOProcessor())
+    amrex::Abort("Must specify at least one particle per cell");
+
+  parms.verbose = false;
+  pp.query("verbose", parms.verbose);
+
+  if (parms.verbose && ParallelDescriptor::IOProcessor()) {
+    std::cout << std::endl;
+    std::cout << "Number of particles per cell : ";
+    std::cout << parms.nppc  << std::endl;
+    std::cout << "Size of domain               : ";
+    std::cout << parms.nx << " " << parms.ny << " " << parms.nz << std::endl;
+  }
+
+  testParticleMesh(parms);
+
+  amrex::Finalize();
+}
+```
+
 ## Thoughts
 
 AMR is, from my experience, easier said than done.
