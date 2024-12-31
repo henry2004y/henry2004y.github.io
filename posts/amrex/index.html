@@ -75,8 +75,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-d166b450ba5a8e9f7a0ab969bf6592c1.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-b98b3756080b395b2863e56aef071fb4.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-cc3e985fa458c77cec441b1b26096e30.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-e488ae1a3af3760c0095b775c7eecbf7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-f204e32666ef269ea7ee89161a332500.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -165,7 +165,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#first-impression" id="toc-first-impression" class="nav-link active" data-scroll-target="#first-impression">First Impression</a></li>
-  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes">Notes</a></li>
+  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes">Notes</a>
+  <ul class="collapse">
+  <li><a href="#compilation" id="toc-compilation" class="nav-link" data-scroll-target="#compilation">Compilation</a></li>
+  <li><a href="#main-components" id="toc-main-components" class="nav-link" data-scroll-target="#main-components">Main Components</a></li>
+  <li><a href="#hello-world" id="toc-hello-world" class="nav-link" data-scroll-target="#hello-world">Hello World</a></li>
+  <li><a href="#parsing-parameters" id="toc-parsing-parameters" class="nav-link" data-scroll-target="#parsing-parameters">Parsing Parameters</a></li>
+  <li><a href="#multifab" id="toc-multifab" class="nav-link" data-scroll-target="#multifab">MultiFab</a></li>
+  <li><a href="#heat-equation" id="toc-heat-equation" class="nav-link" data-scroll-target="#heat-equation">Heat Equation</a></li>
+  <li><a href="#particlemesh" id="toc-particlemesh" class="nav-link" data-scroll-target="#particlemesh">ParticleMesh</a></li>
+  </ul></li>
   <li><a href="#thoughts" id="toc-thoughts" class="nav-link" data-scroll-target="#thoughts">Thoughts</a></li>
   <li><a href="#julia-wrapper" id="toc-julia-wrapper" class="nav-link" data-scroll-target="#julia-wrapper">Julia wrapper</a></li>
   <li><a href="#envisions" id="toc-envisions" class="nav-link" data-scroll-target="#envisions">Envisions</a></li>
@@ -246,6 +255,646 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Pachinko</li>
 </ul>
 <p><a href="https://github.com/AMReX-Codes/ATPESC-codes">Example codes for ATPESC</a></p>
+<section id="compilation" class="level3">
+<h3 class="anchored" data-anchor-id="compilation">Compilation</h3>
+<p>AMReX supports both GNU Make and CMake.</p>
+</section>
+<section id="main-components" class="level3">
+<h3 class="anchored" data-anchor-id="main-components">Main Components</h3>
+<ul>
+<li><code>AMReX.H</code> for the top level definitions.</li>
+<li><code>AMReX_Print.H</code> for printing.</li>
+<li><code>AMReX_ParmParse.H</code> for parsing input parameters.</li>
+<li><code>AMReX_PlotFileUtil.H</code> for plotting.</li>
+<li><code>AMReX_MultiFab.H</code> for MultiFab support.</li>
+<li><code>AMReX_MFParallelFor.H</code> for newer loop syntax over MultiFabs.</li>
+<li><code>AMReX_MultiFabUtil.H</code></li>
+<li><code>AMReX_Particles.H</code></li>
+<li><code>AMReX_ParticleMesh.H</code></li>
+</ul>
+<p>It is a common practice to import the <code>amrex</code> namespace:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> <span class="kw">namespace</span> amrex</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>There are many predefined macros and constant defined in <code>amrex</code>, e.g.&nbsp;<code>BL_SPACEDIM</code>, <code>AMREX_SPACEDIM</code> and <code>AMREX_D_DECL</code>.</p>
+</section>
+<section id="hello-world" class="level3">
+<h3 class="anchored" data-anchor-id="hello-world">Hello World</h3>
+<p>Key points: 1. Wrap everything within <code>Initialize</code> and <code>Finalize</code> for deterministic behaviors.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;AMReX.H&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;AMReX_Print.H&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">*</span> argv<span class="op">[])</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    amrex<span class="op">::</span>Initialize<span class="op">(</span>argc<span class="op">,</span>argv<span class="op">);</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        amrex<span class="op">::</span>Print<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"Hello world from AMReX version "</span> <span class="op">&lt;&lt;</span> amrex<span class="op">::</span>Version<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    amrex<span class="op">::</span>Finalize<span class="op">();</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Refs: * <a href="https://amrex-codes.github.io/amrex/tutorials_html/HelloWorld.html#guided-hello-world">HelloWorld with GNU Make</a> * https://github.com/atmyers/ecp-tutorials/tree/main/01_HelloWorld</p>
+</section>
+<section id="parsing-parameters" class="level3">
+<h3 class="anchored" data-anchor-id="parsing-parameters">Parsing Parameters</h3>
+<p>Given an input file</p>
+<pre><code>an_int_scalar = 2
+a_bool_scalar = true
+a_real_array = 1. 2. 3. 4.
+
+a_prefix.a_real_scalar = 99.0
+a_prefix.a_string = "option"
+a_prefix.an_int_array = 4 5 6</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;AMReX.H&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;AMReX_ParmParse.H&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;AMReX_Print.H&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> test_parameters <span class="op">();</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">*</span> argv<span class="op">[])</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    amrex<span class="op">::</span>Initialize<span class="op">(</span>argc<span class="op">,</span> argv<span class="op">);</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    test_parameters<span class="op">();</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    amrex<span class="op">::</span>Finalize<span class="op">();</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> test_parameters <span class="op">()</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>        amrex<span class="op">::</span>ParmParse pp<span class="op">;</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> i<span class="op">;</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>        <span class="dt">bool</span> b<span class="op">;</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>        <span class="bu">std::</span>vector<span class="op">&lt;</span>amrex<span class="op">::</span>Real<span class="op">&gt;</span> ra<span class="op">;</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>        pp<span class="op">.</span>get<span class="op">(</span><span class="st">"an_int_scalar"</span><span class="op">,</span> i<span class="op">);</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>        pp<span class="op">.</span>get<span class="op">(</span><span class="st">"a_bool_scalar"</span><span class="op">,</span>b<span class="op">);</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>        pp<span class="op">.</span>getarr<span class="op">(</span><span class="st">"a_real_array"</span><span class="op">,</span> ra<span class="op">);</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>        amrex<span class="op">::</span>Print<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"an_int_scalar = "</span> <span class="op">&lt;&lt;</span> i <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>                       <span class="op">&lt;&lt;</span> <span class="st">"a_bool_scalar = "</span> <span class="op">&lt;&lt;</span> b <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>        amrex<span class="op">::</span>Print<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"a_real_array = "</span><span class="op">;</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="kw">auto</span> x <span class="op">:</span> ra<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>            amrex<span class="op">::</span>Print<span class="op">()</span> <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="st">" "</span><span class="op">;</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>        amrex<span class="op">::</span>Print<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>        amrex<span class="op">::</span>ParmParse pp<span class="op">(</span><span class="st">"a_prefix"</span><span class="op">);</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>        <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> ia<span class="op">;</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>        amrex<span class="op">::</span>Real r<span class="op">;</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>        <span class="bu">std::</span>string s<span class="op">;</span></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>        pp<span class="op">.</span>getarr<span class="op">(</span><span class="st">"an_int_array"</span><span class="op">,</span> ia<span class="op">);</span></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>        pp<span class="op">.</span>get<span class="op">(</span><span class="st">"a_real_scalar"</span><span class="op">,</span> r<span class="op">);</span></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>        pp<span class="op">.</span>get<span class="op">(</span><span class="st">"a_string"</span><span class="op">,</span> s<span class="op">);</span></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>        amrex<span class="op">::</span>Print<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"an_int_array = "</span><span class="op">;</span></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="kw">auto</span> x <span class="op">:</span> ia<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>            amrex<span class="op">::</span>Print<span class="op">()</span> <span class="op">&lt;&lt;</span> x <span class="op">&lt;&lt;</span> <span class="st">" "</span><span class="op">;</span></span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>        amrex<span class="op">::</span>Print<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>        amrex<span class="op">::</span>Print<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"a_prefix.a_real_scalar = "</span> <span class="op">&lt;&lt;</span> r <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span></span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>                       <span class="op">&lt;&lt;</span> <span class="st">"a_prefix.a_string = "</span> <span class="op">&lt;&lt;</span> s <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="multifab" class="level3">
+<h3 class="anchored" data-anchor-id="multifab">MultiFab</h3>
+<p>A MultiFab is a C++ class in AMReX (from <code>AMReX_MultiFab.H</code>) the stores and operates on multidimensional arrays in parallel. It contains:</p>
+<ul>
+<li>Grid information in the form of a BoxArray that contains one or more components (scalar values) for a single level of the mesh.</li>
+<li>A distribution map, that allows for parallel processing of data in the MultiFab.</li>
+<li>Ghost cells that facilitate a variety of mesh refinement, boundary conditions, and particle algorithms.</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;AMReX.H&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;AMReX_Print.H&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;AMReX_MultiFab.H&gt;</span><span class="pp"> </span><span class="co">//For the method most common at time of writing</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;AMReX_MFParallelFor.H&gt;</span><span class="pp"> </span><span class="co">//For the second newer method</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;AMReX_PlotFileUtil.H&gt;</span><span class="pp"> </span><span class="co">//For ploting the MultiFab</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">*</span> argv<span class="op">[])</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    amrex<span class="op">::</span>Initialize<span class="op">(</span>argc<span class="op">,</span>argv<span class="op">);</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        amrex<span class="op">::</span>Print<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"Hello world from AMReX version "</span> <span class="op">&lt;&lt;</span> amrex<span class="op">::</span>Version<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Goals:</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Define a MultiFab</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Fill a MultiFab with data</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Plot it</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Parameters</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Number of data components at each grid point in the MultiFab</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> ncomp <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>        <span class="co">// how many grid cells in each direction over the problem domain</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> n_cell <span class="op">=</span> <span class="dv">32</span><span class="op">;</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>        <span class="co">// how many grid cells are allowed in each direction over each box</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> max_grid_size <span class="op">=</span> <span class="dv">16</span><span class="op">;</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>        <span class="co">//BoxArray -- Abstract Domain Setup</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>        <span class="co">// integer vector indicating the lower coordindate bounds</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>        amrex<span class="op">::</span>IntVect dom_lo<span class="op">(</span><span class="dv">0</span><span class="op">,</span><span class="dv">0</span><span class="op">,</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>        <span class="co">// integer vector indicating the upper coordindate bounds</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>        amrex<span class="op">::</span>IntVect dom_hi<span class="op">(</span>n_cell<span class="op">-</span><span class="dv">1</span><span class="op">,</span> n_cell<span class="op">-</span><span class="dv">1</span><span class="op">,</span> n_cell<span class="op">-</span><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>        <span class="co">// box containing the coordinates of this domain</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>        amrex<span class="op">::</span>Box domain<span class="op">(</span>dom_lo<span class="op">,</span> dom_hi<span class="op">);</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>        <span class="co">// will contain a list of boxes describing the problem domain</span></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>        amrex<span class="op">::</span>BoxArray ba<span class="op">(</span>domain<span class="op">);</span></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>        <span class="co">// chop the single grid into many small boxes</span></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>        ba<span class="op">.</span>maxSize<span class="op">(</span>max_grid_size<span class="op">);</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Distribution Mapping</span></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>        amrex<span class="op">::</span>DistributionMapping dm<span class="op">(</span>ba<span class="op">);</span></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>        <span class="co">//Define MuliFab</span></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>        amrex<span class="op">::</span>MultiFab mf<span class="op">(</span>ba<span class="op">,</span> dm<span class="op">,</span> ncomp<span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>        <span class="co">//Geometry -- Physical Properties for data on our domain</span></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>        amrex<span class="op">::</span>RealBox real_box <span class="op">({</span><span class="fl">0.</span><span class="op">,</span> <span class="fl">0.</span><span class="op">,</span> <span class="fl">0.</span><span class="op">},</span> <span class="op">{</span><span class="fl">1.</span> <span class="op">,</span> <span class="fl">1.</span><span class="op">,</span> <span class="fl">1.</span><span class="op">});</span></span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>        amrex<span class="op">::</span>Geometry geom<span class="op">(</span>domain<span class="op">,</span> <span class="op">&amp;</span>real_box<span class="op">);</span></span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>        <span class="co">//Calculate Cell Sizes</span></span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>        amrex<span class="op">::</span>GpuArray<span class="op">&lt;</span>amrex<span class="op">::</span>Real<span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> dx <span class="op">=</span> geom<span class="op">.</span>CellSizeArray<span class="op">();</span>  <span class="co">//dx[0] = dx dx[1] = dy dx[2] = dz</span></span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>        <span class="co">//Fill a MultiFab with Data</span></span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>        <span class="co">//At the time of writing this is still the most commonly seen method.</span></span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span><span class="op">(</span>amrex<span class="op">::</span>MFIter mfi<span class="op">(</span>mf<span class="op">);</span> mfi<span class="op">.</span>isValid<span class="op">();</span> <span class="op">++</span>mfi<span class="op">){</span></span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>            <span class="at">const</span> amrex<span class="op">::</span>Box<span class="op">&amp;</span> bx <span class="op">=</span> mfi<span class="op">.</span>validbox<span class="op">();</span></span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>            <span class="at">const</span> amrex<span class="op">::</span>Array4<span class="op">&lt;</span>amrex<span class="op">::</span>Real<span class="op">&gt;&amp;</span> mf_array <span class="op">=</span> mf<span class="op">.</span>array<span class="op">(</span>mfi<span class="op">);</span></span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>            amrex<span class="op">::</span>ParallelFor<span class="op">(</span>bx<span class="op">,</span> <span class="op">[=]</span> AMREX_GPU_DEVICE<span class="op">(</span><span class="dt">int</span> i<span class="op">,</span> <span class="dt">int</span> j<span class="op">,</span> <span class="dt">int</span> k<span class="op">){</span></span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>                amrex<span class="op">::</span>Real x <span class="op">=</span> <span class="op">(</span>i<span class="op">+</span><span class="fl">0.5</span><span class="op">)</span> <span class="op">*</span> dx<span class="op">[</span><span class="dv">0</span><span class="op">];</span></span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>                amrex<span class="op">::</span>Real y <span class="op">=</span> <span class="op">(</span>j<span class="op">+</span><span class="fl">0.5</span><span class="op">)</span> <span class="op">*</span> dx<span class="op">[</span><span class="dv">1</span><span class="op">];</span></span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a>                amrex<span class="op">::</span>Real z <span class="op">=</span> <span class="op">(</span>k<span class="op">+</span><span class="fl">0.5</span><span class="op">)</span> <span class="op">*</span> dx<span class="op">[</span><span class="dv">2</span><span class="op">];</span></span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a>                amrex<span class="op">::</span>Real r_squared <span class="op">=</span> <span class="op">((</span>x<span class="op">-</span><span class="fl">0.5</span><span class="op">)*(</span>x<span class="op">-</span><span class="fl">0.5</span><span class="op">)+(</span>y<span class="op">-</span><span class="fl">0.5</span><span class="op">)*(</span>y<span class="op">-</span><span class="fl">0.5</span><span class="op">)+(</span>z<span class="op">-</span><span class="fl">0.5</span><span class="op">)*(</span>z<span class="op">-</span><span class="fl">0.5</span><span class="op">))/</span><span class="fl">0.01</span><span class="op">;</span></span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a>                mf_array<span class="op">(</span>i<span class="op">,</span>j<span class="op">,</span>k<span class="op">)</span> <span class="op">=</span> <span class="fl">1.0</span> <span class="op">+</span> <span class="bu">std::</span>exp<span class="op">(-</span>r_squared<span class="op">);</span></span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a>            <span class="op">});</span></span>
+<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a>         <span class="op">}</span></span>
+<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a>        <span class="co">//A second newer method</span></span>
+<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a>        <span class="co">//In this approach the same functionality is contained in a</span></span>
+<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a>        <span class="co">//single ParallelFor function.</span></span>
+<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a>        <span class="co">/*</span></span>
+<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a><span class="co">        const amrex::MultiArray4&lt;amrex::Real&gt;&amp; mf_arrs = mf.arrays();</span></span>
+<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a><span class="co">        const amrex::IntVect ngs(ngrow);</span></span>
+<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a><span class="co">        amrex::ParallelFor(mf, ngs, [=] AMREX_GPU_DEVICE( int nbx, int i, int j, int k) noexcept {</span></span>
+<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a><span class="co">            amrex::Real x = (i+0.5) * dx[0];</span></span>
+<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a><span class="co">            amrex::Real y = (j+0.5) * dx[1];</span></span>
+<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a><span class="co">            amrex::Real z = (k+0.5) * dx[2];</span></span>
+<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a><span class="co">            amrex::Real r_squared = ((x-0.5)*(x-0.5)+(y-0.5)*(y-0.5)+(z-0.5)*(z-0.5))/0.01;</span></span>
+<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a><span class="co">            mf_arrs[nbx](i,j,k) = 1.0 + std::exp(-r_squared);</span></span>
+<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-97"><a href="#cb6-97" aria-hidden="true" tabindex="-1"></a><span class="co">        });</span></span>
+<span id="cb6-98"><a href="#cb6-98" aria-hidden="true" tabindex="-1"></a><span class="co">        */</span></span>
+<span id="cb6-99"><a href="#cb6-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-100"><a href="#cb6-100" aria-hidden="true" tabindex="-1"></a>        <span class="co">//Plot MultiFab Data</span></span>
+<span id="cb6-101"><a href="#cb6-101" aria-hidden="true" tabindex="-1"></a>        WriteSingleLevelPlotfile<span class="op">(</span><span class="st">"plt001"</span><span class="op">,</span> mf<span class="op">,</span> <span class="op">{</span><span class="st">"comp0"</span><span class="op">},</span> geom<span class="op">,</span> <span class="fl">0.</span><span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb6-102"><a href="#cb6-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-103"><a href="#cb6-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-104"><a href="#cb6-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-105"><a href="#cb6-105" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb6-106"><a href="#cb6-106" aria-hidden="true" tabindex="-1"></a>    amrex<span class="op">::</span>Finalize<span class="op">();</span></span>
+<span id="cb6-107"><a href="#cb6-107" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>I think the newer looping syntax is better for GPU.</p>
+</section>
+<section id="heat-equation" class="level3">
+<h3 class="anchored" data-anchor-id="heat-equation">Heat Equation</h3>
+<p>In this Heat Equation example we use two MultiFabs to hold the current and previous values of Phi. Since each <code>MultiFab</code> is distributed separately among parallel processes, this approach can be easily extended for AMR.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;AMReX.H&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;AMReX_PlotFileUtil.H&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;AMReX_ParmParse.H&gt;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main <span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">*</span> argv<span class="op">[])</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    amrex<span class="op">::</span>Initialize<span class="op">(</span>argc<span class="op">,</span>argv<span class="op">);</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">// **********************************</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">// DECLARE SIMULATION PARAMETERS</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">// **********************************</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="co">// number of cells on each side of the domain</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> n_cell<span class="op">;</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">// size of each box (or grid)</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> max_grid_size<span class="op">;</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">// total steps in simulation</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> nsteps<span class="op">;</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">// how often to write a plotfile</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> plot_int<span class="op">;</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    <span class="co">// time step</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    amrex<span class="op">::</span>Real dt<span class="op">;</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    <span class="co">// **********************************</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    <span class="co">// READ PARAMETER VALUES FROM INPUT DATA</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    <span class="co">// **********************************</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    <span class="co">// inputs parameters</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>        <span class="co">// ParmParse is way of reading inputs from the inputs file</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>        <span class="co">// pp.get means we require the inputs file to have it</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>        <span class="co">// pp.query means we optionally need the inputs file to have it - but we must supply a default here</span></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>        amrex<span class="op">::</span>ParmParse pp<span class="op">;</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>        <span class="co">// We need to get n_cell from the inputs file - this is the number of cells on each side of</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>        <span class="co">//   a square (or cubic) domain.</span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>        pp<span class="op">.</span>get<span class="op">(</span><span class="st">"n_cell"</span><span class="op">,</span>n_cell<span class="op">);</span></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>        <span class="co">// The domain is broken into boxes of size max_grid_size</span></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>        pp<span class="op">.</span>get<span class="op">(</span><span class="st">"max_grid_size"</span><span class="op">,</span>max_grid_size<span class="op">);</span></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Default nsteps to 10, allow us to set it to something else in the inputs file</span></span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>        nsteps <span class="op">=</span> <span class="dv">10</span><span class="op">;</span></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>        pp<span class="op">.</span>query<span class="op">(</span><span class="st">"nsteps"</span><span class="op">,</span>nsteps<span class="op">);</span></span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Default plot_int to -1, allow us to set it to something else in the inputs file</span></span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>        <span class="co">//  If plot_int &lt; 0 then no plot files will be written</span></span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>        plot_int <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>        pp<span class="op">.</span>query<span class="op">(</span><span class="st">"plot_int"</span><span class="op">,</span>plot_int<span class="op">);</span></span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>        <span class="co">// time step</span></span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>        pp<span class="op">.</span>get<span class="op">(</span><span class="st">"dt"</span><span class="op">,</span>dt<span class="op">);</span></span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>    <span class="co">// **********************************</span></span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a>    <span class="co">// DEFINE SIMULATION SETUP AND GEOMETRY</span></span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>    <span class="co">// **********************************</span></span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>    <span class="co">// make BoxArray and Geometry</span></span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ba will contain a list of boxes that cover the domain</span></span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>    <span class="co">// geom contains information such as the physical domain size,</span></span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>    <span class="co">// number of points in the domain, and periodicity</span></span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a>    amrex<span class="op">::</span>BoxArray ba<span class="op">;</span></span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a>    amrex<span class="op">::</span>Geometry geom<span class="op">;</span></span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a>    <span class="co">// define lower and upper indices</span></span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a>    amrex<span class="op">::</span>IntVect dom_lo<span class="op">(</span><span class="dv">0</span><span class="op">,</span><span class="dv">0</span><span class="op">,</span><span class="dv">0</span><span class="op">);</span></span>
+<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a>    amrex<span class="op">::</span>IntVect dom_hi<span class="op">(</span>n_cell<span class="op">-</span><span class="dv">1</span><span class="op">,</span> n_cell<span class="op">-</span><span class="dv">1</span><span class="op">,</span> n_cell<span class="op">-</span><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Make a single box that is the entire domain</span></span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a>    amrex<span class="op">::</span>Box domain<span class="op">(</span>dom_lo<span class="op">,</span> dom_hi<span class="op">);</span></span>
+<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Initialize the boxarray "ba" from the single box "domain"</span></span>
+<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Note that one can either initialize ba at the time of declaration,</span></span>
+<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a>    <span class="co">// or define the domain as here after the declaration.</span></span>
+<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a>    ba<span class="op">.</span>define<span class="op">(</span>domain<span class="op">);</span></span>
+<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Break up boxarray "ba" into chunks no larger than "max_grid_size" along a direction</span></span>
+<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a>    ba<span class="op">.</span>maxSize<span class="op">(</span>max_grid_size<span class="op">);</span></span>
+<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Define the physical box, [0,1] in each direction.</span></span>
+<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a>    amrex<span class="op">::</span>RealBox real_box<span class="op">({</span> <span class="fl">0.</span><span class="op">,</span> <span class="fl">0.</span><span class="op">,</span> <span class="fl">0.</span><span class="op">},</span> <span class="op">{</span> <span class="fl">1.</span><span class="op">,</span> <span class="fl">1.</span><span class="op">,</span> <span class="fl">1.</span><span class="op">});</span></span>
+<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a>    <span class="co">// periodic in all direction</span></span>
+<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a>    amrex<span class="op">::</span>Array<span class="op">&lt;</span><span class="dt">int</span><span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> is_periodic<span class="op">{</span><span class="dv">1</span><span class="op">,</span><span class="dv">1</span><span class="op">,</span><span class="dv">1</span><span class="op">};</span></span>
+<span id="cb7-91"><a href="#cb7-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-92"><a href="#cb7-92" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Define a Geometry object</span></span>
+<span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Same as the boxarray, a geometry object can be defined afterwards.</span></span>
+<span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a>    geom<span class="op">.</span>define<span class="op">(</span>domain<span class="op">,</span> real_box<span class="op">,</span> amrex<span class="op">::</span>CoordSys<span class="op">::</span>cartesian<span class="op">,</span> is_periodic<span class="op">);</span></span>
+<span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a>    <span class="co">// extract dx from the geometry object</span></span>
+<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a>    amrex<span class="op">::</span>GpuArray<span class="op">&lt;</span>amrex<span class="op">::</span>Real<span class="op">,</span><span class="dv">3</span><span class="op">&gt;</span> dx <span class="op">=</span> geom<span class="op">.</span>CellSizeArray<span class="op">();</span></span>
+<span id="cb7-98"><a href="#cb7-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-99"><a href="#cb7-99" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Nghost = number of ghost cells for each array</span></span>
+<span id="cb7-100"><a href="#cb7-100" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> Nghost <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb7-101"><a href="#cb7-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-102"><a href="#cb7-102" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Ncomp = number of components for each array</span></span>
+<span id="cb7-103"><a href="#cb7-103" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> Ncomp <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb7-104"><a href="#cb7-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-105"><a href="#cb7-105" aria-hidden="true" tabindex="-1"></a>    <span class="co">// How Boxes are distrubuted among MPI processes</span></span>
+<span id="cb7-106"><a href="#cb7-106" aria-hidden="true" tabindex="-1"></a>    amrex<span class="op">::</span>DistributionMapping dm<span class="op">(</span>ba<span class="op">);</span></span>
+<span id="cb7-107"><a href="#cb7-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-108"><a href="#cb7-108" aria-hidden="true" tabindex="-1"></a>    <span class="co">// we allocate two phi multifabs; one will store the old state, the other the new.</span></span>
+<span id="cb7-109"><a href="#cb7-109" aria-hidden="true" tabindex="-1"></a>    amrex<span class="op">::</span>MultiFab phi_old<span class="op">(</span>ba<span class="op">,</span> dm<span class="op">,</span> Ncomp<span class="op">,</span> Nghost<span class="op">);</span></span>
+<span id="cb7-110"><a href="#cb7-110" aria-hidden="true" tabindex="-1"></a>    amrex<span class="op">::</span>MultiFab phi_new<span class="op">(</span>ba<span class="op">,</span> dm<span class="op">,</span> Ncomp<span class="op">,</span> Nghost<span class="op">);</span></span>
+<span id="cb7-111"><a href="#cb7-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-112"><a href="#cb7-112" aria-hidden="true" tabindex="-1"></a>    <span class="co">// time = starting time in the simulation</span></span>
+<span id="cb7-113"><a href="#cb7-113" aria-hidden="true" tabindex="-1"></a>    amrex<span class="op">::</span>Real time <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb7-114"><a href="#cb7-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-115"><a href="#cb7-115" aria-hidden="true" tabindex="-1"></a>    <span class="co">// **********************************</span></span>
+<span id="cb7-116"><a href="#cb7-116" aria-hidden="true" tabindex="-1"></a>    <span class="co">// INITIALIZE DATA LOOP</span></span>
+<span id="cb7-117"><a href="#cb7-117" aria-hidden="true" tabindex="-1"></a>    <span class="co">// **********************************</span></span>
+<span id="cb7-118"><a href="#cb7-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-119"><a href="#cb7-119" aria-hidden="true" tabindex="-1"></a>    <span class="co">// loop over boxes</span></span>
+<span id="cb7-120"><a href="#cb7-120" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span>amrex<span class="op">::</span>MFIter mfi<span class="op">(</span>phi_old<span class="op">);</span> mfi<span class="op">.</span>isValid<span class="op">();</span> <span class="op">++</span>mfi<span class="op">)</span></span>
+<span id="cb7-121"><a href="#cb7-121" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb7-122"><a href="#cb7-122" aria-hidden="true" tabindex="-1"></a>        <span class="at">const</span> amrex<span class="op">::</span>Box<span class="op">&amp;</span> bx <span class="op">=</span> mfi<span class="op">.</span>validbox<span class="op">();</span></span>
+<span id="cb7-123"><a href="#cb7-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-124"><a href="#cb7-124" aria-hidden="true" tabindex="-1"></a>        <span class="at">const</span> amrex<span class="op">::</span>Array4<span class="op">&lt;</span>amrex<span class="op">::</span>Real<span class="op">&gt;&amp;</span> phiOld <span class="op">=</span> phi_old<span class="op">.</span>array<span class="op">(</span>mfi<span class="op">);</span></span>
+<span id="cb7-125"><a href="#cb7-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-126"><a href="#cb7-126" aria-hidden="true" tabindex="-1"></a>        <span class="co">// set phi = 1 + e^(-(r-0.5)^2)</span></span>
+<span id="cb7-127"><a href="#cb7-127" aria-hidden="true" tabindex="-1"></a>        amrex<span class="op">::</span>ParallelFor<span class="op">(</span>bx<span class="op">,</span> <span class="op">[=]</span> AMREX_GPU_DEVICE<span class="op">(</span><span class="dt">int</span> i<span class="op">,</span> <span class="dt">int</span> j<span class="op">,</span> <span class="dt">int</span> k<span class="op">)</span></span>
+<span id="cb7-128"><a href="#cb7-128" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb7-129"><a href="#cb7-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-130"><a href="#cb7-130" aria-hidden="true" tabindex="-1"></a>            <span class="co">// **********************************</span></span>
+<span id="cb7-131"><a href="#cb7-131" aria-hidden="true" tabindex="-1"></a>            <span class="co">// SET VALUES FOR EACH CELL</span></span>
+<span id="cb7-132"><a href="#cb7-132" aria-hidden="true" tabindex="-1"></a>            <span class="co">// **********************************</span></span>
+<span id="cb7-133"><a href="#cb7-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-134"><a href="#cb7-134" aria-hidden="true" tabindex="-1"></a>            amrex<span class="op">::</span>Real x <span class="op">=</span> <span class="op">(</span>i<span class="op">+</span><span class="fl">0.5</span><span class="op">)</span> <span class="op">*</span> dx<span class="op">[</span><span class="dv">0</span><span class="op">];</span></span>
+<span id="cb7-135"><a href="#cb7-135" aria-hidden="true" tabindex="-1"></a>            amrex<span class="op">::</span>Real y <span class="op">=</span> <span class="op">(</span>j<span class="op">+</span><span class="fl">0.5</span><span class="op">)</span> <span class="op">*</span> dx<span class="op">[</span><span class="dv">1</span><span class="op">];</span></span>
+<span id="cb7-136"><a href="#cb7-136" aria-hidden="true" tabindex="-1"></a>            amrex<span class="op">::</span>Real z <span class="op">=</span> <span class="op">(</span>k<span class="op">+</span><span class="fl">0.5</span><span class="op">)</span> <span class="op">*</span> dx<span class="op">[</span><span class="dv">2</span><span class="op">];</span></span>
+<span id="cb7-137"><a href="#cb7-137" aria-hidden="true" tabindex="-1"></a>            amrex<span class="op">::</span>Real rsquared <span class="op">=</span> <span class="op">((</span>x<span class="op">-</span><span class="fl">0.5</span><span class="op">)*(</span>x<span class="op">-</span><span class="fl">0.5</span><span class="op">)+(</span>y<span class="op">-</span><span class="fl">0.5</span><span class="op">)*(</span>y<span class="op">-</span><span class="fl">0.5</span><span class="op">)+(</span>z<span class="op">-</span><span class="fl">0.5</span><span class="op">)*(</span>z<span class="op">-</span><span class="fl">0.5</span><span class="op">))/</span><span class="fl">0.01</span><span class="op">;</span></span>
+<span id="cb7-138"><a href="#cb7-138" aria-hidden="true" tabindex="-1"></a>            phiOld<span class="op">(</span>i<span class="op">,</span>j<span class="op">,</span>k<span class="op">)</span> <span class="op">=</span> <span class="fl">1.</span> <span class="op">+</span> <span class="bu">std::</span>exp<span class="op">(-</span>rsquared<span class="op">);</span></span>
+<span id="cb7-139"><a href="#cb7-139" aria-hidden="true" tabindex="-1"></a>        <span class="op">});</span></span>
+<span id="cb7-140"><a href="#cb7-140" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb7-141"><a href="#cb7-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-142"><a href="#cb7-142" aria-hidden="true" tabindex="-1"></a>    <span class="co">// **********************************</span></span>
+<span id="cb7-143"><a href="#cb7-143" aria-hidden="true" tabindex="-1"></a>    <span class="co">// WRITE INITIAL PLOT FILE</span></span>
+<span id="cb7-144"><a href="#cb7-144" aria-hidden="true" tabindex="-1"></a>    <span class="co">// **********************************</span></span>
+<span id="cb7-145"><a href="#cb7-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-146"><a href="#cb7-146" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Write a plotfile of the initial data if plot_int &gt; 0</span></span>
+<span id="cb7-147"><a href="#cb7-147" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>plot_int <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span></span>
+<span id="cb7-148"><a href="#cb7-148" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb7-149"><a href="#cb7-149" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> step <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-150"><a href="#cb7-150" aria-hidden="true" tabindex="-1"></a>        <span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> pltfile <span class="op">=</span> amrex<span class="op">::</span>Concatenate<span class="op">(</span><span class="st">"plt"</span><span class="op">,</span>step<span class="op">,</span><span class="dv">5</span><span class="op">);</span></span>
+<span id="cb7-151"><a href="#cb7-151" aria-hidden="true" tabindex="-1"></a>        WriteSingleLevelPlotfile<span class="op">(</span>pltfile<span class="op">,</span> phi_old<span class="op">,</span> <span class="op">{</span><span class="st">"phi"</span><span class="op">},</span> geom<span class="op">,</span> time<span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb7-152"><a href="#cb7-152" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb7-153"><a href="#cb7-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-154"><a href="#cb7-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-155"><a href="#cb7-155" aria-hidden="true" tabindex="-1"></a>    <span class="co">// **********************************</span></span>
+<span id="cb7-156"><a href="#cb7-156" aria-hidden="true" tabindex="-1"></a>    <span class="co">// MAIN TIME EVOLUTION LOOP</span></span>
+<span id="cb7-157"><a href="#cb7-157" aria-hidden="true" tabindex="-1"></a>    <span class="co">// **********************************</span></span>
+<span id="cb7-158"><a href="#cb7-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-159"><a href="#cb7-159" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> step <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> step <span class="op">&lt;=</span> nsteps<span class="op">;</span> <span class="op">++</span>step<span class="op">)</span></span>
+<span id="cb7-160"><a href="#cb7-160" aria-hidden="true" tabindex="-1"></a>    <span class="op">{</span></span>
+<span id="cb7-161"><a href="#cb7-161" aria-hidden="true" tabindex="-1"></a>        <span class="co">// fill periodic ghost cells</span></span>
+<span id="cb7-162"><a href="#cb7-162" aria-hidden="true" tabindex="-1"></a>        phi_old<span class="op">.</span>FillBoundary<span class="op">(</span>geom<span class="op">.</span>periodicity<span class="op">());</span></span>
+<span id="cb7-163"><a href="#cb7-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-164"><a href="#cb7-164" aria-hidden="true" tabindex="-1"></a>        <span class="co">// new_phi = old_phi + dt * Laplacian(old_phi)</span></span>
+<span id="cb7-165"><a href="#cb7-165" aria-hidden="true" tabindex="-1"></a>        <span class="co">// loop over boxes</span></span>
+<span id="cb7-166"><a href="#cb7-166" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span> amrex<span class="op">::</span>MFIter mfi<span class="op">(</span>phi_old<span class="op">);</span> mfi<span class="op">.</span>isValid<span class="op">();</span> <span class="op">++</span>mfi <span class="op">)</span></span>
+<span id="cb7-167"><a href="#cb7-167" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb7-168"><a href="#cb7-168" aria-hidden="true" tabindex="-1"></a>            <span class="at">const</span> amrex<span class="op">::</span>Box<span class="op">&amp;</span> bx <span class="op">=</span> mfi<span class="op">.</span>validbox<span class="op">();</span></span>
+<span id="cb7-169"><a href="#cb7-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-170"><a href="#cb7-170" aria-hidden="true" tabindex="-1"></a>            <span class="at">const</span> amrex<span class="op">::</span>Array4<span class="op">&lt;</span>amrex<span class="op">::</span>Real<span class="op">&gt;&amp;</span> phiOld <span class="op">=</span> phi_old<span class="op">.</span>array<span class="op">(</span>mfi<span class="op">);</span></span>
+<span id="cb7-171"><a href="#cb7-171" aria-hidden="true" tabindex="-1"></a>            <span class="at">const</span> amrex<span class="op">::</span>Array4<span class="op">&lt;</span>amrex<span class="op">::</span>Real<span class="op">&gt;&amp;</span> phiNew <span class="op">=</span> phi_new<span class="op">.</span>array<span class="op">(</span>mfi<span class="op">);</span></span>
+<span id="cb7-172"><a href="#cb7-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-173"><a href="#cb7-173" aria-hidden="true" tabindex="-1"></a>            <span class="co">// advance the data by dt</span></span>
+<span id="cb7-174"><a href="#cb7-174" aria-hidden="true" tabindex="-1"></a>            amrex<span class="op">::</span>ParallelFor<span class="op">(</span>bx<span class="op">,</span> <span class="op">[=]</span> AMREX_GPU_DEVICE <span class="op">(</span><span class="dt">int</span> i<span class="op">,</span> <span class="dt">int</span> j<span class="op">,</span> <span class="dt">int</span> k<span class="op">)</span></span>
+<span id="cb7-175"><a href="#cb7-175" aria-hidden="true" tabindex="-1"></a>            <span class="op">{</span></span>
+<span id="cb7-176"><a href="#cb7-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-177"><a href="#cb7-177" aria-hidden="true" tabindex="-1"></a>                <span class="co">// **********************************</span></span>
+<span id="cb7-178"><a href="#cb7-178" aria-hidden="true" tabindex="-1"></a>                <span class="co">// EVOLVE VALUES FOR EACH CELL</span></span>
+<span id="cb7-179"><a href="#cb7-179" aria-hidden="true" tabindex="-1"></a>                <span class="co">// **********************************</span></span>
+<span id="cb7-180"><a href="#cb7-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-181"><a href="#cb7-181" aria-hidden="true" tabindex="-1"></a>                phiNew<span class="op">(</span>i<span class="op">,</span>j<span class="op">,</span>k<span class="op">)</span> <span class="op">=</span> phiOld<span class="op">(</span>i<span class="op">,</span>j<span class="op">,</span>k<span class="op">)</span> <span class="op">+</span> dt <span class="op">*</span></span>
+<span id="cb7-182"><a href="#cb7-182" aria-hidden="true" tabindex="-1"></a>                    <span class="op">(</span> <span class="op">(</span>phiOld<span class="op">(</span>i<span class="op">+</span><span class="dv">1</span><span class="op">,</span>j<span class="op">,</span>k<span class="op">)</span> <span class="op">-</span> <span class="fl">2.</span><span class="op">*</span>phiOld<span class="op">(</span>i<span class="op">,</span>j<span class="op">,</span>k<span class="op">)</span> <span class="op">+</span> phiOld<span class="op">(</span>i<span class="op">-</span><span class="dv">1</span><span class="op">,</span>j<span class="op">,</span>k<span class="op">))</span> <span class="op">/</span> <span class="op">(</span>dx<span class="op">[</span><span class="dv">0</span><span class="op">]*</span>dx<span class="op">[</span><span class="dv">0</span><span class="op">])</span></span>
+<span id="cb7-183"><a href="#cb7-183" aria-hidden="true" tabindex="-1"></a>                     <span class="op">+(</span>phiOld<span class="op">(</span>i<span class="op">,</span>j<span class="op">+</span><span class="dv">1</span><span class="op">,</span>k<span class="op">)</span> <span class="op">-</span> <span class="fl">2.</span><span class="op">*</span>phiOld<span class="op">(</span>i<span class="op">,</span>j<span class="op">,</span>k<span class="op">)</span> <span class="op">+</span> phiOld<span class="op">(</span>i<span class="op">,</span>j<span class="op">-</span><span class="dv">1</span><span class="op">,</span>k<span class="op">))</span> <span class="op">/</span> <span class="op">(</span>dx<span class="op">[</span><span class="dv">1</span><span class="op">]*</span>dx<span class="op">[</span><span class="dv">1</span><span class="op">])</span></span>
+<span id="cb7-184"><a href="#cb7-184" aria-hidden="true" tabindex="-1"></a>                     <span class="op">+(</span>phiOld<span class="op">(</span>i<span class="op">,</span>j<span class="op">,</span>k<span class="op">+</span><span class="dv">1</span><span class="op">)</span> <span class="op">-</span> <span class="fl">2.</span><span class="op">*</span>phiOld<span class="op">(</span>i<span class="op">,</span>j<span class="op">,</span>k<span class="op">)</span> <span class="op">+</span> phiOld<span class="op">(</span>i<span class="op">,</span>j<span class="op">,</span>k<span class="op">-</span><span class="dv">1</span><span class="op">))</span> <span class="op">/</span> <span class="op">(</span>dx<span class="op">[</span><span class="dv">2</span><span class="op">]*</span>dx<span class="op">[</span><span class="dv">2</span><span class="op">])</span></span>
+<span id="cb7-185"><a href="#cb7-185" aria-hidden="true" tabindex="-1"></a>                        <span class="op">);</span></span>
+<span id="cb7-186"><a href="#cb7-186" aria-hidden="true" tabindex="-1"></a>            <span class="op">});</span></span>
+<span id="cb7-187"><a href="#cb7-187" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb7-188"><a href="#cb7-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-189"><a href="#cb7-189" aria-hidden="true" tabindex="-1"></a>        <span class="co">// **********************************</span></span>
+<span id="cb7-190"><a href="#cb7-190" aria-hidden="true" tabindex="-1"></a>        <span class="co">// INCREMENT</span></span>
+<span id="cb7-191"><a href="#cb7-191" aria-hidden="true" tabindex="-1"></a>        <span class="co">// **********************************</span></span>
+<span id="cb7-192"><a href="#cb7-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-193"><a href="#cb7-193" aria-hidden="true" tabindex="-1"></a>        <span class="co">// update time</span></span>
+<span id="cb7-194"><a href="#cb7-194" aria-hidden="true" tabindex="-1"></a>        time <span class="op">=</span> time <span class="op">+</span> dt<span class="op">;</span></span>
+<span id="cb7-195"><a href="#cb7-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-196"><a href="#cb7-196" aria-hidden="true" tabindex="-1"></a>        <span class="co">// copy new solution into old solution</span></span>
+<span id="cb7-197"><a href="#cb7-197" aria-hidden="true" tabindex="-1"></a>        amrex<span class="op">::</span>MultiFab<span class="op">::</span>Copy<span class="op">(</span>phi_old<span class="op">,</span> phi_new<span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb7-198"><a href="#cb7-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-199"><a href="#cb7-199" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Tell the I/O Processor to write out which step we're doing</span></span>
+<span id="cb7-200"><a href="#cb7-200" aria-hidden="true" tabindex="-1"></a>        amrex<span class="op">::</span>Print<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">"Advanced step "</span> <span class="op">&lt;&lt;</span> step <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb7-201"><a href="#cb7-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-202"><a href="#cb7-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-203"><a href="#cb7-203" aria-hidden="true" tabindex="-1"></a>        <span class="co">// **********************************</span></span>
+<span id="cb7-204"><a href="#cb7-204" aria-hidden="true" tabindex="-1"></a>        <span class="co">// WRITE PLOTFILE AT GIVEN INTERVAL</span></span>
+<span id="cb7-205"><a href="#cb7-205" aria-hidden="true" tabindex="-1"></a>        <span class="co">// **********************************</span></span>
+<span id="cb7-206"><a href="#cb7-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-207"><a href="#cb7-207" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Write a plotfile of the current data (plot_int was defined in the inputs file)</span></span>
+<span id="cb7-208"><a href="#cb7-208" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>plot_int <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> step<span class="op">%</span>plot_int <span class="op">==</span> <span class="dv">0</span><span class="op">)</span></span>
+<span id="cb7-209"><a href="#cb7-209" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb7-210"><a href="#cb7-210" aria-hidden="true" tabindex="-1"></a>            <span class="at">const</span> <span class="bu">std::</span>string<span class="op">&amp;</span> pltfile <span class="op">=</span> amrex<span class="op">::</span>Concatenate<span class="op">(</span><span class="st">"plt"</span><span class="op">,</span>step<span class="op">,</span><span class="dv">5</span><span class="op">);</span></span>
+<span id="cb7-211"><a href="#cb7-211" aria-hidden="true" tabindex="-1"></a>            WriteSingleLevelPlotfile<span class="op">(</span>pltfile<span class="op">,</span> phi_new<span class="op">,</span> <span class="op">{</span><span class="st">"phi"</span><span class="op">},</span> geom<span class="op">,</span> time<span class="op">,</span> step<span class="op">);</span></span>
+<span id="cb7-212"><a href="#cb7-212" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb7-213"><a href="#cb7-213" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb7-214"><a href="#cb7-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-215"><a href="#cb7-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-216"><a href="#cb7-216" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb7-217"><a href="#cb7-217" aria-hidden="true" tabindex="-1"></a>    amrex<span class="op">::</span>Finalize<span class="op">();</span></span>
+<span id="cb7-218"><a href="#cb7-218" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb7-219"><a href="#cb7-219" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="particlemesh" class="level3">
+<h3 class="anchored" data-anchor-id="particlemesh">ParticleMesh</h3>
+<p>Provided the input file:</p>
+<pre><code># Domain size
+
+nx = 128 # number of grid points along the x axis
+ny = 128 # number of grid points along the y axis 
+nz = 128 # number of grid points along the z axis
+
+# Maximum allowable size of each subdomain in the problem domain; 
+#    this is used to decompose the domain for parallel calculations.
+max_grid_size = 32
+
+# Number of particles per cell
+nppc = 10
+
+# Verbosity
+verbose = true   # set to true to get more verbosity</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;AMReX.H&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;AMReX_MultiFab.H&gt;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;AMReX_MultiFabUtil.H&gt;</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;AMReX_Particles.H&gt;</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;AMReX_PlotFileUtil.H&gt;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;AMReX_ParticleMesh.H&gt;</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> <span class="kw">namespace</span> amrex<span class="op">;</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> TestParams <span class="op">{</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> nx<span class="op">;</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> ny<span class="op">;</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> nz<span class="op">;</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> max_grid_size<span class="op">;</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> nppc<span class="op">;</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  <span class="dt">bool</span> verbose<span class="op">;</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> testParticleMesh<span class="op">(</span>TestParams<span class="op">&amp;</span> parms<span class="op">)</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>  RealBox real_box<span class="op">;</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> n <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> n <span class="op">&lt;</span> BL_SPACEDIM<span class="op">;</span> n<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    real_box<span class="op">.</span>setLo<span class="op">(</span>n<span class="op">,</span> <span class="fl">0.0</span><span class="op">);</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    real_box<span class="op">.</span>setHi<span class="op">(</span>n<span class="op">,</span> <span class="fl">1.0</span><span class="op">);</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>  IntVect domain_lo<span class="op">(</span>AMREX_D_DECL<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">));</span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>  IntVect domain_hi<span class="op">(</span>AMREX_D_DECL<span class="op">(</span>parms<span class="op">.</span>nx <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> parms<span class="op">.</span>ny <span class="op">-</span> <span class="dv">1</span><span class="op">,</span> parms<span class="op">.</span>nz<span class="op">-</span><span class="dv">1</span><span class="op">));</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">const</span> Box domain<span class="op">(</span>domain_lo<span class="op">,</span> domain_hi<span class="op">);</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>  <span class="co">// This sets the boundary conditions to be doubly or triply periodic</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> is_per<span class="op">[</span>BL_SPACEDIM<span class="op">];</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> BL_SPACEDIM<span class="op">;</span> i<span class="op">++)</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>    is_per<span class="op">[</span>i<span class="op">]</span> <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>  Geometry geom<span class="op">(</span>domain<span class="op">,</span> <span class="op">&amp;</span>real_box<span class="op">,</span> CoordSys<span class="op">::</span>cartesian<span class="op">,</span> is_per<span class="op">);</span></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>  BoxArray ba<span class="op">(</span>domain<span class="op">);</span></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>  ba<span class="op">.</span>maxSize<span class="op">(</span>parms<span class="op">.</span>max_grid_size<span class="op">);</span></span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>parms<span class="op">.</span>verbose <span class="op">&amp;&amp;</span> ParallelDescriptor<span class="op">::</span>IOProcessor<span class="op">())</span> <span class="op">{</span></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Number of boxes              : "</span> <span class="op">&lt;&lt;</span> ba<span class="op">.</span>size<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="ch">'</span><span class="sc">\n</span><span class="ch">'</span><span class="op">;</span></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Box sizes                    : "</span> <span class="op">&lt;&lt;</span> ba<span class="op">[</span><span class="dv">0</span><span class="op">].</span>size<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="ch">'</span><span class="sc">\n</span><span class="ch">'</span><span class="op">;</span></span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>  DistributionMapping dmap<span class="op">(</span>ba<span class="op">);</span></span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>  MultiFab partMF<span class="op">(</span>ba<span class="op">,</span> dmap<span class="op">,</span> <span class="dv">1</span> <span class="op">+</span> BL_SPACEDIM<span class="op">,</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>  partMF<span class="op">.</span>setVal<span class="op">(</span><span class="fl">0.0</span><span class="op">);</span></span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a>  <span class="kw">typedef</span> ParticleContainer<span class="op">&lt;</span><span class="dv">1</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>BL_SPACEDIM<span class="op">&gt;</span> MyParticleContainer<span class="op">;</span></span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>  MyParticleContainer myPC<span class="op">(</span>geom<span class="op">,</span> dmap<span class="op">,</span> ba<span class="op">);</span></span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a>  myPC<span class="op">.</span>SetVerbose<span class="op">(</span><span class="kw">false</span><span class="op">);</span></span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> num_particles <span class="op">=</span> parms<span class="op">.</span>nppc <span class="op">*</span> parms<span class="op">.</span>nx <span class="op">*</span> parms<span class="op">.</span>ny <span class="op">*</span> parms<span class="op">.</span>nz<span class="op">;</span></span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>ParallelDescriptor<span class="op">::</span>IOProcessor<span class="op">())</span></span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Total number of particles    : "</span> <span class="op">&lt;&lt;</span> num_particles <span class="op">&lt;&lt;</span> <span class="ch">'</span><span class="sc">\n</span><span class="ch">'</span> <span class="op">&lt;&lt;</span> <span class="ch">'</span><span class="sc">\n</span><span class="ch">'</span><span class="op">;</span></span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>  <span class="dt">bool</span> serialize <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> iseed <span class="op">=</span> <span class="dv">451</span><span class="op">;</span></span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>  Real mass <span class="op">=</span> <span class="fl">10.0</span><span class="op">;</span></span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a>  MyParticleContainer<span class="op">::</span>ParticleInitData pdata <span class="op">=</span> <span class="op">{</span>mass<span class="op">,</span> AMREX_D_DECL<span class="op">(</span><span class="fl">1.0</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">,</span> <span class="fl">3.0</span><span class="op">),</span> AMREX_D_DECL<span class="op">(</span><span class="fl">0.0</span><span class="op">,</span> <span class="fl">0.0</span><span class="op">,</span> <span class="fl">0.0</span><span class="op">)};</span></span>
+<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a>  myPC<span class="op">.</span>InitRandom<span class="op">(</span>num_particles<span class="op">,</span> iseed<span class="op">,</span> pdata<span class="op">,</span> serialize<span class="op">);</span></span>
+<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span> nc <span class="op">=</span> <span class="dv">1</span> <span class="op">+</span> BL_SPACEDIM<span class="op">;</span></span>
+<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a>  <span class="at">const</span> <span class="kw">auto</span> plo <span class="op">=</span> geom<span class="op">.</span>ProbLoArray<span class="op">();</span></span>
+<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a>  <span class="at">const</span> <span class="kw">auto</span> dxi <span class="op">=</span> geom<span class="op">.</span>InvCellSizeArray<span class="op">();</span></span>
+<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a>  amrex<span class="op">::</span>ParticleToMesh<span class="op">(</span>myPC<span class="op">,</span> partMF<span class="op">,</span> <span class="dv">0</span><span class="op">,</span></span>
+<span id="cb9-70"><a href="#cb9-70" aria-hidden="true" tabindex="-1"></a>      <span class="op">[=]</span> AMREX_GPU_DEVICE <span class="op">(</span><span class="at">const</span> MyParticleContainer<span class="op">::</span>ParticleType<span class="op">&amp;</span> p<span class="op">,</span></span>
+<span id="cb9-71"><a href="#cb9-71" aria-hidden="true" tabindex="-1"></a>                            amrex<span class="op">::</span>Array4<span class="op">&lt;</span>amrex<span class="op">::</span>Real<span class="op">&gt;</span> <span class="at">const</span><span class="op">&amp;</span> rho<span class="op">)</span></span>
+<span id="cb9-72"><a href="#cb9-72" aria-hidden="true" tabindex="-1"></a>      <span class="op">{</span></span>
+<span id="cb9-73"><a href="#cb9-73" aria-hidden="true" tabindex="-1"></a>          amrex<span class="op">::</span>Real lx <span class="op">=</span> <span class="op">(</span>p<span class="op">.</span>pos<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">-</span> plo<span class="op">[</span><span class="dv">0</span><span class="op">])</span> <span class="op">*</span> dxi<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">+</span> <span class="fl">0.5</span><span class="op">;</span></span>
+<span id="cb9-74"><a href="#cb9-74" aria-hidden="true" tabindex="-1"></a>          amrex<span class="op">::</span>Real ly <span class="op">=</span> <span class="op">(</span>p<span class="op">.</span>pos<span class="op">(</span><span class="dv">1</span><span class="op">)</span> <span class="op">-</span> plo<span class="op">[</span><span class="dv">1</span><span class="op">])</span> <span class="op">*</span> dxi<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> <span class="fl">0.5</span><span class="op">;</span></span>
+<span id="cb9-75"><a href="#cb9-75" aria-hidden="true" tabindex="-1"></a>          amrex<span class="op">::</span>Real lz <span class="op">=</span> <span class="op">(</span>p<span class="op">.</span>pos<span class="op">(</span><span class="dv">2</span><span class="op">)</span> <span class="op">-</span> plo<span class="op">[</span><span class="dv">2</span><span class="op">])</span> <span class="op">*</span> dxi<span class="op">[</span><span class="dv">2</span><span class="op">]</span> <span class="op">+</span> <span class="fl">0.5</span><span class="op">;</span></span>
+<span id="cb9-76"><a href="#cb9-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-77"><a href="#cb9-77" aria-hidden="true" tabindex="-1"></a>          <span class="dt">int</span> i <span class="op">=</span> amrex<span class="op">::</span>Math<span class="op">::</span>floor<span class="op">(</span>lx<span class="op">);</span></span>
+<span id="cb9-78"><a href="#cb9-78" aria-hidden="true" tabindex="-1"></a>          <span class="dt">int</span> j <span class="op">=</span> amrex<span class="op">::</span>Math<span class="op">::</span>floor<span class="op">(</span>ly<span class="op">);</span></span>
+<span id="cb9-79"><a href="#cb9-79" aria-hidden="true" tabindex="-1"></a>          <span class="dt">int</span> k <span class="op">=</span> amrex<span class="op">::</span>Math<span class="op">::</span>floor<span class="op">(</span>lz<span class="op">);</span></span>
+<span id="cb9-80"><a href="#cb9-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-81"><a href="#cb9-81" aria-hidden="true" tabindex="-1"></a>          amrex<span class="op">::</span>Real xint <span class="op">=</span> lx <span class="op">-</span> i<span class="op">;</span></span>
+<span id="cb9-82"><a href="#cb9-82" aria-hidden="true" tabindex="-1"></a>          amrex<span class="op">::</span>Real yint <span class="op">=</span> ly <span class="op">-</span> j<span class="op">;</span></span>
+<span id="cb9-83"><a href="#cb9-83" aria-hidden="true" tabindex="-1"></a>          amrex<span class="op">::</span>Real zint <span class="op">=</span> lz <span class="op">-</span> k<span class="op">;</span></span>
+<span id="cb9-84"><a href="#cb9-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-85"><a href="#cb9-85" aria-hidden="true" tabindex="-1"></a>          amrex<span class="op">::</span>Real sx<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span><span class="fl">1.</span><span class="op">-</span>xint<span class="op">,</span> xint<span class="op">};</span></span>
+<span id="cb9-86"><a href="#cb9-86" aria-hidden="true" tabindex="-1"></a>          amrex<span class="op">::</span>Real sy<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span><span class="fl">1.</span><span class="op">-</span>yint<span class="op">,</span> yint<span class="op">};</span></span>
+<span id="cb9-87"><a href="#cb9-87" aria-hidden="true" tabindex="-1"></a>          amrex<span class="op">::</span>Real sz<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span><span class="fl">1.</span><span class="op">-</span>zint<span class="op">,</span> zint<span class="op">};</span></span>
+<span id="cb9-88"><a href="#cb9-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-89"><a href="#cb9-89" aria-hidden="true" tabindex="-1"></a>          <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> kk <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> kk <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">;</span> <span class="op">++</span>kk<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-90"><a href="#cb9-90" aria-hidden="true" tabindex="-1"></a>              <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> jj <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> jj <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">;</span> <span class="op">++</span>jj<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-91"><a href="#cb9-91" aria-hidden="true" tabindex="-1"></a>                  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> ii <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> ii <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">;</span> <span class="op">++</span>ii<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-92"><a href="#cb9-92" aria-hidden="true" tabindex="-1"></a>                      amrex<span class="op">::</span>Gpu<span class="op">::</span>Atomic<span class="op">::</span>AddNoRet<span class="op">(&amp;</span>rho<span class="op">(</span>i<span class="op">+</span>ii<span class="op">-</span><span class="dv">1</span><span class="op">,</span> j<span class="op">+</span>jj<span class="op">-</span><span class="dv">1</span><span class="op">,</span> k<span class="op">+</span>kk<span class="op">-</span><span class="dv">1</span><span class="op">,</span> <span class="dv">0</span><span class="op">),</span></span>
+<span id="cb9-93"><a href="#cb9-93" aria-hidden="true" tabindex="-1"></a>                                              sx<span class="op">[</span>ii<span class="op">]*</span>sy<span class="op">[</span>jj<span class="op">]*</span>sz<span class="op">[</span>kk<span class="op">]*</span>p<span class="op">.</span>rdata<span class="op">(</span><span class="dv">0</span><span class="op">));</span></span>
+<span id="cb9-94"><a href="#cb9-94" aria-hidden="true" tabindex="-1"></a>                  <span class="op">}</span></span>
+<span id="cb9-95"><a href="#cb9-95" aria-hidden="true" tabindex="-1"></a>              <span class="op">}</span></span>
+<span id="cb9-96"><a href="#cb9-96" aria-hidden="true" tabindex="-1"></a>          <span class="op">}</span></span>
+<span id="cb9-97"><a href="#cb9-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-98"><a href="#cb9-98" aria-hidden="true" tabindex="-1"></a>          <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> comp<span class="op">=</span><span class="dv">1</span><span class="op">;</span> comp <span class="op">&lt;</span> nc<span class="op">;</span> <span class="op">++</span>comp<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-99"><a href="#cb9-99" aria-hidden="true" tabindex="-1"></a>             <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> kk <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> kk <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">;</span> <span class="op">++</span>kk<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-100"><a href="#cb9-100" aria-hidden="true" tabindex="-1"></a>                  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> jj <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> jj <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">;</span> <span class="op">++</span>jj<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-101"><a href="#cb9-101" aria-hidden="true" tabindex="-1"></a>                      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> ii <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> ii <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">;</span> <span class="op">++</span>ii<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-102"><a href="#cb9-102" aria-hidden="true" tabindex="-1"></a>                          amrex<span class="op">::</span>Gpu<span class="op">::</span>Atomic<span class="op">::</span>AddNoRet<span class="op">(&amp;</span>rho<span class="op">(</span>i<span class="op">+</span>ii<span class="op">-</span><span class="dv">1</span><span class="op">,</span> j<span class="op">+</span>jj<span class="op">-</span><span class="dv">1</span><span class="op">,</span> k<span class="op">+</span>kk<span class="op">-</span><span class="dv">1</span><span class="op">,</span> comp<span class="op">),</span></span>
+<span id="cb9-103"><a href="#cb9-103" aria-hidden="true" tabindex="-1"></a>                                                  sx<span class="op">[</span>ii<span class="op">]*</span>sy<span class="op">[</span>jj<span class="op">]*</span>sz<span class="op">[</span>kk<span class="op">]*</span>p<span class="op">.</span>rdata<span class="op">(</span><span class="dv">0</span><span class="op">)*</span>p<span class="op">.</span>rdata<span class="op">(</span>comp<span class="op">));</span></span>
+<span id="cb9-104"><a href="#cb9-104" aria-hidden="true" tabindex="-1"></a>                      <span class="op">}</span></span>
+<span id="cb9-105"><a href="#cb9-105" aria-hidden="true" tabindex="-1"></a>                  <span class="op">}</span></span>
+<span id="cb9-106"><a href="#cb9-106" aria-hidden="true" tabindex="-1"></a>              <span class="op">}</span></span>
+<span id="cb9-107"><a href="#cb9-107" aria-hidden="true" tabindex="-1"></a>          <span class="op">}</span></span>
+<span id="cb9-108"><a href="#cb9-108" aria-hidden="true" tabindex="-1"></a>      <span class="op">});</span></span>
+<span id="cb9-109"><a href="#cb9-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-110"><a href="#cb9-110" aria-hidden="true" tabindex="-1"></a>  MultiFab acceleration<span class="op">(</span>ba<span class="op">,</span> dmap<span class="op">,</span> BL_SPACEDIM<span class="op">,</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb9-111"><a href="#cb9-111" aria-hidden="true" tabindex="-1"></a>  acceleration<span class="op">.</span>setVal<span class="op">(</span><span class="fl">5.0</span><span class="op">);</span></span>
+<span id="cb9-112"><a href="#cb9-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-113"><a href="#cb9-113" aria-hidden="true" tabindex="-1"></a>  nc <span class="op">=</span> BL_SPACEDIM<span class="op">;</span></span>
+<span id="cb9-114"><a href="#cb9-114" aria-hidden="true" tabindex="-1"></a>  amrex<span class="op">::</span>MeshToParticle<span class="op">(</span>myPC<span class="op">,</span> acceleration<span class="op">,</span> <span class="dv">0</span><span class="op">,</span></span>
+<span id="cb9-115"><a href="#cb9-115" aria-hidden="true" tabindex="-1"></a>      <span class="op">[=]</span> AMREX_GPU_DEVICE <span class="op">(</span>MyParticleContainer<span class="op">::</span>ParticleType<span class="op">&amp;</span> p<span class="op">,</span></span>
+<span id="cb9-116"><a href="#cb9-116" aria-hidden="true" tabindex="-1"></a>                            amrex<span class="op">::</span>Array4<span class="op">&lt;</span><span class="at">const</span> amrex<span class="op">::</span>Real<span class="op">&gt;</span> <span class="at">const</span><span class="op">&amp;</span> acc<span class="op">)</span></span>
+<span id="cb9-117"><a href="#cb9-117" aria-hidden="true" tabindex="-1"></a>      <span class="op">{</span></span>
+<span id="cb9-118"><a href="#cb9-118" aria-hidden="true" tabindex="-1"></a>          amrex<span class="op">::</span>Real lx <span class="op">=</span> <span class="op">(</span>p<span class="op">.</span>pos<span class="op">(</span><span class="dv">0</span><span class="op">)</span> <span class="op">-</span> plo<span class="op">[</span><span class="dv">0</span><span class="op">])</span> <span class="op">*</span> dxi<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">+</span> <span class="fl">0.5</span><span class="op">;</span></span>
+<span id="cb9-119"><a href="#cb9-119" aria-hidden="true" tabindex="-1"></a>          amrex<span class="op">::</span>Real ly <span class="op">=</span> <span class="op">(</span>p<span class="op">.</span>pos<span class="op">(</span><span class="dv">1</span><span class="op">)</span> <span class="op">-</span> plo<span class="op">[</span><span class="dv">1</span><span class="op">])</span> <span class="op">*</span> dxi<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> <span class="fl">0.5</span><span class="op">;</span></span>
+<span id="cb9-120"><a href="#cb9-120" aria-hidden="true" tabindex="-1"></a>          amrex<span class="op">::</span>Real lz <span class="op">=</span> <span class="op">(</span>p<span class="op">.</span>pos<span class="op">(</span><span class="dv">2</span><span class="op">)</span> <span class="op">-</span> plo<span class="op">[</span><span class="dv">2</span><span class="op">])</span> <span class="op">*</span> dxi<span class="op">[</span><span class="dv">2</span><span class="op">]</span> <span class="op">+</span> <span class="fl">0.5</span><span class="op">;</span></span>
+<span id="cb9-121"><a href="#cb9-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-122"><a href="#cb9-122" aria-hidden="true" tabindex="-1"></a>          <span class="dt">int</span> i <span class="op">=</span> amrex<span class="op">::</span>Math<span class="op">::</span>floor<span class="op">(</span>lx<span class="op">);</span></span>
+<span id="cb9-123"><a href="#cb9-123" aria-hidden="true" tabindex="-1"></a>          <span class="dt">int</span> j <span class="op">=</span> amrex<span class="op">::</span>Math<span class="op">::</span>floor<span class="op">(</span>ly<span class="op">);</span></span>
+<span id="cb9-124"><a href="#cb9-124" aria-hidden="true" tabindex="-1"></a>          <span class="dt">int</span> k <span class="op">=</span> amrex<span class="op">::</span>Math<span class="op">::</span>floor<span class="op">(</span>lz<span class="op">);</span></span>
+<span id="cb9-125"><a href="#cb9-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-126"><a href="#cb9-126" aria-hidden="true" tabindex="-1"></a>          amrex<span class="op">::</span>Real xint <span class="op">=</span> lx <span class="op">-</span> i<span class="op">;</span></span>
+<span id="cb9-127"><a href="#cb9-127" aria-hidden="true" tabindex="-1"></a>          amrex<span class="op">::</span>Real yint <span class="op">=</span> ly <span class="op">-</span> j<span class="op">;</span></span>
+<span id="cb9-128"><a href="#cb9-128" aria-hidden="true" tabindex="-1"></a>          amrex<span class="op">::</span>Real zint <span class="op">=</span> lz <span class="op">-</span> k<span class="op">;</span></span>
+<span id="cb9-129"><a href="#cb9-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-130"><a href="#cb9-130" aria-hidden="true" tabindex="-1"></a>          amrex<span class="op">::</span>Real sx<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span><span class="fl">1.</span><span class="op">-</span>xint<span class="op">,</span> xint<span class="op">};</span></span>
+<span id="cb9-131"><a href="#cb9-131" aria-hidden="true" tabindex="-1"></a>          amrex<span class="op">::</span>Real sy<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span><span class="fl">1.</span><span class="op">-</span>yint<span class="op">,</span> yint<span class="op">};</span></span>
+<span id="cb9-132"><a href="#cb9-132" aria-hidden="true" tabindex="-1"></a>          amrex<span class="op">::</span>Real sz<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span><span class="fl">1.</span><span class="op">-</span>zint<span class="op">,</span> zint<span class="op">};</span></span>
+<span id="cb9-133"><a href="#cb9-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-134"><a href="#cb9-134" aria-hidden="true" tabindex="-1"></a>          <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> comp<span class="op">=</span><span class="dv">0</span><span class="op">;</span> comp <span class="op">&lt;</span> nc<span class="op">;</span> <span class="op">++</span>comp<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-135"><a href="#cb9-135" aria-hidden="true" tabindex="-1"></a>              <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> kk <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> kk <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">;</span> <span class="op">++</span>kk<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-136"><a href="#cb9-136" aria-hidden="true" tabindex="-1"></a>                  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> jj <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> jj <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">;</span> <span class="op">++</span>jj<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-137"><a href="#cb9-137" aria-hidden="true" tabindex="-1"></a>                      <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> ii <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> ii <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">;</span> <span class="op">++</span>ii<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-138"><a href="#cb9-138" aria-hidden="true" tabindex="-1"></a>                          p<span class="op">.</span>rdata<span class="op">(</span><span class="dv">4</span><span class="op">+</span>comp<span class="op">)</span> <span class="op">+=</span> sx<span class="op">[</span>ii<span class="op">]*</span>sy<span class="op">[</span>jj<span class="op">]*</span>sz<span class="op">[</span>kk<span class="op">]*</span>acc<span class="op">(</span>i<span class="op">+</span>ii<span class="op">-</span><span class="dv">1</span><span class="op">,</span>j<span class="op">+</span>jj<span class="op">-</span><span class="dv">1</span><span class="op">,</span>k<span class="op">+</span>kk<span class="op">-</span><span class="dv">1</span><span class="op">,</span>comp<span class="op">);</span></span>
+<span id="cb9-139"><a href="#cb9-139" aria-hidden="true" tabindex="-1"></a>                      <span class="op">}</span></span>
+<span id="cb9-140"><a href="#cb9-140" aria-hidden="true" tabindex="-1"></a>                  <span class="op">}</span></span>
+<span id="cb9-141"><a href="#cb9-141" aria-hidden="true" tabindex="-1"></a>              <span class="op">}</span></span>
+<span id="cb9-142"><a href="#cb9-142" aria-hidden="true" tabindex="-1"></a>          <span class="op">}</span></span>
+<span id="cb9-143"><a href="#cb9-143" aria-hidden="true" tabindex="-1"></a>      <span class="op">});</span></span>
+<span id="cb9-144"><a href="#cb9-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-145"><a href="#cb9-145" aria-hidden="true" tabindex="-1"></a>  WriteSingleLevelPlotfile<span class="op">(</span><span class="st">"plot"</span><span class="op">,</span> partMF<span class="op">,</span></span>
+<span id="cb9-146"><a href="#cb9-146" aria-hidden="true" tabindex="-1"></a>                           <span class="op">{</span><span class="st">"density"</span><span class="op">,</span> <span class="st">"vx"</span><span class="op">,</span> <span class="st">"vy"</span><span class="op">,</span> <span class="st">"vz"</span><span class="op">},</span></span>
+<span id="cb9-147"><a href="#cb9-147" aria-hidden="true" tabindex="-1"></a>                           geom<span class="op">,</span> <span class="fl">0.0</span><span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb9-148"><a href="#cb9-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-149"><a href="#cb9-149" aria-hidden="true" tabindex="-1"></a>  myPC<span class="op">.</span>Checkpoint<span class="op">(</span><span class="st">"plot"</span><span class="op">,</span> <span class="st">"particle0"</span><span class="op">);</span></span>
+<span id="cb9-150"><a href="#cb9-150" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb9-151"><a href="#cb9-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-152"><a href="#cb9-152" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span><span class="op">*</span> argv<span class="op">[])</span></span>
+<span id="cb9-153"><a href="#cb9-153" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb9-154"><a href="#cb9-154" aria-hidden="true" tabindex="-1"></a>  amrex<span class="op">::</span>Initialize<span class="op">(</span>argc<span class="op">,</span>argv<span class="op">);</span></span>
+<span id="cb9-155"><a href="#cb9-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-156"><a href="#cb9-156" aria-hidden="true" tabindex="-1"></a>  ParmParse pp<span class="op">;</span></span>
+<span id="cb9-157"><a href="#cb9-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-158"><a href="#cb9-158" aria-hidden="true" tabindex="-1"></a>  TestParams parms<span class="op">;</span></span>
+<span id="cb9-159"><a href="#cb9-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-160"><a href="#cb9-160" aria-hidden="true" tabindex="-1"></a>  pp<span class="op">.</span>get<span class="op">(</span><span class="st">"nx"</span><span class="op">,</span> parms<span class="op">.</span>nx<span class="op">);</span></span>
+<span id="cb9-161"><a href="#cb9-161" aria-hidden="true" tabindex="-1"></a>  pp<span class="op">.</span>get<span class="op">(</span><span class="st">"ny"</span><span class="op">,</span> parms<span class="op">.</span>ny<span class="op">);</span></span>
+<span id="cb9-162"><a href="#cb9-162" aria-hidden="true" tabindex="-1"></a>  pp<span class="op">.</span>get<span class="op">(</span><span class="st">"nz"</span><span class="op">,</span> parms<span class="op">.</span>nz<span class="op">);</span></span>
+<span id="cb9-163"><a href="#cb9-163" aria-hidden="true" tabindex="-1"></a>  pp<span class="op">.</span>get<span class="op">(</span><span class="st">"max_grid_size"</span><span class="op">,</span> parms<span class="op">.</span>max_grid_size<span class="op">);</span></span>
+<span id="cb9-164"><a href="#cb9-164" aria-hidden="true" tabindex="-1"></a>  pp<span class="op">.</span>get<span class="op">(</span><span class="st">"nppc"</span><span class="op">,</span> parms<span class="op">.</span>nppc<span class="op">);</span></span>
+<span id="cb9-165"><a href="#cb9-165" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>parms<span class="op">.</span>nppc <span class="op">&lt;</span> <span class="dv">1</span> <span class="op">&amp;&amp;</span> ParallelDescriptor<span class="op">::</span>IOProcessor<span class="op">())</span></span>
+<span id="cb9-166"><a href="#cb9-166" aria-hidden="true" tabindex="-1"></a>    amrex<span class="op">::</span>Abort<span class="op">(</span><span class="st">"Must specify at least one particle per cell"</span><span class="op">);</span></span>
+<span id="cb9-167"><a href="#cb9-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-168"><a href="#cb9-168" aria-hidden="true" tabindex="-1"></a>  parms<span class="op">.</span>verbose <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb9-169"><a href="#cb9-169" aria-hidden="true" tabindex="-1"></a>  pp<span class="op">.</span>query<span class="op">(</span><span class="st">"verbose"</span><span class="op">,</span> parms<span class="op">.</span>verbose<span class="op">);</span></span>
+<span id="cb9-170"><a href="#cb9-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-171"><a href="#cb9-171" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> <span class="op">(</span>parms<span class="op">.</span>verbose <span class="op">&amp;&amp;</span> ParallelDescriptor<span class="op">::</span>IOProcessor<span class="op">())</span> <span class="op">{</span></span>
+<span id="cb9-172"><a href="#cb9-172" aria-hidden="true" tabindex="-1"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb9-173"><a href="#cb9-173" aria-hidden="true" tabindex="-1"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Number of particles per cell : "</span><span class="op">;</span></span>
+<span id="cb9-174"><a href="#cb9-174" aria-hidden="true" tabindex="-1"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> parms<span class="op">.</span>nppc  <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb9-175"><a href="#cb9-175" aria-hidden="true" tabindex="-1"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> <span class="st">"Size of domain               : "</span><span class="op">;</span></span>
+<span id="cb9-176"><a href="#cb9-176" aria-hidden="true" tabindex="-1"></a>    <span class="bu">std::</span>cout <span class="op">&lt;&lt;</span> parms<span class="op">.</span>nx <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> parms<span class="op">.</span>ny <span class="op">&lt;&lt;</span> <span class="st">" "</span> <span class="op">&lt;&lt;</span> parms<span class="op">.</span>nz <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb9-177"><a href="#cb9-177" aria-hidden="true" tabindex="-1"></a>  <span class="op">}</span></span>
+<span id="cb9-178"><a href="#cb9-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-179"><a href="#cb9-179" aria-hidden="true" tabindex="-1"></a>  testParticleMesh<span class="op">(</span>parms<span class="op">);</span></span>
+<span id="cb9-180"><a href="#cb9-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-181"><a href="#cb9-181" aria-hidden="true" tabindex="-1"></a>  amrex<span class="op">::</span>Finalize<span class="op">();</span></span>
+<span id="cb9-182"><a href="#cb9-182" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
 </section>
 <section id="thoughts" class="level2">
 <h2 class="anchored" data-anchor-id="thoughts">Thoughts</h2>
