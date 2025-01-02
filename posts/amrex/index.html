@@ -167,6 +167,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#first-impression" id="toc-first-impression" class="nav-link active" data-scroll-target="#first-impression">First Impression</a></li>
   <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes">Notes</a>
   <ul class="collapse">
+  <li><a href="#hands-on" id="toc-hands-on" class="nav-link" data-scroll-target="#hands-on">Hands-on</a></li>
   <li><a href="#compilation" id="toc-compilation" class="nav-link" data-scroll-target="#compilation">Compilation</a></li>
   <li><a href="#main-components" id="toc-main-components" class="nav-link" data-scroll-target="#main-components">Main Components</a></li>
   <li><a href="#hello-world" id="toc-hello-world" class="nav-link" data-scroll-target="#hello-world">Hello World</a></li>
@@ -233,13 +234,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A notion of IO processor and non-IO processor is established.</p>
 <p>I can tell they are experts. Quotes:</p>
 <blockquote class="blockquote">
-<p>AMReX has a Fortran module,&nbsp;<code>amrex_mempool_module</code>&nbsp;that can be used to allocate memory for Fortran pointers. The reason that such a module exists in AMReX is that memory allocation is often very slow in multi-threaded OpenMP parallel regions. AMReX&nbsp;<code>amrex_mempool_module</code>&nbsp;provides a much faster alternative approach, in which each thread has its own memory pool.</p>
+<p>AMReX has a Fortran module, <code>amrex_mempool_module</code> that can be used to allocate memory for Fortran pointers. The reason that such a module exists in AMReX is that memory allocation is often very slow in multi-threaded OpenMP parallel regions. AMReX&nbsp;<code>amrex_mempool_module</code>&nbsp;provides a much faster alternative approach, in which each thread has its own memory pool.</p>
 </blockquote>
 <p>AMReX has built-in multigrid solver. FLEKS is using the multi-block GMRES solver in SWMF, but I also ported that part into pure C++ implementation. It is actually a good chance to see if the MG solver works here. However, note that multigrid is usually for solving elliptic problems (e.g.&nbsp;Poisson’s equation), which is often the most time-consuming part that we try to avoid.</p>
 <p>AMReX, because it is built upon C++, differs type copies and references. For example, <code>BoxArray</code> is a key type in AMR for storing all boxes on the same level. Doing things like</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>ba<span class="op">[</span><span class="dv">3</span><span class="op">].</span>coarsen<span class="op">(</span><span class="dv">2</span><span class="op">);</span>  <span class="co">// DO NOT DO THIS!  Doesn't do what one might expect.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>will only modify a copy instead of the original array.</p>
-<p>Checkout <code>std::shared_ptr</code>.</p>
 <p>The distribution of boxes in the domain involves the math of space filling curves. This is perhaps the most interesting question in load balancing.</p>
 <p>Functions written in the C++ header files are mostly either inline functions or template functions, for example, the diffusion update kernel in the HeatConduction example.</p>
 <p>AMReX uses a subset of cores to do parallel I/O. If all processors attempt to access the disk directly, they will all end up waiting.</p>
@@ -249,6 +249,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Ann Almgren from Lawrence-Berkeley gave a presentation on AMR with some application introduction to AMReX.</p>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/wE3tdL_p6Ms" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
 </iframe>
+<section id="hands-on" class="level3">
+<h3 class="anchored" data-anchor-id="hands-on">Hands-on</h3>
 <p><a href="https://amrex-codes.github.io/NERSCPerformancePortabilityTraining/">Hands-on training materials</a> including</p>
 <ul>
 <li>Spinning fluid</li>
@@ -256,6 +258,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Pachinko</li>
 </ul>
 <p><a href="https://github.com/AMReX-Codes/ATPESC-codes">Example codes for ATPESC</a></p>
+<p>https://xsdk-project.github.io/MathPackagesTraining/lessons/amrex/</p>
+</section>
 <section id="compilation" class="level3">
 <h3 class="anchored" data-anchor-id="compilation">Compilation</h3>
 <p>AMReX supports both GNU Make and CMake.</p>
