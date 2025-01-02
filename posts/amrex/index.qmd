@@ -18,7 +18,7 @@ A notion of IO processor and non-IO processor is established.
 
 I can tell they are experts. Quotes:
 
-> AMReX has a Fortran module, `amrex_mempool_module` that can be used to allocate memory for Fortran pointers. The reason that such a module exists in AMReX is that memory allocation is often very slow in multi-threaded OpenMP parallel regions. AMReX `amrex_mempool_module` provides a much faster alternative approach, in which each thread has its own memory pool.
+> AMReX has a Fortran module, `amrex_mempool_module` that can be used to allocate memory for Fortran pointers. The reason that such a module exists in AMReX is that memory allocation is often very slow in multi-threaded OpenMP parallel regions. AMReX `amrex_mempool_module` provides a much faster alternative approach, in which each thread has its own memory pool.
 
 AMReX has built-in multigrid solver. FLEKS is using the multi-block GMRES solver in SWMF, but I also ported that part into pure C++ implementation. It is actually a good chance to see if the MG solver works here. However, note that multigrid is usually for solving elliptic problems (e.g. Poisson's equation), which is often the most time-consuming part that we try to avoid.
 
@@ -29,8 +29,6 @@ ba[3].coarsen(2);  // DO NOT DO THIS!  Doesn't do what one might expect.
 ```
 
 will only modify a copy instead of the original array.
-
-Checkout `std::shared_ptr`.
 
 The distribution of boxes in the domain involves the math of space filling curves. This is perhaps the most interesting question in load balancing.
 
@@ -44,6 +42,8 @@ Ann Almgren from Lawrence-Berkeley gave a presentation on AMR with some applicat
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/wE3tdL_p6Ms" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+### Hands-on
+
 [Hands-on training materials](https://amrex-codes.github.io/NERSCPerformancePortabilityTraining/) including
 
 - Spinning fluid
@@ -51,6 +51,8 @@ Ann Almgren from Lawrence-Berkeley gave a presentation on AMR with some applicat
 - Pachinko
 
 [Example codes for ATPESC](https://github.com/AMReX-Codes/ATPESC-codes)
+
+https://xsdk-project.github.io/MathPackagesTraining/lessons/amrex/
 
 ### Compilation
 
