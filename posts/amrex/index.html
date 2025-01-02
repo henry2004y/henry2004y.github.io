@@ -175,6 +175,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#heat-equation" id="toc-heat-equation" class="nav-link" data-scroll-target="#heat-equation">Heat Equation</a></li>
   <li><a href="#particlemesh" id="toc-particlemesh" class="nav-link" data-scroll-target="#particlemesh">ParticleMesh</a></li>
   </ul></li>
+  <li><a href="#warpx" id="toc-warpx" class="nav-link" data-scroll-target="#warpx">WarpX</a></li>
   <li><a href="#thoughts" id="toc-thoughts" class="nav-link" data-scroll-target="#thoughts">Thoughts</a></li>
   <li><a href="#julia-wrapper" id="toc-julia-wrapper" class="nav-link" data-scroll-target="#julia-wrapper">Julia wrapper</a></li>
   <li><a href="#envisions" id="toc-envisions" class="nav-link" data-scroll-target="#envisions">Envisions</a></li>
@@ -213,7 +214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">March 14, 2024</p>
+      <p class="date-modified">January 1, 2025</p>
     </div>
   </div>
     
@@ -474,6 +475,7 @@ a_prefix.an_int_array = 4 5 6</code></pre>
 <section id="heat-equation" class="level3">
 <h3 class="anchored" data-anchor-id="heat-equation">Heat Equation</h3>
 <p>In this Heat Equation example we use two MultiFabs to hold the current and previous values of Phi. Since each <code>MultiFab</code> is distributed separately among parallel processes, this approach can be easily extended for AMR.</p>
+<p>While loading the output from 03HeatEquation with <code>n_cell = 128</code>, the output variable lives on a 3D uniform mesh of size 128^3. When I tried to load the data into ParaView 5.13.0, it showed the correct number of cells (128^3 = 1,907,152), and the <code>Extents</code> is from 0 to 64 with 65 points in each dimension.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode cpp code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;AMReX.H&gt;</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;AMReX_PlotFileUtil.H&gt;</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;AMReX_ParmParse.H&gt;</span></span>
@@ -896,10 +898,14 @@ verbose = true   # set to true to get more verbosity</code></pre>
 <span id="cb9-182"><a href="#cb9-182" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
+<section id="warpx" class="level2">
+<h2 class="anchored" data-anchor-id="warpx">WarpX</h2>
+</section>
 <section id="thoughts" class="level2">
 <h2 class="anchored" data-anchor-id="thoughts">Thoughts</h2>
 <p>AMR is, from my experience, easier said than done.</p>
 <p>It would be a pain to build your work upon something that is not easily understandable. I think AMReX beats BATL in every aspect. It has nice documentation, clear syntax, and neat interfaces. I can tell that while BATL is designed by smart scientists, AMReX is motivated by scientific projects and carefully designed by expert programmers. Let us go back a few years and think about history. BATL was written in 2011-2012 before MHD-PIC coulping, which, in my point of view, is clearly motivated by the coupling project. That was actually a really nice time spot when the whole group can switch to OOP and design a general mesh library. Unfortunately, being biased towards pure functional programming and only BATSRUS in mind, we missed that great opportunity. Thus it results in today’s BATL, being fully integrated only for BATSRUS, and not suitable for even multithreads control, let along GPU. AMReX is publicly release in 2017, as a descendant for GUMBO. It was born at a time when all the mainstream massively parallel techiques becomes mature and ready for use. It covers almost all the possibilities in physics simulation using structured grid, which will eventually make it shining over other competitors. I would also say that its developers are really appreciated for making it open source. This is how work done in one group can benefit all other groups and raise fame and honor in the community. Science is not a stand-alone project. With really good fundations we can easily find collaborators and make amazing work.</p>
+<p>AMReX has so many things mentioned in the doc. I will go over the doc first before digging into FLEKS, and try to work on FLEKS later.</p>
 </section>
 <section id="julia-wrapper" class="level2">
 <h2 class="anchored" data-anchor-id="julia-wrapper">Julia wrapper</h2>
@@ -908,7 +914,7 @@ verbose = true   # set to true to get more verbosity</code></pre>
 <section id="envisions" class="level2">
 <h2 class="anchored" data-anchor-id="envisions">Envisions</h2>
 <ul class="task-list">
-<li><label><input type="checkbox">Go through the tutorials</label></li>
+<li><label><input type="checkbox" checked="">Go through the tutorials</label></li>
 <li><label><input type="checkbox">Think about how to map the functionalities of BATL to AMReX</label></li>
 <li><label><input type="checkbox">Understand the source code structure</label></li>
 <li><label><input type="checkbox">Write a Julia wrapper for AMReX.</label></li>
