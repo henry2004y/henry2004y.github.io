@@ -3,7 +3,7 @@ title: Learning AMReX
 author: "Hongyang Zhou"
 date: "2020-07-18"
 categories: [programming]
-date-modified: "2024-03-14"
+date-modified: "2025-01-01"
 ---
 
 ## First Impression
@@ -290,6 +290,8 @@ I think the newer looping syntax is better for GPU.
 ### Heat Equation
 
 In this Heat Equation example we use two MultiFabs to hold the current and previous values of Phi. Since each `MultiFab` is distributed separately among parallel processes, this approach can be easily extended for AMR.
+
+While loading the output from 03HeatEquation with `n_cell = 128`, the output variable lives on a 3D uniform mesh of size 128^3. When I tried to load the data into ParaView 5.13.0, it showed the correct number of cells (128^3 = 1,907,152), and the `Extents` is from 0 to 64 with 65 points in each dimension.
 
 ```cpp
 #include <AMReX.H>
@@ -720,6 +722,8 @@ int main(int argc, char* argv[])
 }
 ```
 
+## WarpX
+
 ## Thoughts
 
 AMR is, from my experience, easier said than done.
@@ -728,13 +732,15 @@ It would be a pain to build your work upon something that is not easily understa
 I think AMReX beats BATL in every aspect. It has nice documentation, clear syntax, and neat interfaces. I can tell that while BATL is designed by smart scientists, AMReX is motivated by scientific projects and carefully designed by expert programmers.
 Let us go back a few years and think about history. BATL was written in 2011-2012 before MHD-PIC coulping, which, in my point of view, is clearly motivated by the coupling project. That was actually a really nice time spot when the whole group can switch to OOP and design a general mesh library. Unfortunately, being biased towards pure functional programming and only BATSRUS in mind, we missed that great opportunity. Thus it results in today's BATL, being fully integrated only for BATSRUS, and not suitable for even multithreads control, let along GPU. AMReX is publicly release in 2017, as a descendant for GUMBO. It was born at a time when all the mainstream massively parallel techiques becomes mature and ready for use. It covers almost all the possibilities in physics simulation using structured grid, which will eventually make it shining over other competitors. I would also say that its developers are really appreciated for making it open source. This is how work done in one group can benefit all other groups and raise fame and honor in the community. Science is not a stand-alone project. With really good fundations we can easily find collaborators and make amazing work.
 
+AMReX has so many things mentioned in the doc. I will go over the doc first before digging into FLEKS, and try to work on FLEKS later.
+
 ## Julia wrapper
 
 I really want a Julia wrapper over AMReX. There is an experimental project of a Python wrapper, and I also see a shared binary in the Julia registry. But neither of them is functional.
 
 ## Envisions
 
-- [ ] Go through the tutorials
+- [x] Go through the tutorials
 - [ ] Think about how to map the functionalities of BATL to AMReX
 - [ ] Understand the source code structure
 - [ ] Write a Julia wrapper for AMReX.
