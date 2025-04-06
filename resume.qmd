@@ -294,9 +294,6 @@ format:
   \begin{flushleft}Interplay of magnetic reconnection and current sheet kink instability in the Earth's magnetotail\end{flushleft}
   \vspace{-0.2cm}
   \textit{Cozzani, Giulia and Alho, M and Zaitsev, Ivan and {\bf Zhou, Hongyang} and Hoilijoki, Sanni and Turc, Lucile and Grandin, Maxime and Horaites, Konstantinos and Battarbee, Markus and Pfau-Kempf, Yann and others},   Geophysical Research Letters, 2025
-  \begin{flushleft}Interplay of magnetic reconnection and current sheet kink instability in the Earth's magnetotail\end{flushleft}
-  \vspace{-0.2cm}
-  \textit{Cozzani, Giulia and Alho, M and Zaitsev, Ivan and {\bf Zhou, Hongyang} and Hoilijoki, Sanni and Turc, Lucile and Grandin, Maxime and Horaites, Konstantinos and Battarbee, Markus and Pfau-Kempf, Yann and others},   Geophysical Research Letters, 2025
   \begin{flushleft}The Vlasiator 5.2 Ionosphere--Coupling a magnetospheric hybrid-Vlasov simulation with a height-integrated ionosphere model\end{flushleft}
   \vspace{-0.2cm}
   \textit{Ganse, Urs and Pfau-Kempf, Yann and Zhou, Hongyang and Juusola, Liisa and Workayehu, Abiyot and Kebede, Fasil and Papadakis, Konstantinos and Grandin, Maxime and Alho, Markku and Battarbee, Markus and others},   Geoscientific Model Development Discussions, 2024
