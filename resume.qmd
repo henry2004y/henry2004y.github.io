@@ -276,7 +276,7 @@ format:
 \vspace{-0.16cm}
 **Programming Languages** - Julia, Fortran, C, C++, MATLAB, Python, IDL, CUDA, Rust, Perl, LaTeX
 
-**3D Visualization Tools** - Paraview, VisIt, Tecplot 
+**3D Visualization & Rendering** - Paraview, VisIt, Tecplot 
 
 **Languages** - English, Mandarin
 
@@ -285,8 +285,22 @@ format:
 {\bf PUBLICATIONS}
   \vspace{3pt}
   \hrule
-  \begin{flushleft}Hybrid-Vlasov modelling of ion velocity distribution functions associated with the Kelvin-Helmholtz
-instability with a density and temperature asymmetry\end{flushleft}
+  \begin{flushleft}Anomalous Transient Enhancement of Planetary Ion Escape at Mars\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{Zhang, Chi and Dong, Chuanfei and {\bf Zhou, Hongyang} and Halekas, Jasper and Yamauchi, Masatoshi and Nilsson, Hans and Liu, Terry and Persson, Moa and Curry, Shannon and Dong, Yaxue and Futaana, Yoshifumi and Chen, Yuxi and Zhou, Muni and Suranga, Ruhunusiri and Hanley, Kathleen and Mazelle, Christian and Xu, Shaosui and Ramstad, Robin and Holmstrom, Mats and Chen, Li-Jen},   Nature Communications, 2025
+  \begin{flushleft}Observational characteristics of electron distributions in the Martian induced magnetotail\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{Zhang, Chi and Dong, Chuanfei and {\bf Zhou, Hongyang} and Deca, Jan and Xu, Shaosui and Harada, Yuki and Curry, Shannon M and Mitchell, David L and Liu, Zhi-Yang and Qin, Junfeng and others},   Geophysical Research Letters, 2025
+  \begin{flushleft}Interplay of magnetic reconnection and current sheet kink instability in the Earth's magnetotail\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{Cozzani, Giulia and Alho, M and Zaitsev, Ivan and {\bf Zhou, Hongyang} and Hoilijoki, Sanni and Turc, Lucile and Grandin, Maxime and Horaites, Konstantinos and Battarbee, Markus and Pfau-Kempf, Yann and others},   Geophysical Research Letters, 2025
+  \begin{flushleft}Interplay of magnetic reconnection and current sheet kink instability in the Earth's magnetotail\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{Cozzani, Giulia and Alho, M and Zaitsev, Ivan and {\bf Zhou, Hongyang} and Hoilijoki, Sanni and Turc, Lucile and Grandin, Maxime and Horaites, Konstantinos and Battarbee, Markus and Pfau-Kempf, Yann and others},   Geophysical Research Letters, 2025
+  \begin{flushleft}The Vlasiator 5.2 Ionosphere--Coupling a magnetospheric hybrid-Vlasov simulation with a height-integrated ionosphere model\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{Ganse, Urs and Pfau-Kempf, Yann and Zhou, Hongyang and Juusola, Liisa and Workayehu, Abiyot and Kebede, Fasil and Papadakis, Konstantinos and Grandin, Maxime and Alho, Markku and Battarbee, Markus and others},   Geoscientific Model Development Discussions, 2024
+  \begin{flushleft}Hybrid-Vlasov modelling of ion velocity distribution functions associated with the Kelvin-Helmholtz instability with a density and temperature asymmetry\end{flushleft}
   \vspace{-0.2cm}
   \textit{Tarvus, Vertti and Lurc, Lucile and {\bf Zhou, Hongyang} and Nakamura, Takuma and Settino, Adriana and Blasl, Kevin and Cozzani, Giulia and others},   AAS, 2024
   \begin{flushleft}Source of Drift-dispersed Electrons in Martian Crustal Magnetic Fields\end{flushleft}
