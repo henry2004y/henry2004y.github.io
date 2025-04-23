@@ -3,7 +3,7 @@ title: Advanced Python
 author: "Hongyang Zhou"
 date: "2021-10-15"
 categories: [programming]
-date-modified: "2024-11-29"
+date-modified: "2025-04-23"
 ---
 
 > Good languages stop you from writing stupid codes; bad languages allow you to write more stupid codes.
@@ -30,13 +30,13 @@ More often than not I find myself unsatisfied with the default Python or package
 1. Download source code:
 
 ```sh
-wget https://www.python.org/ftp/python/3.11.7/Python-3.11.7.tgz
+wget https://www.python.org/ftp/python/3.12.10/Python-3.12.10.tgz
 ```
 
 2. Extract archive:
 
 ```sh
-tar xzvf Python-3.11.7.tgz
+tar xzvf Python-3.12.10.tgz
 ```
 
 3. Configure Makefile:
@@ -45,7 +45,20 @@ tar xzvf Python-3.11.7.tgz
 ./configure --enable-optimizations --enable-shared
 ```
 
-[`--enables-shared`](https://docs.python.org/3/using/configure.html#linker-options) is important for external programs calling Python methods and APIs on the binary level.
+Or more specifically, assuming you put the source code into `/home/hyzhou/bin/Python-3.12.10`,
+
+```sh
+./configure \
+    --prefix=/home/hyzhou/bin/Python-3.12.10 \
+    --enable-shared \
+    --enable-optimizations \
+    --enable-ipv6 \
+    LDFLAGS=-Wl,-rpath=/home/hyzhou/bin/Python-3.12.10/lib,--disable-new-dtags
+```
+
+`--prefix` is used to set the custom installation directory.
+
+[`--enables-shared`](https://docs.python.org/3/using/configure.html#linker-options) is important for external programs calling Python methods and APIs on the binary level (e.g. using PyPlot from Julia).
 
 4. Compile and install:
 
@@ -55,11 +68,16 @@ make altinstall
 
 `altinstall` is used to prevent replacing the default python binary file `/usr/bin/python`.
 
+```sh
+make
+make install
+```
+
 5. Check:
 
 ```sh
 python3.11 -V
-pip3.11 -V
+python3.11 -m pip --version
 ```
 
 If on Windows, it would be as simple as downloading the official executable file and follow the installer.
@@ -74,17 +92,9 @@ python3.11 -m pip install -U matplotlib
 
 instead of calling `pip` alone to prevent mismatch of pip and python version.
 
-### Dependency Manager: Pipenv
-
-```sh
-python -m pip install -U pipenv
-```
-
-[A simple demonstration](https://docs.python-guide.org/dev/virtualenvs/#installing-packages-for-your-project).
-
 ### Dependency Manager: Poetry
 
-[Poetry](https://python-poetry.org/docs/) is a better dependency manager. I should use `poetry` over `pipenv` if possible.
+[Poetry](https://python-poetry.org/docs/) is a dependency manager. I should use `poetry` over `pipenv` if possible.
 
 Use `pipx` to install poetry for avoiding self update issues.
 
@@ -135,6 +145,10 @@ and then update:
 ```bash
 poetry update
 ```
+
+### Dependency Manager: uv
+
+[uv](https://docs.astral.sh/uv/) is the most advanced package manager for Python now. It can be used as a direct replacement for almost all the other tools like `pip`, `pipenv`, and `poetry`.
 
 #### Registering in PyPI
 
