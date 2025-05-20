@@ -114,3 +114,17 @@ ffmpeg -i input0 -i input1 -i input2 -filter_complex "[0:v][1:v][2:v]hstack=inpu
 
 `[0:v]` and `[1:v]` refer to the first and second video streams from the first and second inputs.
 The `-map` option determines which streams should be included in the output file.
+
+If the videos do not have the same width or height, we need to first rescale the videos:
+
+To rescale to a target height while keeping the same ratio and an even width pixel number:
+
+```shell
+ffmpeg -i input.mp4 -vcodec libx265 -vf scale=-2:1418 rescaled.mp4
+```
+
+To rescale to a target width while keeping the same ratio and an even height pixel number:
+
+```shell
+ffmpeg -i input.mp4 -vcodec libx265 -vf scale=726:-2 rescaled.mp4
+```
