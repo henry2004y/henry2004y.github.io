@@ -1,0 +1,40 @@
+---
+title: TV Display Techniques Review
+author: "Hongyang Zhou"
+date: "2025-06-14"
+categories: [tech]
+---
+
+- Plasma 等离子体
+  - 比LCD亮度更高，适合户外大屏
+  - 响应快（~ O(μs), compared to O(ms) for LCD）
+  - 显示原理无电磁场介入，抗电磁干扰
+  - 耗电（> 300 W），烧屏
+  - 难以小型化，制造工艺复杂
+
+- LCD: Liquid Crystal Display 液晶显示器
+  - 偏振片，液晶
+  - 根据电压施加方向细分为VA（施加电压呈垂直螺旋状偏转）、IPS（施加电压呈垂直螺旋状偏转）、TN（施加电压呈垂直旋转）
+
+- QLED是在LCD的基础上对背光进行改进，实现更广色域显示。但是QLED仍属于LCD范畴，和OLED完全不同。
+
+- mini-LED也是LCD范畴。所谓mini，指的是分区背光而非整体背光。此类技术在局部亮域从侧面看会有光晕效果。
+
+- LED: Light-Emitting Diode 发光二极管
+  - 新的技术研究方向逐渐转向LED
+  - 基础单元为发光二极管，电流强度决定亮度，单色。为显示彩色，每个像素点有红、绿、篮三种灯珠。
+
+- OLED: Organic LED
+  - 微型LED的一类，对比度极高，无光晕。
+  - 在薄膜电路上涂抹荧光材料，发出三色光。可单独控制每个像素的背光。
+  - 容易实现曲面屏、折叠屏。
+  - 有机材料寿命短，不同颜色材料损耗不同->烧屏。
+  - QD-OLED用量子点技术解决不同材料寿命不同的问题。
+
+- micro-LED
+  - 无机材料
+  - 灯珠可以做得够小，但巨量转移技术成本较高（把大量灯珠放置在基板上）
+
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=558168733&bvid=BV1Me4y1k72b&cid=842034398&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
+
+<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=892715799&bvid=BV1mP4y1J7Up&cid=470557936&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
