@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Hongyang Zhou">
-<meta name="dcterms.date" content="2019-01-24">
+<meta name="dcterms.date" content="2025-06-14">
 
-<title>Plotting of Streamlines – 景田日志</title>
+<title>TV Display Techniques Review – 景田日志</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -299,9 +299,9 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Plotting of Streamlines</h1>
+<h1 class="title">TV Display Techniques Review</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">visual</div>
+    <div class="quarto-category">tech</div>
   </div>
   </div>
 
@@ -319,16 +319,10 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 24, 2019</p>
+      <p class="date">June 14, 2025</p>
     </div>
   </div>
   
-    <div>
-    <div class="quarto-title-meta-heading">Modified</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date-modified">June 28, 2024</p>
-    </div>
-  </div>
     
   </div>
   
@@ -337,21 +331,45 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>The built-in streamline function of Matplotlib/MATLAB is not proper for scientifically visualizing field information. 一开始在MATLAB上开发VisAna的时候，记得Gabor就在说怎么这个磁力线莫名其妙地断了，旁边贾老师说这是MATLAB画图导致的问题，不是我程序写错了。后来转战Julia，改用Matplotlib，这个问题不但没有解决，还变得愈演愈烈。</p>
-<p>问题的表现有几点：</p>
-<ol type="1">
-<li>The only control parameter for streamlines are <code>density</code>, which indicates that there are algorithms behind the scene to select and remove extra lines in a dense region.</li>
-<li>Therefore there are lines ending for no physical reason, which is not suitable for scientifically interpreting the field data.</li>
-</ol>
-<p>Take a look at the official streamline plots: <img src="https://matplotlib.org/3.1.1/_images/sphx_glr_plot_streamplot_001.png" class="img-fluid" alt="matplotlib_streamline"></p>
-<p>This is definitely what you expect. I noticed that there is a <code>minlength</code> argument described in <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.streamplot.html">streamplot</a>. Maybe give that a try?</p>
-<p>The solution turns out to be doing tracing alone. In <a href="(https://github.com/spacepy/spacepy/blob/master/spacepy/pybats/trace2d.py)">SpacePy</a>, there’s a standalone C code for tracing one line at a time and output the point data. Initially I copied the C code, compiled it into a dynamic library, and then call the function directly from Julia. Next I incorporate the function into the plotting function I have and use it instead of the original streamplot in Matplotlib.</p>
-<p>Maybe in Matplotlib 3.6, we can get a new keyword that provides continuous streamlines.</p>
-<hr>
-<p>2D stream tracing is not that hard. Essentially this is just solving ODEs with the chosen numerical schemes. Let’s start with a fixed stepsize and move on to an adaptive stepsize (which is what’s being used in BATSRUS). More complicated stuffs include tracing in 3D general mesh. Work in progress.</p>
-<p>One example in Python is given in this <a href="https://pythonmatplotlibtips.blogspot.com/2017/12/draw-flow-with-continuous-stream-line.html">post</a>. Essentially it is solving ODEs and connect points into lines. At each step in the discretized equation, a interpolation function is provided to calculate the vector field direction at a given point.</p>
-<p>I have built a small package <a href="https://github.com/henry2004y/FieldTracer.jl">FieldTracer.jl</a> for tracing streamlines and fieldlines in 2D and 3D. It is now almost feature complete. One specific reason I need this is to select fixed seeds for animations, such that there won’t be sudden jumps of field lines between frames.</p>
-<p>Update: After Matplotlib 3.8, there is a new keyword in <code>streamplot</code> which controls whether the streamlines should be broken or not.</p>
+<ul>
+<li><p>Plasma 等离子体</p>
+<ul>
+<li>比LCD亮度更高，适合户外大屏</li>
+<li>响应快（~ O(μs), compared to O(ms) for LCD）</li>
+<li>显示原理无电磁场介入，抗电磁干扰</li>
+<li>耗电（&gt; 300 W），烧屏</li>
+<li>难以小型化，制造工艺复杂</li>
+</ul></li>
+<li><p>LCD: Liquid Crystal Display 液晶显示器</p>
+<ul>
+<li>偏振片，液晶</li>
+<li>根据电压施加方向细分为VA（施加电压呈垂直螺旋状偏转）、IPS（施加电压呈垂直螺旋状偏转）、TN（施加电压呈垂直旋转）</li>
+</ul></li>
+<li><p>QLED是在LCD的基础上对背光进行改进，实现更广色域显示。但是QLED仍属于LCD范畴，和OLED完全不同。</p></li>
+<li><p>mini-LED也是LCD范畴。所谓mini，指的是分区背光而非整体背光。此类技术在局部亮域从侧面看会有光晕效果。</p></li>
+<li><p>LED: Light-Emitting Diode 发光二极管</p>
+<ul>
+<li>新的技术研究方向逐渐转向LED</li>
+<li>基础单元为发光二极管，电流强度决定亮度，单色。为显示彩色，每个像素点有红、绿、篮三种灯珠。</li>
+</ul></li>
+<li><p>OLED: Organic LED</p>
+<ul>
+<li>微型LED的一类，对比度极高，无光晕。</li>
+<li>在薄膜电路上涂抹荧光材料，发出三色光。可单独控制每个像素的背光。</li>
+<li>容易实现曲面屏、折叠屏。</li>
+<li>有机材料寿命短，不同颜色材料损耗不同-&gt;烧屏。</li>
+<li>QD-OLED用量子点技术解决不同材料寿命不同的问题。</li>
+</ul></li>
+<li><p>micro-LED</p>
+<ul>
+<li>无机材料</li>
+<li>灯珠可以做得够小，但巨量转移技术成本较高（把大量灯珠放置在基板上）</li>
+</ul></li>
+</ul>
+<iframe src="//player.bilibili.com/player.html?isOutside=true&amp;aid=558168733&amp;bvid=BV1Me4y1k72b&amp;cid=842034398&amp;p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true">
+</iframe>
+<iframe src="//player.bilibili.com/player.html?isOutside=true&amp;aid=892715799&amp;bvid=BV1mP4y1J7Up&amp;cid=470557936&amp;p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true">
+</iframe>
 
 
 
