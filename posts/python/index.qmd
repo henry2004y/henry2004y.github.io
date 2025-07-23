@@ -150,6 +150,8 @@ poetry update
 
 [uv](https://docs.astral.sh/uv/) is the most advanced package manager for Python now. It can be used as a direct replacement for almost all the other tools like `pip`, `pipenv`, and `poetry`.
 
+There are tools like [migrate-to-uv](https://mkniewallner.github.io/migrate-to-uv/) for converting the `pyproject.toml` to the uv version. Other usages are similar to `poetry`.
+
 #### Registering in PyPI
 
 Follow this [guide](https://packaging.python.org/en/latest/tutorials/packaging-projects/).
