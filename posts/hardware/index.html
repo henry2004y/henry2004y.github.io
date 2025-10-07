@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.24">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -39,14 +39,14 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-b651517ce65839d647a86e2780455cfb.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dc55a5b9e770e841cd82e46aadbfb9b0.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-707d8167ce6003fca903bfe2be84ab7f.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-35230b9eddcb4aed3fb0b0104a6f9898.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark-973ceedfe83e7eee1eb98874c3495bf5.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../../site_libs/bootstrap/bootstrap-35230b9eddcb4aed3fb0b0104a6f9898.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-b47711e029d57ef122bfe8dd8a3acd40.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-49fe3259626e6a0d2ac123512a444c7f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-b47711e029d57ef122bfe8dd8a3acd40.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -298,7 +298,10 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#装机实录" id="toc-装机实录" class="nav-link active" data-scroll-target="#装机实录">装机实录</a></li>
+  <li><a href="#装机实录" id="toc-装机实录" class="nav-link active" data-scroll-target="#装机实录">装机实录</a>
+  <ul class="collapse">
+  <li><a href="#gpu" id="toc-gpu" class="nav-link" data-scroll-target="#gpu">GPU</a></li>
+  </ul></li>
   <li><a href="#hardware-for-coding" id="toc-hardware-for-coding" class="nav-link" data-scroll-target="#hardware-for-coding">Hardware for coding</a></li>
   </ul>
 </nav>
@@ -335,6 +338,12 @@ ul.task-list li input[type="checkbox"] {
     </div>
   </div>
   
+    <div>
+    <div class="quarto-title-meta-heading">Modified</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">October 7, 2025</p>
+    </div>
+  </div>
     
   </div>
   
@@ -357,8 +366,12 @@ ul.task-list li input[type="checkbox"] {
 <li>Fan: Be Quiet PURE ROCK 3 CPU Air Cooler。简单挑了个40刀的中间价格。自带硅脂，无需再单独购入thermal paste。</li>
 </ol>
 <p>以上这些加起来855刀，我觉得十分划算。考虑之后加一块5070的显卡，大概550刀。据说50系列销量不佳，之后还会降价，咱拭目以待。</p>
-<p>整个硬件组装过程还是比较顺利的，顺序是CPU-&gt;memory-&gt;SSD-&gt;Fan-&gt;Case-&gt;Power。唯一就是接线的时候第一次少接了几根，第一次接电没点亮。重新接好了就没问题。真正麻烦的是软件。我预先购买了一块USB，在Ubuntu官网了拷了盘，25.04。结果装好了，没有Wifi驱动。一搜，首先网友盲推LTS版本Ubuntu 24，说是新版本可能不稳定。我于是又重新拷USB，装上了24——一样，还是没有Wifi选项。又搜了半天，看到一条记录是Linux目前没有该款主板的网卡驱动，说是太新。顿时非常郁闷，那就意味这无论装哪个Linux操作系统都会遇到一样的问题。没办法，只能转战Windows。没有单独买个人版，利用学校的微软账号从Azure上面弄到一个序列号，再学习了一下Win 11的U盘安装方法。这时之前用作Ubuntu系统的安装盘无法被Windows的安装拷贝程序识别。弄半天发现是需要手动格式化，先在图形界面操作，报错read-only。又看了一阵找到一个Windows自带的命令行程序能修改读写权限，搞了两遍终于格式化成功。然后拷贝程序顺利识别，拿着U盘再去新机器上刷掉Ubuntu装Win11。第一次尝试出现了GPT header corruption错误，可能是分区错误，要调整BIOS设置。又是个坑。折腾了好一圈，看到屏幕上的建议把Boot Sector Recovery Policy 从User变成了Auto，退出BIOS，电脑自己重启了几遍后成功进入Win11系统。然而，此时竟然依然没有Wifi驱动……我打开主板说明书，翻到了驱动安装的页面，扫描二维码，到ASUS的官网注册了这块主板，用笔记本下载了WLAN和Wifi的驱动到U盘，插回PC，安装。终于，几经折腾，下午一点半开始，晚上出去吃了个饭俩小时，回来接着断断续续看，直到晚上11点42分全部搞定。偏底层的部分没有经验，不知道驱动和兼容性是这么麻烦的环节。其实现在参考资料已经很多了，但没有动手前还是很难考虑周全。我要是会写驱动，那就是和真计算机科班出身的一样了。这本来也是操作系统里面十分麻烦的环节。</p>
+<p>整个硬件组装过程还是比较顺利的，顺序是CPU-&gt;memory-&gt;SSD-&gt;Fan-&gt;Case-&gt;Power。唯一就是接线的时候第一次少接了几根，第一次接电没点亮。重新接好了就没问题。真正麻烦的是软件。我预先购买了一块USB，在Ubuntu官网了拷了盘，25.04。结果装好了，没有Wifi驱动。一搜，首先网友盲推LTS版本Ubuntu 24，说是新版本可能不稳定。我于是又重新拷USB，装上了24——一样，还是没有Wifi选项。又搜了半天，看到一条记录是Linux目前没有该款主板的网卡驱动，说是太新。顿时非常郁闷，那就意味这无论装哪个Linux操作系统都会遇到一样的问题。没办法，只能转战Windows。没有单独买个人版，利用学校的微软账号从Azure上面弄到一个序列号，再学习了一下Win 11的U盘安装方法。这时之前用作Ubuntu系统的安装盘无法被Windows的安装拷贝程序识别。弄半天发现是需要手动格式化，先在图形界面操作，报错read-only。又看了一阵找到一个Windows自带的命令行程序能修改读写权限，搞了两遍终于格式化成功。然后拷贝程序顺利识别，拿着U盘再去新机器上刷掉Ubuntu装Win11。第一次尝试出现了GPT header corruption错误，可能是分区错误，要调整BIOS设置。又是个坑。折腾了好一圈，看到屏幕上的建议把Boot Sector Recovery Policy 从User变成了Auto，退出BIOS，电脑自己重启了几遍后成功进入Win11系统。然而，此时竟然依然没有Wifi驱动……我打开主板说明书，翻到了驱动安装的页面，扫描二维码，到ASUS的官网注册了这块主板，用笔记本下载了WLAN和Wifi的驱动到U盘，插回PC，安装。终于，几经折腾，下午一点半开始，晚上出去吃了个饭俩小时，回来接着断断续续看，直到晚上11点42分全部搞定。偏底层的部分没有经验，不知道驱动和兼容性是这么麻烦的环节。其实现在参考资料已经很多了，但没有动手前还是很难考虑周全。我要是会写驱动，那就是和真计算机科班出身的一样了。这本来也是操作系统里面十分麻烦的环节。目前仍有无线网卡和蓝牙的驱动问题没有解决。</p>
 <p>剩下的软件安装都十分顺利，WSL2+Ubuntu、VSCode、Zsh、Python、Julia、SSH、ParaView，基本一次完成。</p>
+<section id="gpu" class="level3">
+<h3 class="anchored" data-anchor-id="gpu">GPU</h3>
+<p>之后单独买了一块RTX 5070 12GB ASUS的显卡，原价550刀，加税580刀。安装起来很顺利，从主机上卸下两块钢板用来接显卡输出，将显卡对准主板上的PCIE插槽插入即可。最后把视频信号输出换到显卡上面，主板和Win11系统都能自动识别显卡。补一个显卡驱动，装上CUDA，GPU的程序也能跑了。 这样总成本是1435刀，和一开始的预期差不多。</p>
+</section>
 </section>
 <section id="hardware-for-coding" class="level2">
 <h2 class="anchored" data-anchor-id="hardware-for-coding">Hardware for coding</h2>
