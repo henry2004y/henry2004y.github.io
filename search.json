@@ -1432,7 +1432,7 @@
     "href": "link.html",
     "title": "Links",
     "section": "",
-    "text": "Plasma Key Notes\nTestParticle.jl\nResearch Log\nMy Personal Vlasiator Manual\nCFD in Practice\nVlasiator.jl\nBatsrus.jl\nData Processing in Space Physics\nFieldTracer.jl\nIdeal MHD Toy Model\nMultigrid Solver in MATLAB\n1D PIC in Julia1\nCoding in Julia\nCoding in Fortran\nCoding in C++2\nWorking on Clusters3\nVlasiator: simulating near-Earth space with high-performance computing"
+    "text": "Plasma Key Notes\nTestParticle.jl\nResearch Log\nMy Personal Vlasiator Manual\nCFD in Practice\nVlasiator.jl\nBatsrus.jl\nData Processing in Space Physics\nFieldTracer.jl\nIdeal MHD Toy Model\nMultigrid Solver in MATLAB\nPIC Algorithm Comparison\n1D PIC in Julia1\nCoding in Julia\nCoding in Fortran\nCoding in C++2\nWorking on Clusters3\nVlasiator: simulating near-Earth space with high-performance computing"
   },
   {
     "objectID": "link.html#tools",
