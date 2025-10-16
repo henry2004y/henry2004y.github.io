@@ -24,6 +24,8 @@ title: "Links"
 
 [Multigrid Solver in MATLAB](https://github.com/henry2004y/MGSolver)
 
+[PIC Algorithm Comparison](https://henry2004y.github.io/PIC-comparison/)
+
 [1D PIC in Julia](https://github.com/henry2004y/kempo)[^1]
 
 [Coding in Julia](https://henry2004y.github.io/JuliaNotes/)
