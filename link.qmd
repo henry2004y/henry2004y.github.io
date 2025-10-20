@@ -26,6 +26,8 @@ title: "Links"
 
 [PIC Algorithm Comparison](https://henry2004y.github.io/PIC-comparison/)
 
+[Collisions in PIC](https://henry2004y.github.io/PIC-comparison/pic_collisions_guide)
+
 [1D PIC in Julia](https://github.com/henry2004y/kempo)[^1]
 
 [Coding in Julia](https://henry2004y.github.io/JuliaNotes/)
