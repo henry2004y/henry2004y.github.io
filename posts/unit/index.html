@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Hongyang Zhou">
-<meta name="dcterms.date" content="2019-11-08">
+<meta name="dcterms.date" content="2025-10-23">
 
-<title>Using latexdiff – 景田日志</title>
+<title>Unit Conversion Between SI and CGS – 景田日志</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -75,6 +75,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../../styles.css">
 </head>
@@ -293,8 +322,21 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-easy-part-mechanics" id="toc-the-easy-part-mechanics" class="nav-link active" data-scroll-target="#the-easy-part-mechanics">The “Easy” Part: Mechanics</a></li>
+  <li><a href="#the-hard-part-electromagnetism" id="toc-the-hard-part-electromagnetism" class="nav-link" data-scroll-target="#the-hard-part-electromagnetism">The “Hard” Part: Electromagnetism</a></li>
+  <li><a href="#how-to-convert-em-units" id="toc-how-to-convert-em-units" class="nav-link" data-scroll-target="#how-to-convert-em-units">How to Convert E&amp;M Units</a>
+  <ul class="collapse">
+  <li><a href="#method-1-use-a-rosetta-stone-conversion-table-easiest" id="toc-method-1-use-a-rosetta-stone-conversion-table-easiest" class="nav-link" data-scroll-target="#method-1-use-a-rosetta-stone-conversion-table-easiest">Method 1: Use a “Rosetta Stone” Conversion Table (Easiest)</a></li>
+  </ul></li>
+  <li><a href="#method-2-re-derive-the-conversion-from-the-equations-the-fundamental-way" id="toc-method-2-re-derive-the-conversion-from-the-equations-the-fundamental-way" class="nav-link" data-scroll-target="#method-2-re-derive-the-conversion-from-the-equations-the-fundamental-way">Method 2: Re-derive the Conversion from the Equations (The “Fundamental” Way)</a></li>
+  <li><a href="#summary-and-final-advice" id="toc-summary-and-final-advice" class="nav-link" data-scroll-target="#summary-and-final-advice">Summary and Final Advice</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -302,11 +344,9 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Using latexdiff</h1>
-<p class="subtitle lead">Compare and show the differences between files</p>
+<h1 class="title">Unit Conversion Between SI and CGS</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">software</div>
-    <div class="quarto-category">latex</div>
+    <div class="quarto-category">math</div>
   </div>
   </div>
 
@@ -324,7 +364,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">November 8, 2019</p>
+      <p class="date">October 23, 2025</p>
     </div>
   </div>
   
@@ -336,13 +376,242 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Compare the differences between files is a tedious task. However, if you pick the right tool, it may become as easy as one line command.</p>
-<p>For my first paper, I learned a little bit of using the package <strong>trackchanges</strong>. This package provides some basic commands of manually pointing out the removal, substitution and comments. It is good enough if you use it from the first place. What if I added some changes and forgot to track them initially? Then probably you should turn to <strong>latexdiff</strong>.</p>
-<p>latexdiff is an invaluable utility that makes it easy to markup and view changes made to the document. It definitely reduced my burden of having to read through two files simultaneously where it would be easy to overlook subtle changes like word substitutions and changing numbers or signs in an equation. My advisor, who is an expert in Perl, specifically pointed out that <strong>latexdiff</strong> is an excellent script written in Perl. I searched on Google and found the author named F.J. Tilmann; he is supposed to be a scientist who happened to know Perl pretty well. And this script has been developed and maintained by him since 2004. You can check it out <a href="https://github.com/ftilmann/latexdiff">here</a>. A basic introductino is provided on <a href="https://www.overleaf.com/learn/latex/Articles/Using_Latexdiff_For_Marking_Changes_To_Tex_Documents">Overleaf</a>.</p>
-<p>I spent two hours on my first attempt to make it work, but I failed. Then my advisor and I sat down together and digged into the problem. After about half an hour, we finally figured out that the issue for my latex source file is that in the <code>lstlisting</code> environment where I showed some demo codes for OpenMP, there is a single dollar sign $ in the text, which is interpreted as the math environment in Latex. Since that one $ is assumed to come in pair to mark the beginning and end of math input, <strong>latexdiff</strong> made a mistake all across the file trying to match that $ sign with some other one that comes later. Unfortunately for string parsing tasks, similar symbols like single quote, double quote that cannot be distinguished either the start or end position will be a nightmare.</p>
-<p>Anyway, we finally found the problem. Actually, there is an option named <code>PICTUREENV</code> which can be used to exclude some kind of environments. However, it didn’t work for me.</p>
+<p>The conversion process is split into two very different categories:</p>
+<ol type="1">
+<li><strong>Mechanics (length, mass, force, energy):</strong> This is straightforward. The physical laws (e.g., <span class="math inline">\(F=ma\)</span>) are identical, so you just convert the base units.</li>
+<li><strong>Electromagnetism (charge, field, potential):</strong> This is the confusing part. The physical laws themselves are written differently, which changes the very definition and dimensions of the units.</li>
+</ol>
+<p>Here is a breakdown of how to handle both.</p>
+<section id="the-easy-part-mechanics" class="level2">
+<h2 class="anchored" data-anchor-id="the-easy-part-mechanics">The “Easy” Part: Mechanics</h2>
+<p>In mechanics, both SI and CGS systems use the same equations. The only difference is the scale of the three base units:</p>
+<ul>
+<li><strong>Length:</strong> <span class="math inline">\(1 \text{ meter (m)} = 100 \text{ centimeters (cm)}\)</span></li>
+<li><strong>Mass:</strong> <span class="math inline">\(1 \text{ kilogram (kg)} = 1000 \text{ grams (g)}\)</span></li>
+<li><strong>Time:</strong> <span class="math inline">\(1 \text{ second (s)} = 1 \text{ second (s)}\)</span></li>
+</ul>
+<p>To convert any derived unit, you simply use the <strong>Factor-Label</strong> Method (dimensional analysis).</p>
+<p>Example 1: Force (Newton to Dyne)</p>
+<ul>
+<li>The SI unit of force is the Newton (N). From <span class="math inline">\(F=ma\)</span>, <span class="math inline">\(1 \text{ N} = 1 \text{ kg} \cdot \text{m/s}^2\)</span>.</li>
+<li>The CGS unit of force is the dyne (dyn). From <span class="math inline">\(F=ma\)</span>, <span class="math inline">\(1 \text{ dyn} = 1 \text{ g} \cdot \text{cm/s}^2\)</span>.</li>
+</ul>
+<p>Let’s convert 1 N to dyn: <span class="math display">\[
+1 \text{ N} = 1 \frac{\text{kg} \cdot \text{m}}{\text{s}^2} \times \left( \frac{1000 \text{ g}}{1 \text{ kg}} \right) \times \left( \frac{100 \text{ cm}}{1 \text{ m}} \right) = 100,000 \frac{\text{g} \cdot \text{cm}}{\text{s}^2} = 10^5 \text{ dyn}
+\]</span></p>
+<p>Example 2: Energy (Joule to Erg)</p>
+<ul>
+<li>The SI unit of energy is the Joule (J). <span class="math inline">\(1 \text{ J} = 1 \text{ N} \cdot \text{m}\)</span>.</li>
+<li>The CGS unit of energy is the erg (erg). <span class="math inline">\(1 \text{ erg} = 1 \text{ dyn} \cdot \text{cm}\)</span>.</li>
+</ul>
+<p>Let’s convert 1 J to erg: <span class="math display">\[1 \text{ J} = 1 \text{ N} \cdot \text{m} \times \left( \frac{10^5 \text{ dyn}}{1 \text{ N}} \right) \times \left( \frac{100 \text{ cm}}{1 \text{ m}} \right) = 10^7 \text{ dyn} \cdot \text{cm} = 10^7 \text{ erg}\]</span></p>
+<p>Common Mechanical Conversions</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Quantity</th>
+<th style="text-align: left;">SI Unit</th>
+<th style="text-align: left;">CGS Unit</th>
+<th style="text-align: left;">Conversion</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Length</td>
+<td style="text-align: left;">meter (m)</td>
+<td style="text-align: left;">centimeter (cm)</td>
+<td style="text-align: left;"><span class="math inline">\(1 \text{ m} = 100 \text{ cm}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mass</td>
+<td style="text-align: left;">kilogram (kg)</td>
+<td style="text-align: left;">gram (g)</td>
+<td style="text-align: left;"><span class="math inline">\(1 \text{ kg} = 1000 \text{ g}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Force</td>
+<td style="text-align: left;">Newton (N)</td>
+<td style="text-align: left;">dyne (dyn)</td>
+<td style="text-align: left;"><span class="math inline">\(1 \text{ N} = 10^5 \text{ dyn}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Energy</td>
+<td style="text-align: left;">Joule (J)</td>
+<td style="text-align: left;">erg (erg)</td>
+<td style="text-align: left;"><span class="math inline">\(1 \text{ J} = 10^7 \text{ erg}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Pressure</td>
+<td style="text-align: left;">Pascal (Pa)</td>
+<td style="text-align: left;">Barye (Ba)</td>
+<td style="text-align: left;"><span class="math inline">\(1 \text{ Pa} = 10 \text{ Ba} (\text{dyn}/\text{cm}^2)\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="the-hard-part-electromagnetism" class="level2">
+<h2 class="anchored" data-anchor-id="the-hard-part-electromagnetism">The “Hard” Part: Electromagnetism</h2>
+<p>Our confusion almost certainly comes from electromagnetism. Here, we primarily compare SI to the Gaussian CGS system, which is most common in physics (especially plasma physics and astrophysics).</p>
+<p>The Core Problem: The Equations Are Different</p>
+<ul>
+<li>SI: Introduces a new base unit, the <strong>Ampere (A)</strong>, for electric current. Charge (Coulomb) is a derived unit (<span class="math inline">\(1 \text{ C} = 1 \text{ A} \cdot \text{s}\)</span>). The laws of E&amp;M require physical constants:
+<ul>
+<li>Permittivity of free space: <span class="math inline">\(\epsilon_0\)</span></li>
+<li>Permeability of free space: <span class="math inline">\(\mu_0\)</span></li>
+<li>These are related by <span class="math inline">\(c^2 = 1/(\epsilon_0 \mu_0)\)</span>.</li>
+</ul></li>
+<li>Gaussian CGS: Does not introduce a new unit. Instead, it defines the unit of charge (the <strong>statcoulomb</strong> or <strong>esu</strong>) directly from Coulomb’s Law by setting the constant <span class="math inline">\(k_e\)</span> to <span class="math inline">\(1\)</span> (dimensionless).
+<ul>
+<li>SI Coulomb’s Law: <span class="math inline">\(F = k_e \frac{q_1 q_2}{r^2} = \frac{1}{4\pi\epsilon_0} \frac{q_1 q_2}{r^2}\)</span></li>
+<li>Gaussian Coulomb’s Law: <span class="math inline">\(F = \frac{q_1 q_2}{r^2}\)</span></li>
+</ul></li>
+</ul>
+<p>Because the fundamental equations are different, factors of <span class="math inline">\(4\pi\)</span>, <span class="math inline">\(c\)</span> (the speed of light), <span class="math inline">\(\epsilon_0\)</span>, and <span class="math inline">\(\mu_0\)</span> appear in different places. The clearest way to see this is to compare Maxwell’s Equations and the Lorentz Force:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Equation</th>
+<th style="text-align: left;">SI System</th>
+<th style="text-align: left;">Gaussian CGS System</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Gauss’s Law (E)</td>
+<td style="text-align: left;"><span class="math inline">\(\nabla \cdot \vec{E} = \frac{\rho}{\epsilon_0}\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\nabla \cdot \vec{E} = 4\pi\rho\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Gauss’s Law (B)</td>
+<td style="text-align: left;"><span class="math inline">\(\nabla \cdot \vec{B} = 0\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\nabla \cdot \vec{B} = 0\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Faraday’s Law</td>
+<td style="text-align: left;"><span class="math inline">\(\nabla \times \vec{E} = -\frac{\partial \vec{B}}{\partial t}\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\nabla \times \vec{E} = -\frac{1}{c}\frac{\partial \vec{B}}{\partial t}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ampère-Maxwell</td>
+<td style="text-align: left;"><span class="math inline">\(\nabla \times \vec{B} = \mu_0 \vec{J} + \mu_0 \epsilon_0 \frac{\partial \vec{E}}{\partial t}\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\nabla \times \vec{B} = \frac{4\pi}{c}\vec{J} + \frac{1}{c}\frac{\partial \vec{E}}{\partial t}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Lorentz Force</td>
+<td style="text-align: left;"><span class="math inline">\(\vec{F} = q(\vec{E} + \vec{v} \times \vec{B})\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(\vec{F} = q(\vec{E} + \frac{\vec{v}}{c} \times \vec{B})\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="how-to-convert-em-units" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-convert-em-units">How to Convert E&amp;M Units</h2>
+<p>Since the dimensions themselves are different, you cannot use the simple factor-label method. You have two options:</p>
+<section id="method-1-use-a-rosetta-stone-conversion-table-easiest" class="level3">
+<h3 class="anchored" data-anchor-id="method-1-use-a-rosetta-stone-conversion-table-easiest">Method 1: Use a “Rosetta Stone” Conversion Table (Easiest)</h3>
+<p>This is what most people do. Memorize or look up the key conversion factors. The symbol “<span class="math inline">\(\leftrightarrow\)</span>” is often used to show a correspondence rather than an equality, as the dimensions are not the same.</p>
+<p>Common E&amp;M Conversions (SI <span class="math inline">\(\leftrightarrow\)</span> Gaussian CGS)</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Quantity</th>
+<th style="text-align: left;">SI Unit</th>
+<th style="text-align: left;">Gaussian CGS Unit</th>
+<th style="text-align: left;">Conversion Factor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Magnetic Field (<span class="math inline">\(B\)</span>)</td>
+<td style="text-align: left;">Tesla (T)</td>
+<td style="text-align: left;">Gauss (G)</td>
+<td style="text-align: left;"><span class="math inline">\(1 \text{ T} \leftrightarrow 10^4 \text{ G}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Electric Field (<span class="math inline">\(E\)</span>)</td>
+<td style="text-align: left;">Volt/meter (V/m)</td>
+<td style="text-align: left;">Statvolt/cm (statV/cm)</td>
+<td style="text-align: left;"><span class="math inline">\(1 \text{ statV/cm} \leftrightarrow 2.9979 \times 10^4 \text{ V/m}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Charge (<span class="math inline">\(q\)</span>)</td>
+<td style="text-align: left;">Coulomb (C)</td>
+<td style="text-align: left;">Statcoulomb (statC or esu)</td>
+<td style="text-align: left;"><span class="math inline">\(1 \text{ C} \leftrightarrow 2.9979 \times 10^9 \text{ statC}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Potential (<span class="math inline">\(\phi\)</span>)</td>
+<td style="text-align: left;">Volt (V)</td>
+<td style="text-align: left;">Statvolt (statV)</td>
+<td style="text-align: left;"><span class="math inline">\(1 \text{ statV} \leftrightarrow 299.79 \text{ V}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Note: The factor <span class="math inline">\(2.9979...\)</span> is the numerical value of <span class="math inline">\(c\)</span> (speed of light) in units of <span class="math inline">\(10^8 \text{ m/s}\)</span>. It’s often approximated as <span class="math inline">\(3\)</span>.</p>
+<p>The most common conversion you will see in physics is for the magnetic field: <span class="math display">\[
+1 \text{ Tesla} = 10^4 \text{ Gauss}
+\]</span></p>
+</section>
+</section>
+<section id="method-2-re-derive-the-conversion-from-the-equations-the-fundamental-way" class="level2">
+<h2 class="anchored" data-anchor-id="method-2-re-derive-the-conversion-from-the-equations-the-fundamental-way">Method 2: Re-derive the Conversion from the Equations (The “Fundamental” Way)</h2>
+<p>This shows why the conversion factors are what they are. Let’s find the conversion for charge using Coulomb’s Law.</p>
+<ol type="1">
+<li><p>Start with the two equations for force:</p>
+<ul>
+<li>SI: <span class="math inline">\(F_{SI} = \frac{1}{4\pi\epsilon_0} \frac{q_{SI}^2}{r_{SI}^2}\)</span></li>
+<li>CGS: <span class="math inline">\(F_{CGS} = \frac{q_{CGS}^2}{r_{CGS}^2}\)</span></li>
+</ul></li>
+<li><p>Use known values:</p>
+<ul>
+<li>The SI constant <span class="math inline">\(k_e = 1 / (4\pi\epsilon_0) \approx 9 \times 10^9 \text{ N} \cdot \text{m}^2/\text{C}^2\)</span>.</li>
+<li>From mechanics, we know <span class="math inline">\(1 \text{ N} = 10^5 \text{ dyn}\)</span> and <span class="math inline">\(1 \text{ m} = 100 \text{ cm}\)</span>.</li>
+</ul></li>
+<li><p>Set up an equivalence. Let’s find the CGS charge (<span class="math inline">\(q_{CGS}\)</span>) that is equivalent to <span class="math inline">\(1 \text{ C}\)</span> of SI charge (<span class="math inline">\(q_{SI}\)</span>). We’ll use <span class="math inline">\(r_{SI} = 1 \text{ m}\)</span> and <span class="math inline">\(r_{CGS} = 100 \text{ cm}\)</span>.</p></li>
+<li><p>Calculate the force in SI:</p>
+<ul>
+<li><span class="math display">\[F_{SI} = (9 \times 10^9) \frac{(1 \text{ C})^2}{(1 \text{ m})^2} = 9 \times 10^9 \text{ N}\]</span></li>
+</ul></li>
+<li><p>Convert that force to CGS:</p>
+<ul>
+<li><span class="math display">\[F_{CGS} = (9 \times 10^9 \text{ N}) \times \left( \frac{10^5 \text{ dyn}}{1 \text{ N}} \right) = 9 \times 10^{14} \text{ dyn}\]</span></li>
+</ul></li>
+<li><p>Solve for the CGS charge <span class="math inline">\(q_{CGS}\)</span> using the CGS equation: <span class="math display">\[
+F_{CGS} = \frac{q_{CGS}^2}{r_{CGS}^2}\]</span> <span class="math display">\[
+9 \times 10^{14} \text{ dyn} = \frac{q_{CGS}^2}{(100 \text{ cm})^2}\]</span> <span class="math display">\[
+q_{CGS}^2 = (9 \times 10^{14}) \times (100^2) = (9 \times 10^{14}) \times (10^4) = 9 \times 10^{18} \text{ (statC)}^2\]</span> <span class="math display">\[
+q_{CGS} = \sqrt{9 \times 10^{18}} = 3 \times 10^9 \text{ statC}\]</span></p></li>
+<li><p>Result: <span class="math inline">\(1 \text{ C} \leftrightarrow 3 \times 10^9 \text{ statC}\)</span> (using the approximation <span class="math inline">\(c \approx 3 \times 10^{10} \text{ cm/s}\)</span>).</p></li>
+</ol>
+</section>
+<section id="summary-and-final-advice" class="level2">
+<h2 class="anchored" data-anchor-id="summary-and-final-advice">Summary and Final Advice</h2>
+<ol type="1">
+<li>For Mechanics: Use the Factor-Label Method by converting meters, kilograms, and seconds.</li>
+<li>For E&amp;M: The equations themselves are different. Do not use the factor-label method.</li>
+<li>Golden Rule: Never mix SI and CGS units in the same equation. If you have a <span class="math inline">\(B\)</span>-field in Gauss, your velocities must be in cm/s, your <span class="math inline">\(E\)</span>-field in statV/cm, and you must use the CGS form of the equation (e.g., Lorentz force with the <span class="math inline">\(\vec{v}/c\)</span> term).</li>
+<li>Practical Tip: When reading a paper or textbook, the first thing to check is which unit system is being used. This is often stated in the introduction or methods section. Engineering fields almost exclusively use SI. Many theoretical physics and astrophysics fields use Gaussian CGS.</li>
+</ol>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
