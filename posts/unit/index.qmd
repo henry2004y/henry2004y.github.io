@@ -1,0 +1,132 @@
+---
+title: Unit Conversion Between SI and CGS
+date: "2025-10-23"
+categories: [math]
+---
+
+The conversion process is split into two very different categories:
+
+1. **Mechanics (length, mass, force, energy):** This is straightforward. The physical laws (e.g., $F=ma$) are identical, so you just convert the base units.
+2. **Electromagnetism (charge, field, potential):** This is the confusing part. The physical laws themselves are written differently, which changes the very definition and dimensions of the units.
+
+Here is a breakdown of how to handle both.
+
+## The "Easy" Part: Mechanics
+
+In mechanics, both SI and CGS systems use the same equations. The only difference is the scale of the three base units:
+
+- **Length:** $1 \text{ meter (m)} = 100 \text{ centimeters (cm)}$
+- **Mass:** $1 \text{ kilogram (kg)} = 1000 \text{ grams (g)}$
+- **Time:** $1 \text{ second (s)} = 1 \text{ second (s)}$
+
+To convert any derived unit, you simply use the **Factor-Label** Method (dimensional analysis).
+
+Example 1: Force (Newton to Dyne)
+
+- The SI unit of force is the Newton (N). From $F=ma$, $1 \text{ N} = 1 \text{ kg} \cdot \text{m/s}^2$.
+- The CGS unit of force is the dyne (dyn). From $F=ma$, $1 \text{ dyn} = 1 \text{ g} \cdot \text{cm/s}^2$.
+
+Let's convert 1 N to dyn:
+$$
+1 \text{ N} = 1 \frac{\text{kg} \cdot \text{m}}{\text{s}^2} \times \left( \frac{1000 \text{ g}}{1 \text{ kg}} \right) \times \left( \frac{100 \text{ cm}}{1 \text{ m}} \right) = 100,000 \frac{\text{g} \cdot \text{cm}}{\text{s}^2} = 10^5 \text{ dyn}
+$$
+
+Example 2: Energy (Joule to Erg)
+
+- The SI unit of energy is the Joule (J). $1 \text{ J} = 1 \text{ N} \cdot \text{m}$.
+- The CGS unit of energy is the erg (erg). $1 \text{ erg} = 1 \text{ dyn} \cdot \text{cm}$.
+
+Let's convert 1 J to erg:
+$$1 \text{ J} = 1 \text{ N} \cdot \text{m} \times \left( \frac{10^5 \text{ dyn}}{1 \text{ N}} \right) \times \left( \frac{100 \text{ cm}}{1 \text{ m}} \right) = 10^7 \text{ dyn} \cdot \text{cm} = 10^7 \text{ erg}$$
+
+Common Mechanical Conversions
+
+| Quantity | SI Unit | CGS Unit | Conversion |
+| :--- | :--- | :--- | :--- |
+| Length | meter (m) | centimeter (cm) | $1 \text{ m} = 100 \text{ cm}$ |
+| Mass | kilogram (kg) | gram (g) | $1 \text{ kg} = 1000 \text{ g}$ |
+| Force | Newton (N) | dyne (dyn) | $1 \text{ N} = 10^5 \text{ dyn}$ |
+| Energy | Joule (J) | erg (erg) | $1 \text{ J} = 10^7 \text{ erg}$ |
+| Pressure | Pascal (Pa) | Barye (Ba) | $1 \text{ Pa} = 10 \text{ Ba} (\text{dyn}/\text{cm}^2)$ |
+
+## The "Hard" Part: Electromagnetism
+
+Our confusion almost certainly comes from electromagnetism. Here, we primarily compare SI to the Gaussian CGS system, which is most common in physics (especially plasma physics and astrophysics).
+
+The Core Problem: The Equations Are Different
+
+- SI: Introduces a new base unit, the **Ampere (A)**, for electric current. Charge (Coulomb) is a derived unit ($1 \text{ C} = 1 \text{ A} \cdot \text{s}$). The laws of E&M require physical constants:
+   - Permittivity of free space: $\epsilon_0$
+   - Permeability of free space: $\mu_0$
+   - These are related by $c^2 = 1/(\epsilon_0 \mu_0)$.
+- Gaussian CGS: Does not introduce a new unit. Instead, it defines the unit of charge (the **statcoulomb** or **esu**) directly from Coulomb's Law by setting the constant $k_e$ to $1$ (dimensionless).
+   - SI Coulomb's Law: $F = k_e \frac{q_1 q_2}{r^2} = \frac{1}{4\pi\epsilon_0} \frac{q_1 q_2}{r^2}$
+   - Gaussian Coulomb's Law: $F = \frac{q_1 q_2}{r^2}$
+
+Because the fundamental equations are different, factors of $4\pi$, $c$ (the speed of light), $\epsilon_0$, and $\mu_0$ appear in different places. The clearest way to see this is to compare Maxwell's Equations and the Lorentz Force:
+
+| Equation | SI System | Gaussian CGS System |
+| :--- | :--- | :--- |
+| Gauss's Law (E) | $\nabla \cdot \vec{E} = \frac{\rho}{\epsilon_0}$ | $\nabla \cdot \vec{E} = 4\pi\rho$ |
+| Gauss's Law (B) | $\nabla \cdot \vec{B} = 0$ | $\nabla \cdot \vec{B} = 0$ |
+| Faraday's Law | $\nabla \times \vec{E} = -\frac{\partial \vec{B}}{\partial t}$ | $\nabla \times \vec{E} = -\frac{1}{c}\frac{\partial \vec{B}}{\partial t}$ |
+| Ampère-Maxwell | $\nabla \times \vec{B} = \mu_0 \vec{J} + \mu_0 \epsilon_0 \frac{\partial \vec{E}}{\partial t}$ | $\nabla \times \vec{B} = \frac{4\pi}{c}\vec{J} + \frac{1}{c}\frac{\partial \vec{E}}{\partial t}$ |
+| Lorentz Force | $\vec{F} = q(\vec{E} + \vec{v} \times \vec{B})$ | $\vec{F} = q(\vec{E} + \frac{\vec{v}}{c} \times \vec{B})$ |
+
+## How to Convert E&M Units
+
+Since the dimensions themselves are different, you cannot use the simple factor-label method. You have two options:
+
+### Method 1: Use a "Rosetta Stone" Conversion Table (Easiest)
+
+This is what most people do. Memorize or look up the key conversion factors. The symbol "$\leftrightarrow$" is often used to show a correspondence rather than an equality, as the dimensions are not the same.
+
+Common E&M Conversions (SI $\leftrightarrow$ Gaussian CGS)
+
+| Quantity | SI Unit | Gaussian CGS Unit | Conversion Factor |
+| :--- | :--- | :--- | :--- |
+| Magnetic Field ($B$) | Tesla (T) | Gauss (G) | $1 \text{ T} \leftrightarrow 10^4 \text{ G}$ |
+| Electric Field ($E$) | Volt/meter (V/m) | Statvolt/cm (statV/cm) | $1 \text{ statV/cm} \leftrightarrow 2.9979 \times 10^4 \text{ V/m}$ |
+| Charge ($q$) | Coulomb (C) | Statcoulomb (statC or esu) | $1 \text{ C} \leftrightarrow 2.9979 \times 10^9 \text{ statC}$ |
+| Potential ($\phi$) | Volt (V) | Statvolt (statV) | $1 \text{ statV} \leftrightarrow 299.79 \text{ V}$ |
+
+Note: The factor $2.9979...$ is the numerical value of $c$ (speed of light) in units of $10^8 \text{ m/s}$. It's often approximated as $3$.
+
+The most common conversion you will see in physics is for the magnetic field:
+$$
+1 \text{ Tesla} = 10^4 \text{ Gauss}
+$$
+
+## Method 2: Re-derive the Conversion from the Equations (The "Fundamental" Way)
+
+This shows why the conversion factors are what they are. Let's find the conversion for charge using Coulomb's Law.
+
+1. Start with the two equations for force:
+   - SI: $F_{SI} = \frac{1}{4\pi\epsilon_0} \frac{q_{SI}^2}{r_{SI}^2}$
+   - CGS: $F_{CGS} = \frac{q_{CGS}^2}{r_{CGS}^2}$
+2. Use known values:
+   - The SI constant $k_e = 1 / (4\pi\epsilon_0) \approx 9 \times 10^9 \text{ N} \cdot \text{m}^2/\text{C}^2$.
+   - From mechanics, we know $1 \text{ N} = 10^5 \text{ dyn}$ and $1 \text{ m} = 100 \text{ cm}$.
+3. Set up an equivalence. Let's find the CGS charge ($q_{CGS}$) that is equivalent to $1 \text{ C}$ of SI charge ($q_{SI}$). We'll use $r_{SI} = 1 \text{ m}$ and $r_{CGS} = 100 \text{ cm}$.
+4. Calculate the force in SI:
+   - $$F_{SI} = (9 \times 10^9) \frac{(1 \text{ C})^2}{(1 \text{ m})^2} = 9 \times 10^9 \text{ N}$$
+5. Convert that force to CGS:
+   - $$F_{CGS} = (9 \times 10^9 \text{ N}) \times \left( \frac{10^5 \text{ dyn}}{1 \text{ N}} \right) = 9 \times 10^{14} \text{ dyn}$$
+6. Solve for the CGS charge $q_{CGS}$ using the CGS equation:
+$$
+F_{CGS} = \frac{q_{CGS}^2}{r_{CGS}^2}$$
+$$
+9 \times 10^{14} \text{ dyn} = \frac{q_{CGS}^2}{(100 \text{ cm})^2}$$
+$$
+q_{CGS}^2 = (9 \times 10^{14}) \times (100^2) = (9 \times 10^{14}) \times (10^4) = 9 \times 10^{18} \text{ (statC)}^2$$
+$$
+q_{CGS} = \sqrt{9 \times 10^{18}} = 3 \times 10^9 \text{ statC}$$
+
+7. Result: $1 \text{ C} \leftrightarrow 3 \times 10^9 \text{ statC}$ (using the approximation $c \approx 3 \times 10^{10} \text{ cm/s}$).
+
+## Summary and Final Advice
+
+1. For Mechanics: Use the Factor-Label Method by converting meters, kilograms, and seconds.
+2. For E&M: The equations themselves are different. Do not use the factor-label method.
+3. Golden Rule: Never mix SI and CGS units in the same equation. If you have a $B$-field in Gauss, your velocities must be in cm/s, your $E$-field in statV/cm, and you must use the CGS form of the equation (e.g., Lorentz force with the $\vec{v}/c$ term).
+4. Practical Tip: When reading a paper or textbook, the first thing to check is which unit system is being used. This is often stated in the introduction or methods section. Engineering fields almost exclusively use SI. Many theoretical physics and astrophysics fields use Gaussian CGS.
