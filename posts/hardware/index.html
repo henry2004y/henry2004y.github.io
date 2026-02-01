@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.26">
+<meta name="generator" content="quarto-1.8.27">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -39,9 +39,9 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-b758ccaa5987ceb1b75504551e579abf.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-4d9afe2b8d18ee9fa5d0d57b5ed4214d.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap-b47711e029d57ef122bfe8dd8a3acd40.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
@@ -299,6 +299,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#装机实录" id="toc-装机实录" class="nav-link active" data-scroll-target="#装机实录">装机实录</a>
   <ul class="collapse">
   <li><a href="#gpu" id="toc-gpu" class="nav-link" data-scroll-target="#gpu">GPU</a></li>
+  <li><a href="#wifi-bluetooth" id="toc-wifi-bluetooth" class="nav-link" data-scroll-target="#wifi-bluetooth">Wifi &amp; Bluetooth</a></li>
   </ul></li>
   <li><a href="#hardware-for-coding" id="toc-hardware-for-coding" class="nav-link" data-scroll-target="#hardware-for-coding">Hardware for coding</a></li>
   </ul>
@@ -339,7 +340,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">October 7, 2025</p>
+      <p class="date-modified">February 1, 2026</p>
     </div>
   </div>
     
@@ -369,6 +370,11 @@ ul.task-list li input[type="checkbox"] {
 <section id="gpu" class="level3">
 <h3 class="anchored" data-anchor-id="gpu">GPU</h3>
 <p>之后单独买了一块RTX 5070 12GB ASUS的显卡，原价550刀，加税580刀。安装起来很顺利，从主机上卸下两块钢板用来接显卡输出，将显卡对准主板上的PCIE插槽插入即可。最后把视频信号输出换到显卡上面，主板和Win11系统都能自动识别显卡。补一个显卡驱动，装上CUDA，GPU的程序也能跑了。 这样总成本是1435刀，和一开始的预期差不多。</p>
+</section>
+<section id="wifi-bluetooth" class="level3">
+<h3 class="anchored" data-anchor-id="wifi-bluetooth">Wifi &amp; Bluetooth</h3>
+<p>一开始装Ubuntu的时候，wifi连不上，最后查证是因为缺少网卡驱动。后来换成了Windows 11，wifi没问题了，但是蓝牙连接依旧没有成功，我以为还是驱动的问题。最近为了和宝一起玩儿游戏，考虑弄个外置音箱，差点就去直接买了一台有线的。宝说她有个索尼的蓝牙音箱，我们试了一下，音箱和手机连接正常，但是和电脑无法连接。手机和电脑连接也正常，但是电脑和音箱的组合就是不行。尝试更新驱动无果后，我在路上和等午饭时一直在搜索是否有相关的信息，逐步发现有人提到wifi天线的问题。把wifi和蓝牙放在一起搜，结果显示一根天线同时支持二者。寻思着装机时没注意还有天线，我以为板载wifi就是直接在主板上内置了，不需要天线。回家一翻，发现真的盒子里还有未拆封的天线，接口是主机后的两根金色的圆孔。搭好接上，再次尝试，一次成功。</p>
+<p>这说明，没有天线时wifi能登录是因为屋子里的无线信号足够强，显示只有两三格时也能用。但是蓝牙的信号很弱，尤其是音箱的蓝牙，缺少天线的时候就搜不到。装上外接天线，不仅蓝牙可以用了，wifi的信号也都到了满格。</p>
 </section>
 </section>
 <section id="hardware-for-coding" class="level2">
