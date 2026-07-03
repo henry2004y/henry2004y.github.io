@@ -25,7 +25,7 @@ format:
 \begin{huge}\begin{center}{\bf Hongyang Zhou}\end{center}\end{huge}
 
 <!-- CONTACT INFO -->
-\begin{center}hongyang@bu.edu ∙ \href{https://github.com/henry2004y}{Github}
+\begin{center}hongyang@bu.edu ∙ \href{https://orcid.org/0000-0003-4571-4501}{ORCID} ∙ \href{https://github.com/henry2004y}{Github}
 \end{center}
 \vspace{15pt}
 
@@ -285,6 +285,54 @@ format:
 {\bf PUBLICATIONS}
   \vspace{3pt}
   \hrule
+  \begin{flushleft}Cross-Scale Coupling in Earth's Dayside Magnetosphere 2D Semi-Implicit PIC Simulation: From Global Geometry to Multi-Scale Kinetic Dynamics\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{{\bf Zhou, Hongyang} and Dong, Chuanfei and Chen, Yuxi and Zhang, Chi and Walsh, Brian M. and Zou, Ying and Li, Xinmin},   Journal of Geophysical Research: Space Physics, 2026
+  \begin{flushleft}Planar Collisionless Shock Simulations with the Semi-implicit Particle-in-cell Model FLEKS\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{{\bf Zhou, Hongyang} and Chen, Yuxi and Dong, Chuanfei and Wang, Liang and Zou, Ying and Walsh, Brian M. and T{\'o}th, G{\'a}bor},   The Astrophysical Journal Supplement Series, 2026
+  \begin{flushleft}Properties and Radial Evolution of Solar Wind Turbulence Near Mercury's Orbit\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{Li, Xinmin and Dong, Chuanfei and Hadid, Lina Z. and Aizawa, Sae and Zhang, Chi and {\bf Zhou, Hongyang} and Wang, Liang and Gao, Jiawei and Slavin, James A.},   The Astrophysical Journal Letters, 2026
+  \begin{flushleft}Direct Observations of Magnetic Reconnection in the Solar Wind Current Sheets near Mars\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{Zhang, Chi and Dong, Chuanfei and Li, Xinmin and Shen, Han-Wen and Halekas, Jasper and Phan, Tai and Mazelle, Christian and Harada, Yuki and {\bf Zhou, Hongyang} and Gao, Jiawei},   The Astrophysical Journal Letters, 2026
+  \begin{flushleft}Physics-Informed Neural Networks for Modeling the Martian Induced Magnetosphere\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{Gao, Jiawei and Dong, Chuanfei and Zhang, Chi and Qin, Yilan and Shekarpaz, Simin and Li, Xinmin and Wang, Liang and {\bf Zhou, Hongyang} and Tadlock, Abigail},   Geophysical Research Letters, 2026
+  \begin{flushleft}Global Mapping of Magnetic Field Topologies in the Martian Induced Magnetosphere\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{Zhang, Chi and Dong, Chuanfei and Xu, Shaosui and Halekas, Jasper and Luhmann, Janet and Shen, Han-Wen and {\bf Zhou, Hongyang} and Wang, Xiao-Dong and Gao, Jiawei and Li, Xinmin and others},   Journal of Geophysical Research: Space Physics, 2026
+  \begin{flushleft}Spectral Properties and Energy Injection in Mercury's Magnetotail Current Sheet\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{Li, Xinmin and Dong, Chuanfei and Wang, Liang and Aizawa, Sae and Hadid, Lina Z. and Zhang, Chi and {\bf Zhou, Hongyang} and Slavin, James A. and Gao, Jiawei and Stumpo, Mirko and others},   Geophysical Research Letters, 2026
+  \begin{flushleft}Revisiting Mars' Induced Magnetic Field and Clock Angle Departures Under Real-Time Upstream Solar Wind Conditions\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{Cheng, Zhihao and Zhang, Chi and Dong, Chuanfei and {\bf Zhou, Hongyang} and Gao, Jiawei and Tadlock, Abigail and Li, Xinmin and Wang, Liang},   Journal of Geophysical Research: Space Physics, 2025
+  \begin{flushleft}Global Energy Transport and Conversion in the Solar Wind--Mars Interaction: MAVEN Observations\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{Zhang, Chi and Dong, Chuanfei and {\bf Zhou, Hongyang} and Halekas, Jasper and Li, Xinmin and Gao, Jiawei and Shen, Han-Wen and Wang, Xiao-Dong and Nilsson, Hans and Ramstad, Robin and others},   Journal of Geophysical Research: Planets, 2025
+  \begin{flushleft}Observation of a Knotted Electron Diffusion Region in Earth's Magnetotail Reconnection\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{Li, Xinmin and Dong, Chuanfei and Ji, Hantao and Zhang, Chi and Wang, Liang and Giles, Barbara and {\bf Zhou, Hongyang} and Chen, Rui and Qi, Yi},   Geophysical Research Letters, 2025
+  \begin{flushleft}Control of Solar Wind on Magnetic Field Fluctuations in the Subsolar Magnetosheath\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{Zou, Ying and Walsh, Brian M. and Chen, Yuxi and {\bf Zhou, Hongyang} and Raptis, Savvas},   Journal of Geophysical Research: Space Physics, 2025
+  \begin{flushleft}The Early-Phase Growth of ULF Waves in the Ion Foreshock Observed in a Hybrid-Vlasov Simulation\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{Zhang, Kun and Dorfman, Seth and Turc, Lucile and Ganse, Urs and Shi, Chen and {\bf Zhou, Hongyang} and Palmroth, Minna},   Journal of Geophysical Research: Space Physics, 2025
+  \begin{flushleft}BATSRUS GPU: Faster-than-real-time Magnetospheric Simulations with a Block-adaptive Grid Code\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{An, Yifu and Chen, Yuxi and {\bf Zhou, Hongyang} and Gaenko, A. and T{\'o}th, G{\'a}bor},   The Astrophysical Journal, 2025
+  \begin{flushleft}Interplay Between a Foreshock Bubble and a Hot Flow Anomaly Forming Along the Same Rotational Discontinuity\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{Turc, L. and Archer, M. O. and {\bf Zhou, Hongyang} and Pfau-Kempf, Y. and Suni, J. and Kajdi\v{c}, P. and Blanco-Cano, X. and Dahani, S. and Battarbee, M. and Raptis, S. and others},   Geophysical Research Letters, 2025
+  \begin{flushleft}Ion-Mediated Tearing and Kink Instabilities in the Earth's Magnetosphere: Hybrid-Vlasov Simulations\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{Zaitsev, I. and Cozzani, G. and Alho, M. and Horaites, K. and {\bf Zhou, Hongyang} and Kit, A. and Pfau-Kempf, Y. and Hoilijoki, S. and Ganse, U. and Battarbee, M. and others},   Journal of Geophysical Research: Space Physics, 2025
+  \begin{flushleft}Role of ULF Waves in Reforming the Martian Bow Shock\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{Zhang, Chi and Dong, Chuanfei and Liu, Terry Z. and Mazelle, Christian and Raptis, Savvas and {\bf Zhou, Hongyang} and Fruchtman, Jacob and Halekas, Jasper and Li, Jing-Huan and Hanley, Kathleen G. and others},   AGU Advances, 2025
   \begin{flushleft}Anomalous Transient Enhancement of Planetary Ion Escape at Mars\end{flushleft}
   \vspace{-0.2cm}
   \textit{Zhang, Chi and Dong, Chuanfei and {\bf Zhou, Hongyang} and Halekas, Jasper and Yamauchi, Masatoshi and Nilsson, Hans and Liu, Terry and Persson, Moa and Curry, Shannon and Dong, Yaxue and Futaana, Yoshifumi and Chen, Yuxi and Zhou, Muni and Suranga, Ruhunusiri and Hanley, Kathleen and Mazelle, Christian and Xu, Shaosui and Ramstad, Robin and Holmstrom, Mats and Chen, Li-Jen},   Nature Communications, 2025
