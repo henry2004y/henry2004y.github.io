@@ -285,6 +285,11 @@ format:
 {\bf PUBLICATIONS}
   \vspace{3pt}
   \hrule
+  \begin{flushleft}Pitch-Angle-Dependent Cosmic-Ray Transport in Anisotropic Magnetohydrodynamic Turbulence\end{flushleft}
+  \vspace{-0.2cm}
+  \textit{{\bf Zhou, Hongyang} and Dong, Chuanfei and Xu, Siyao},   The Astrophysical Journal, 2026
+  \vspace{3pt}
+  \hrule
   \begin{flushleft}Cross-Scale Coupling in Earth's Dayside Magnetosphere 2D Semi-Implicit PIC Simulation: From Global Geometry to Multi-Scale Kinetic Dynamics\end{flushleft}
   \vspace{-0.2cm}
   \textit{{\bf Zhou, Hongyang} and Dong, Chuanfei and Chen, Yuxi and Zhang, Chi and Walsh, Brian M. and Zou, Ying and Li, Xinmin},   Journal of Geophysical Research: Space Physics, 2026
